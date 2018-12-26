@@ -38,6 +38,10 @@ $(function () {
         }
     });
 
+    socket.on('game.answer-failed', message => {
+        alert(message);
+    });
+
     $login.submit(e => {
         e.preventDefault();
         socket.emit('game.login', {

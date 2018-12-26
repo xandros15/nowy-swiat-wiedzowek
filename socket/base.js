@@ -49,7 +49,10 @@ const createSocket = function (app) {
     function submitAnswer(player, answer) {
         if (player && !player.answer) {
             player.answer = answer;
+
+            return true;
         }
+        return false;
     }
 
     function resetAnswers() {
@@ -93,8 +96,11 @@ const createSocket = function (app) {
         });
         socket.on('game.answer', ({message}) => {
             if (!isAdmin(player)) {
-                submitAnswer(player, message);
-                sendToAdmin('game.players-update', players);
+                if (submitAnswer(player, message)) {
+                    sendToAdmin('game.players-update', players);
+                } else {
+                    socket.emit('game.answer-failed', 'You can send answer only once');
+                }
             }
         });
         socket.on('game.reset', () => {

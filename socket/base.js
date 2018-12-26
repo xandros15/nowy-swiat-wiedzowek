@@ -6,48 +6,48 @@ const createSocket = function (app) {
     const ADMIN_NAME = process.env.ANSWER_ADMIN || 'admin';
     const ADMIN_PASSWORD = process.env.ANSWER_PASS || 'NajlepszeAtrakcje';
 
-    const adminPlayer = {
+    const admin = {
         id: '',
         nickname: ADMIN_NAME,
         password: ADMIN_PASSWORD,
-        answer: '',
     };
 
     //app
-    let players = [adminPlayer];
+    let players = [];
 
     function isAdminOnline() {
-        const player = players.find(player => player.nickname === ADMIN_NAME);
-
-        return player.id !== '';
+        return admin.id !== '';
     }
 
 
     function loginOrAddPlayer({nickname, password, id}) {
-        let player = players.find(player => player.nickname === nickname);
-        if (player && player.password !== password) {
-            return false;
-        }
+        if (nickname === admin.nickname && password === admin.password) {
+            admin.id = id;
 
-        if (!player) {
-            player = {
-                nickname,
-                password,
-                id,
-                answer: '',
-            };
-            players.push(player);
+            return admin;
         } else {
-            player.id = id;
+            let player = players.find(player => player.nickname === nickname);
+            if (player && player.password === password) {
+                player.id = id;
+
+                return player;
+            } else if (!player && nickname !== ADMIN_NAME) {
+                player = {
+                    nickname,
+                    password,
+                    id,
+                    answer: '',
+                };
+                players.push(player);
+
+                return player;
+            }
         }
-
-
-        return player;
+        return false;
     }
 
-    function submitAnswer({nickname, answer}) {
-        const player = players.find(player => player.nickname === nickname);
-        if (player.answer === '') {
+    function submitAnswer(player, answer) {
+        if (player && !player.answer) {
             player.answer = answer;
         }
     }
@@ -58,17 +58,18 @@ const createSocket = function (app) {
         }
     }
 
+    function isAdmin(player) {
+        return player && player.nickname === admin.nickname;
+    }
+
     function sendToAdmin(namespace, elements) {
         if (isAdminOnline()) {
-            const player = players.find(player => player.nickname === ADMIN_NAME);
-            io.to(player.id).emit(namespace, elements);
+            io.to(admin.id).emit(namespace, elements);
         }
     }
 
     io.on('connection', socket => {
         let player = null;
-
-
         socket.on('game.login', ({nickname, password}) => {
             if (!nickname || !password) {
                 socket.emit('game.login-failed', 'You need to fill these fields');
@@ -82,22 +83,22 @@ const createSocket = function (app) {
 
             if (!player) {
                 socket.emit('game.login-failed', 'Player name exist or you type wrong password');
+            } else if (isAdmin(player)) {
+                socket.emit('game.admin-login');
+                sendToAdmin('game.players-update', players);
             } else {
                 socket.emit('game.player', player);
-                if (players.find(player => player.id === socket.id && player.nickname === ADMIN_NAME)) {
-                    socket.emit('game.admin-login');
-                }
                 sendToAdmin('game.players-update', players);
             }
         });
         socket.on('game.answer', ({message}) => {
-            if (player && player.nickname !== ADMIN_NAME) {
-                submitAnswer({nickname: player.nickname, answer: message});
+            if (!isAdmin(player)) {
+                submitAnswer(player, message);
                 sendToAdmin('game.players-update', players);
             }
         });
         socket.on('game.reset', () => {
-            if (player && player.nickname === ADMIN_NAME) {
+            if (isAdmin(player)) {
                 resetAnswers();
                 socket.broadcast.emit('game.reset');
                 socket.emit('game.players-update', players);

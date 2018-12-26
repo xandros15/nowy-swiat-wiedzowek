@@ -58,10 +58,10 @@ const createSocket = function (app) {
         }
     }
 
-    function updateAnswers() {
+    function sendToAdmin(namespace, elements) {
         if (isAdminOnline()) {
             const player = players.find(player => player.nickname === ADMIN_NAME);
-            io.to(player.id).emit('game.players-update', players);
+            io.to(player.id).emit(namespace, elements);
         }
     }
 
@@ -80,25 +80,23 @@ const createSocket = function (app) {
                 socket.emit('game.login-failed');
             } else {
                 socket.emit('game.player', player);
-                // console.log(socket);
                 if (players.find(player => player.id === socket.id && player.nickname === ADMIN_NAME)) {
                     socket.emit('game.admin-login');
                 }
-                io.sockets.emit('game.players-update', players);
+                sendToAdmin('game.players-update', players);
             }
         });
         socket.on('game.answer', ({message}) => {
             if (player && player.nickname !== ADMIN_NAME) {
                 submitAnswer({nickname: player.nickname, answer: message});
-                updateAnswers();
+                sendToAdmin('game.players-update', players);
             }
         });
         socket.on('game.reset', () => {
             if (player && player.nickname === ADMIN_NAME) {
                 resetAnswers();
-                socket.emit('game.reset');
-                updateAnswers(io);
-                console.log('reset answers')
+                socket.broadcast.emit('game.reset');
+                socket.emit('game.players-update', players);
             }
         });
     });

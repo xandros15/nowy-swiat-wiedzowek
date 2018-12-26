@@ -70,6 +70,10 @@ const createSocket = function (app) {
 
 
         socket.on('game.login', ({nickname, password}) => {
+            if (!nickname || !password) {
+                socket.emit('game.login-failed', 'You need to fill these fields');
+                return;
+            }
             player = loginOrAddPlayer({
                 nickname,
                 password,
@@ -77,7 +81,7 @@ const createSocket = function (app) {
             });
 
             if (!player) {
-                socket.emit('game.login-failed');
+                socket.emit('game.login-failed', 'Player name exist or you type wrong password');
             } else {
                 socket.emit('game.player', player);
                 if (players.find(player => player.id === socket.id && player.nickname === ADMIN_NAME)) {

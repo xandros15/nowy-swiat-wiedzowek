@@ -21,9 +21,9 @@ $(function () {
         player.nickname = p.nickname;
     });
 
-    socket.on('game.login-failed', () => {
+    socket.on('game.login-failed', message => {
         $('#password').val('');
-        alert('Player exist or wrong password');
+        alert(message);
     });
 
     socket.on('game.reset', () => {

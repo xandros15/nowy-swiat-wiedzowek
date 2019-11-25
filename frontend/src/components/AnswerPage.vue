@@ -1,5 +1,5 @@
 <template>
-    <form @submit.prevent="">
+    <form @submit.prevent="sendAnswer">
         <div>
             <label for="answer">Odpowiedź</label>
             <input id="answer" v-model="answer">
@@ -18,6 +18,12 @@
     data () {
       return {answer: '', answerAlt: ''}
     },
+    methods: {
+      sendAnswer () {
+        this.$store.dispatch('answer', {answer: this.answer, answerAlt: this.answerAlt})
+          .then(() => this.answer = this.answerAlt = '')
+      }
+    }
   }
 </script>
 

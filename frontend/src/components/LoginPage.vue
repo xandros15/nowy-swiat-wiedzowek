@@ -7,7 +7,6 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
 
   export default {
     name: 'LoginPage',
@@ -15,9 +14,9 @@
       return {nickname: ''}
     },
     methods: {
-      ...mapActions({
-        login: ''
-      })
+      login () {
+        this.$store.dispatch('login', {nickname: this.nickname}).then(() => this.nickname = '')
+      }
     }
   }
 </script>

@@ -8,8 +8,33 @@ export default new Vuex.Store({
     login: '',
     isConnected: false,
     isLogged: false,
+    answers: [],
   },
-  mutations: {},
-  actions: {},
+  mutations: {
+    ['successfulLogin'] (state) {
+      state.isLogged = true
+    },
+    ['pushAnswer'] (state, answer) {
+      state.answers.push(answer)
+    }
+  },
+  actions: {
+    ['login'] ({state}, {password}) {
+      if (!state.isLogged) {
+        const {$socket} = this._vm
+        $socket.emit('admin', {password})
+      }
+    },
+    ['socket.admin'] ({commit,}, {isSuccess}) {
+      if (isSuccess) {
+        commit('successfulLogin')
+      } else {
+        alert('Wrong password')
+      }
+    },
+    ['socket.answer'] ({commit,}, answer) {
+      commit('pushAnswer', answer)
+    }
+  },
   modules: {}
 })

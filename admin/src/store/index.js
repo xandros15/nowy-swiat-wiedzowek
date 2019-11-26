@@ -6,6 +6,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     login: '',
+    password: '',
     isConnected: false,
     isLogged: false,
     answers: [],
@@ -19,14 +20,16 @@ export default new Vuex.Store({
     },
     ['resetAnswers'] (state) {
       state.answers = []
+    },
+    ['setPassword'] (state, password) {
+      state.password = password
     }
   },
   actions: {
-    ['login'] ({state}, {password}) {
-      if (!state.isLogged) {
-        const {$socket} = this._vm
-        $socket.emit('admin', {password})
-      }
+    ['login'] ({commit,}, {password}) {
+      const {$socket} = this._vm
+      $socket.emit('admin', {password})
+      commit('setPassword', password)
     },
     ['reset'] () {
       this._vm.$socket.emit('reset')
@@ -53,6 +56,13 @@ export default new Vuex.Store({
       answers = answers || []
       for (const answer of answers) {
         commit('pushAnswer', answer)
+      }
+    },
+    ['socket.reconnect'] ({state, dispatch}) {
+      if (state.isLogged && state.password && confirm('Disconnect. Do you want to reconnect?')) {
+        dispatch('login', {password: state.password,})
+      } else {
+        document.location.reload()
       }
     }
   },

@@ -50,6 +50,7 @@ io.on('connection', socket => {
     if (socket === adminIo) {
       answers = []
       adminIo.emit('reset', {isSuccess: true})
+      adminIo.broadcast.emit('reset', {isSuccess: true})
     }
   })
   socket.on('disconnect', () => {

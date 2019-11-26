@@ -5,6 +5,7 @@ const PASSWORD = process.env.PASSWORD || 'admin'
 
 const io = require('socket.io')(PORT)
 let users = []
+let answers = []
 let adminIo = null
 
 io.on('connection', socket => {
@@ -24,18 +25,20 @@ io.on('connection', socket => {
     if (password === PASSWORD) {
       adminIo = socket
       socket.emit('admin', {isSuccess: true})
+      socket.emit('answers', {answers})
     } else {
       socket.emit('admin', {isSuccess: false})
     }
   })
   socket.on('answer', ({answer, answerAlt}) => {
-    console.log(adminIo)
+    const payload = {
+      nickname: user.nickname,
+      answer,
+      answerAlt
+    }
+    answers.push(payload)
     if (adminIo) {
-      adminIo.emit('answer', {
-        nickname: user.nickname,
-        answer,
-        answerAlt
-      })
+      adminIo.emit('answer', payload)
     }
   })
   socket.on('disconnect', () => {

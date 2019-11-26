@@ -34,7 +34,7 @@ io.on('connection', socket => {
   })
   socket.on('answer', ({answer, answerAlt}) => {
     if (
-      answer.length < 3 || answer.length > 64 || answerAlt.length > 64 ||
+      answer.length < 1 || answer.length > 64 || answerAlt.length > 64 ||
       answers.findIndex(i => i.nickname === user.nickname) !== -1) {
       socket.emit('answer', {isSuccess: false})
     } else {

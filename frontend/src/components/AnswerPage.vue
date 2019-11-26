@@ -1,11 +1,11 @@
 <template>
     <form @submit.prevent="sendAnswer">
         <div>
-            <label for="answer">Odpowiedź</label>
+            <label for="answer">Anime: </label>
             <input :value="answer" id="answer" ref="answer">
         </div>
         <div>
-            <label for="answer-alt">Odpowiedź dodatkowa</label>
+            <label for="answer-alt">Dodatkowe dane: </label>
             <input :value="answerAlt" id="answer-alt" ref="answerAlt">
         </div>
         <button>Wyślij</button>

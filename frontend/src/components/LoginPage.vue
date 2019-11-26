@@ -1,7 +1,7 @@
 <template>
     <form @submit.prevent="login">
         <label for="nickname">Nazwa drużyny</label>
-        <input id="nickname" v-model="nickname"/>
+        <input id="nickname" v-model.trim="nickname"/>
         <button>Dołącz</button>
     </form>
 </template>

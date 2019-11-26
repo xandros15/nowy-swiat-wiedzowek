@@ -24,8 +24,8 @@
     methods: {
       sendAnswer () {
         this.$store.dispatch('answer', {
-          answer: this.$refs.answer.value,
-          answerAlt: this.$refs.answerAlt.value,
+          answer: this.$refs.answer.value.trim(),
+          answerAlt: this.$refs.answerAlt.value.trim(),
         })
       }
     }

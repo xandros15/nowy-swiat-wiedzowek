@@ -24,7 +24,7 @@ io.on('connection', socket => {
     console.log('login', payload)
   })
   socket.on('admin', ({password}) => {
-    if (password === PASSWORD) {
+    if (password === PASSWORD && adminIo === null) {
       adminIo = socket
       socket.emit('admin', {isSuccess: true})
       socket.emit('answers', {answers})

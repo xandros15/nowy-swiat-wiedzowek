@@ -16,6 +16,9 @@ export default new Vuex.Store({
     },
     ['pushAnswer'] (state, answer) {
       state.answers.push(answer)
+    },
+    ['resetAnswers'] (state) {
+      state.answers = []
     }
   },
   actions: {
@@ -23,6 +26,16 @@ export default new Vuex.Store({
       if (!state.isLogged) {
         const {$socket} = this._vm
         $socket.emit('admin', {password})
+      }
+    },
+    ['reset'] () {
+      this._vm.$socket.emit('reset')
+    },
+    ['socket.reset'] ({commit}, {isSuccess}) {
+      if (isSuccess) {
+        commit('resetAnswers')
+      } else {
+        alert('Cannot reset answers.')
       }
     },
     ['socket.admin'] ({commit,}, {isSuccess}) {

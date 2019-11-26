@@ -41,6 +41,12 @@ io.on('connection', socket => {
       adminIo.emit('answer', payload)
     }
   })
+  socket.on('reset', () => {
+    if (socket === adminIo) {
+      answers = []
+      adminIo.emit('reset', {isSuccess: true})
+    }
+  })
   socket.on('disconnect', () => {
     if (user.nickname.length > 0) {
       users = users.filter(u => u !== user.nickname)

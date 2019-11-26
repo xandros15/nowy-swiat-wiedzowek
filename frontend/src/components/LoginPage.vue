@@ -1,6 +1,6 @@
 <template>
     <form @submit.prevent="login">
-        <label for="nickname">Dołącz do Gry</label>
+        <label for="nickname">Nazwa drużyny</label>
         <input id="nickname" v-model="nickname"/>
         <button>Dołącz</button>
     </form>

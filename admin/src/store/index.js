@@ -49,6 +49,7 @@ export default new Vuex.Store({
       commit('pushAnswer', answer)
     },
     ['socket.answers'] ({commit,}, {answers}) {
+      commit('resetAnswers')
       answers = answers || []
       for (const answer of answers) {
         commit('pushAnswer', answer)

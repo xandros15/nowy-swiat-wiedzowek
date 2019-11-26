@@ -31,14 +31,19 @@ io.on('connection', socket => {
     }
   })
   socket.on('answer', ({answer, answerAlt}) => {
-    const payload = {
-      nickname: user.nickname,
-      answer,
-      answerAlt
-    }
-    answers.push(payload)
-    if (adminIo) {
-      adminIo.emit('answer', payload)
+    if (answers.findIndex(i => i.nickname === user.nickname) !== -1) {
+      socket.emit('answer', {isSuccess: false})
+    } else {
+      const payload = {
+        nickname: user.nickname,
+        answer,
+        answerAlt
+      }
+      answers.push(payload)
+      if (adminIo) {
+        adminIo.emit('answer', payload)
+      }
+      socket.emit('answer', {isSuccess: true})
     }
   })
   socket.on('reset', () => {

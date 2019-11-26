@@ -37,7 +37,12 @@ export default new Vuex.Store({
       } else {
         alert('Błąd w dołączeniu do gry, może zły nickname?')
       }
-    }
+    },
+    ['socket.answer'] (store, {isSuccess}) {
+      if (!isSuccess) {
+        alert('Wysłałeś już swoją odpowiedź.')
+      }
+    },
   },
   modules: {}
 })

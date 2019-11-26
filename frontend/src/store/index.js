@@ -31,11 +31,9 @@ export default new Vuex.Store({
         commit('setAnswer', {answer, answerAlt})
       }
     },
-    ['login'] ({state}, {nickname}) {
-      if (!state.isLogged) {
-        const {$socket} = this._vm
-        $socket.emit('login', {nickname})
-      }
+    ['login'] (store, {nickname}) {
+      const {$socket} = this._vm
+      $socket.emit('login', {nickname})
     },
     ['socket.login'] ({commit}, {isSuccess, nickname}) {
       if (isSuccess) {
@@ -55,6 +53,13 @@ export default new Vuex.Store({
     ['socket.reset'] ({commit}, {isSuccess}) {
       if (isSuccess) {
         commit('setAnswer', {answer: '', answerAlt: ''})
+      }
+    },
+    ['socket.reconnect'] ({state, dispatch}) {
+      if (state.isLogged && state.nickname && confirm('Rozłączono. Czy chcesz połączyć się ponownie?')) {
+        dispatch('login', {nickname: state.nickname,})
+      } else {
+        document.location.reload()
       }
     },
   },

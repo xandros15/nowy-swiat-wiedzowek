@@ -12,7 +12,9 @@ io.on('connection', socket => {
   let user = {nickname: '',}
   socket.on('login', ({nickname}) => {
     const payload = {isSuccess: true, nickname}
-    if (users.indexOf(nickname) === -1) {
+    if (users.indexOf(nickname) === -1 &&
+      nickname.length > 2 && nickname.length < 16
+    ) {
       user.nickname = nickname
       users.push(nickname)
     } else {

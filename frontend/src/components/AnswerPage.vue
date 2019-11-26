@@ -23,10 +23,15 @@
     }),
     methods: {
       sendAnswer () {
-        this.$store.dispatch('answer', {
+        const payload = {
           answer: this.$refs.answer.value.trim(),
           answerAlt: this.$refs.answerAlt.value.trim(),
-        })
+        }
+        if (payload.answer.length < 1 || payload.answer.length > 64 || payload.answerAlt.length > 64) {
+          alert('Twoja odpowiedź jest za długa lub za krótka')
+        } else {
+          this.$store.dispatch('answer', payload)
+        }
       }
     }
   }

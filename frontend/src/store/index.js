@@ -8,6 +8,8 @@ export default new Vuex.Store({
     nickname: '',
     isConnected: false,
     isLogged: false,
+    answer: '',
+    answerAlt: '',
   },
   mutations: {
     ['changeNickname'] (state, {nickname}) {
@@ -16,12 +18,17 @@ export default new Vuex.Store({
     ['successfulLogin'] (state) {
       state.isLogged = true
     },
+    ['setAnswer'] (state, {answer, answerAlt}) {
+      state.answer = answer
+      state.answerAlt = answerAlt
+    }
   },
   actions: {
-    ['answer'] ({state}, {answer, answerAlt}) {
+    ['answer'] ({state, commit}, {answer, answerAlt}) {
       if (state.isLogged) {
         const {$socket} = this._vm
         $socket.emit('answer', {answer, answerAlt})
+        commit('setAnswer', {answer, answerAlt})
       }
     },
     ['login'] ({state}, {nickname}) {
@@ -38,9 +45,11 @@ export default new Vuex.Store({
         alert('Błąd w dołączeniu do gry, może zły nickname?')
       }
     },
-    ['socket.answer'] (store, {isSuccess}) {
+    ['socket.answer'] ({commit}, {isSuccess}) {
       if (!isSuccess) {
         alert('Wysłałeś już swoją odpowiedź.')
+      } else {
+        commit('setAnswer', {answer: '', answerAlt: ''})
       }
     },
   },

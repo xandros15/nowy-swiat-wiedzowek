@@ -2,26 +2,31 @@
     <form @submit.prevent="sendAnswer">
         <div>
             <label for="answer">Odpowiedź</label>
-            <input id="answer" v-model="answer">
+            <input :value="answer" id="answer" ref="answer">
         </div>
         <div>
             <label for="answer-alt">Odpowiedź dodatkowa</label>
-            <input id="answer-alt" v-model="answerAlt">
+            <input :value="answerAlt" id="answer-alt" ref="answerAlt">
         </div>
         <button>Wyślij</button>
     </form>
 </template>
 
 <script>
+  import { mapState } from 'vuex'
+
   export default {
     name: 'AnswerPage',
-    data () {
-      return {answer: '', answerAlt: ''}
-    },
+    computed: mapState({
+      answer: state => state.answer,
+      answerAlt: state => state.answerAlt,
+    }),
     methods: {
       sendAnswer () {
-        this.$store.dispatch('answer', {answer: this.answer, answerAlt: this.answerAlt})
-          .then(() => this.answer = this.answerAlt = '')
+        this.$store.dispatch('answer', {
+          answer: this.$refs.answer.value,
+          answerAlt: this.$refs.answerAlt.value,
+        })
       }
     }
   }

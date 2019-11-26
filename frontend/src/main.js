@@ -7,7 +7,7 @@ Vue.config.productionTip = false
 
 Vue.use(new VueSocketIO({
   debug: true,
-  connection: process.env.NODE_ENV === 'development' ? 'http://localhost:3333' : '',
+  connection: process.env.NODE_ENV === 'development' ? 'http://192.168.0.61:3333' : '',
   vuex: {
     store,
     actionPrefix: 'socket.',

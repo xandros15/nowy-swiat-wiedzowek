@@ -1,9 +1,13 @@
 <template>
-    <form @submit.prevent="login">
-        <label for="nickname">Nazwa drużyny</label>
-        <input id="nickname" v-model.trim="nickname"/>
-        <button>Dołącz</button>
-    </form>
+    <div class="login-page-wrapper">
+        <div class="login-page-container">
+            <form @submit.prevent="login" class="login-form">
+                <h2 class="title">Wprowadź nazwę dużyny i wciśnij "dołącz".</h2>
+                <input class="login-form-input" placeholder="nazwa drużyny" title="nazwa drużyny" v-model="nickname"/>
+                <button class="login-form-button">Dołącz</button>
+            </form>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -25,5 +29,65 @@
   }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+    .login {
+        &-page {
+            &-wrapper {
+                width: 100%;
+                height: 100%;
+                background: #76b852; /* fallback for old browsers */
+                background: -webkit-linear-gradient(right, #76b852, #8dc26f);
+                background: -moz-linear-gradient(right, #76b852, #8dc26f);
+                background: -o-linear-gradient(right, #76b852, #8dc26f);
+                background: linear-gradient(to left, #76b852, #8dc26f);
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+            }
+
+            &-container {
+                width: 360px;
+                padding: 8% 0 0;
+                margin: auto;
+            }
+        }
+
+        &-form {
+            position: relative;
+            z-index: 1;
+            background: #fff;
+            max-width: 360px;
+            margin: 0 auto 100px;
+            padding: 45px;
+            text-align: center;
+            box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+
+            &-input {
+                outline: 0;
+                background: #f2f2f2;
+                width: 100%;
+                border: 0;
+                margin: 0 0 15px;
+                padding: 15px;
+                box-sizing: border-box;
+                font-size: 14px;
+            }
+
+            &-button {
+                text-transform: uppercase;
+                outline: 0;
+                background: #4caf50;
+                width: 100%;
+                border: 0;
+                padding: 15px;
+                color: #fff;
+                font-size: 14px;
+                cursor: pointer;
+
+                &:hover, &:active, &:focus {
+                    background: #43a047;
+
+                }
+            }
+        }
+    }
 </style>

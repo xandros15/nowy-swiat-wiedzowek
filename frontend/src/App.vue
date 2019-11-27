@@ -37,4 +37,14 @@
         width: 100%;
         height: 100%;
     }
+
+    body {
+        background: #b85f1b; /* fallback for old browsers */
+        background: -webkit-linear-gradient(right, #b85f1b, #c2874d);
+        background: -moz-linear-gradient(right, #b85f1b, #c2874d);
+        background: -o-linear-gradient(right, #b85f1b, #c2874d);
+        background: linear-gradient(to left, #b85f1b, #c2874d);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
 </style>

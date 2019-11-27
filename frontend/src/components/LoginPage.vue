@@ -1,12 +1,10 @@
 <template>
-    <div class="login-page-wrapper">
-        <div class="login-page-container">
-            <form @submit.prevent="login" class="login-form">
-                <h2 class="title">Wprowadź nazwę dużyny i wciśnij "dołącz".</h2>
-                <input class="login-form-input" placeholder="nazwa drużyny" title="nazwa drużyny" v-model="nickname"/>
-                <button class="login-form-button">Dołącz</button>
-            </form>
-        </div>
+    <div class="login-container">
+        <form @submit.prevent="login" class="login-form">
+            <h2 class="title">Wprowadź nazwę dużyny i wciśnij "dołącz".</h2>
+            <input class="login-form-input" placeholder="nazwa drużyny" title="nazwa drużyny" v-model="nickname"/>
+            <button class="login-form-button">Dołącz</button>
+        </form>
     </div>
 </template>
 
@@ -31,24 +29,10 @@
 
 <style lang="scss" scoped>
     .login {
-        &-page {
-            &-wrapper {
-                width: 100%;
-                height: 100%;
-                background: #76b852; /* fallback for old browsers */
-                background: -webkit-linear-gradient(right, #76b852, #8dc26f);
-                background: -moz-linear-gradient(right, #76b852, #8dc26f);
-                background: -o-linear-gradient(right, #76b852, #8dc26f);
-                background: linear-gradient(to left, #76b852, #8dc26f);
-                -webkit-font-smoothing: antialiased;
-                -moz-osx-font-smoothing: grayscale;
-            }
-
-            &-container {
-                width: 360px;
-                padding: 8% 0 0;
-                margin: auto;
-            }
+        &-container {
+            width: 360px;
+            padding: 8% 0 0;
+            margin: auto;
         }
 
         &-form {
@@ -75,7 +59,7 @@
             &-button {
                 text-transform: uppercase;
                 outline: 0;
-                background: #4caf50;
+                background: #b84d08;
                 width: 100%;
                 border: 0;
                 padding: 15px;
@@ -84,7 +68,7 @@
                 cursor: pointer;
 
                 &:hover, &:active, &:focus {
-                    background: #43a047;
+                    background: #d15208;
 
                 }
             }

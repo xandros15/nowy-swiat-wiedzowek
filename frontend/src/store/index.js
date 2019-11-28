@@ -13,10 +13,14 @@ export default new Vuex.Store({
     login: '',
     password: '',
     answers: [],
+    room: '',
   },
   mutations: {
     ['changeNickname'] (state, {nickname}) {
       state.nickname = nickname
+    },
+    ['changeRoom'] (state, room) {
+      state.room = room
     },
     ['successfulLogin'] (state, isAdmin) {
       isAdmin = isAdmin || false
@@ -46,9 +50,10 @@ export default new Vuex.Store({
         commit('setAnswer', {answer, answerAlt})
       }
     },
-    ['login'] (store, {nickname, room}) {
+    ['login'] ({commit}, {nickname, room}) {
       const {$socket} = this._vm
       $socket.emit('login', {nickname, room})
+      commit('changeRoom', room)
     },
     ['socket.login'] ({commit}, {isSuccess, nickname}) {
       if (isSuccess) {
@@ -71,10 +76,16 @@ export default new Vuex.Store({
       }
     },
     ['socket.reconnect'] ({state, dispatch}) {
-      if (state.isLogged && state.nickname && confirm('Rozłączono. Czy chcesz połączyć się ponownie?')) {
-        dispatch('login', {nickname: state.nickname,})
-      } else {
-        document.location.reload()
+      if (state.isLogged) {
+        if (confirm('Rozłączono. Czy chcesz połączyć się ponownie?')) {
+          if (state.nickname) {
+            dispatch('login', {nickname: state.nickname, room: state.room})
+          } else if (state.isAdmin) {
+            dispatch('admin.login', {password: state.password, room: state.room})
+          }
+        } else {
+          document.location.reload()
+        }
       }
     },
     //admin
@@ -82,6 +93,7 @@ export default new Vuex.Store({
       const {$socket} = this._vm
       $socket.emit('admin', {password, room})
       commit('setPassword', password)
+      commit('changeRoom', room)
     },
     ['admin.reset'] () {
       this._vm.$socket.emit('reset')

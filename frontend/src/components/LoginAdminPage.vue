@@ -16,7 +16,7 @@
     },
     methods: {
       loginAdmin () {
-        this.$store.dispatch('login', {password: this.password})
+        this.$store.dispatch('admin.login', {password: this.password})
       }
     }
   }

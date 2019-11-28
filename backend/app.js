@@ -27,7 +27,7 @@ io.on('connection', socket => {
     if (password === PASSWORD && adminIo === null) {
       adminIo = socket
       socket.emit('admin', {isSuccess: true})
-      socket.emit('answers', {answers})
+      socket.emit('answers.receive', {answers})
     } else {
       socket.emit('admin', {isSuccess: false})
     }
@@ -45,7 +45,7 @@ io.on('connection', socket => {
       }
       answers.push(payload)
       if (adminIo) {
-        adminIo.emit('answer', payload)
+        adminIo.emit('answer.receive', payload)
       }
       socket.emit('answer', {isSuccess: true})
     }
@@ -53,7 +53,7 @@ io.on('connection', socket => {
   socket.on('reset', () => {
     if (socket === adminIo) {
       answers = []
-      adminIo.emit('reset', {isSuccess: true})
+      adminIo.emit('reset.answers', {isSuccess: true})
       adminIo.broadcast.emit('reset', {isSuccess: true})
     }
   })

@@ -6,22 +6,37 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     nickname: '',
-    isConnected: false,
+    isAdmin: false,
     isLogged: false,
     answer: '',
     answerAlt: '',
+    login: '',
+    password: '',
+    answers: [],
   },
   mutations: {
     ['changeNickname'] (state, {nickname}) {
       state.nickname = nickname
     },
-    ['successfulLogin'] (state) {
+    ['successfulLogin'] (state, isAdmin) {
+      isAdmin = isAdmin || false
       state.isLogged = true
+      state.isAdmin = isAdmin
     },
     ['setAnswer'] (state, {answer, answerAlt}) {
       state.answer = answer
       state.answerAlt = answerAlt
-    }
+    },
+    //admin
+    ['pushAnswer'] (state, answer) {
+      state.answers.push(answer)
+    },
+    ['resetAnswers'] (state) {
+      state.answers = []
+    },
+    ['setPassword'] (state, password) {
+      state.password = password
+    },
   },
   actions: {
     ['answer'] ({state, commit}, {answer, answerAlt}) {
@@ -60,6 +75,39 @@ export default new Vuex.Store({
         dispatch('login', {nickname: state.nickname,})
       } else {
         document.location.reload()
+      }
+    },
+    //admin
+    ['admin.login'] ({commit,}, {password}) {
+      const {$socket} = this._vm
+      $socket.emit('admin', {password})
+      commit('setPassword', password)
+    },
+    ['admin.reset'] () {
+      this._vm.$socket.emit('reset')
+    },
+    ['socket.reset.answers'] ({commit}, {isSuccess}) {
+      if (isSuccess) {
+        commit('resetAnswers')
+      } else {
+        alert('Błąd przy resetowaniu Odpowiedzi.')
+      }
+    },
+    ['socket.admin'] ({commit,}, {isSuccess}) {
+      if (isSuccess) {
+        commit('successfulLogin', true)
+      } else {
+        alert('Błąd przy logowaniu.')
+      }
+    },
+    ['socket.answer.receive'] ({commit,}, answer) {
+      commit('pushAnswer', answer)
+    },
+    ['socket.answers.receive'] ({commit,}, {answers}) {
+      commit('resetAnswers')
+      answers = answers || []
+      for (const answer of answers) {
+        commit('pushAnswer', answer)
       }
     },
   },

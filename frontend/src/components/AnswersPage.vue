@@ -32,7 +32,7 @@
   export default {
     name: 'AnswersPage',
     computed: mapState(['answers']),
-    methods: mapActions({reset: 'reset'}),
+    methods: mapActions({reset: 'admin.reset'}),
   }
 </script>
 

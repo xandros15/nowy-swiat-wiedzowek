@@ -10,8 +10,10 @@ let adminIo = null
 
 io.on('connection', socket => {
   let user = {nickname: '', room: ''}
-  socket.on('login', ({nickname, room}) => {
-    const payload = {isSuccess: true, nickname}
+  socket.on('login', payload => {
+    payload = payload || {nickname: '', room: ''}
+    const {nickname, room} = payload
+    const response = {isSuccess: true, nickname}
     if (users.indexOf(nickname) === -1 &&
       nickname.length > 2 && nickname.length < 16
     ) {
@@ -20,12 +22,14 @@ io.on('connection', socket => {
       user.nickname = nickname
       users.push(nickname)
     } else {
-      payload.isSuccess = false
+      response.isSuccess = false
     }
-    socket.emit('login', payload)
-    console.log('login', payload)
+    socket.emit('login', response)
+    console.log('login', response)
   })
-  socket.on('admin', ({password}) => {
+  socket.on('admin', payload => {
+    payload = payload || {password: ''}
+    const {password,} = payload
     if (password === PASSWORD && adminIo === null) {
       adminIo = socket
       socket.emit('admin', {isSuccess: true})
@@ -34,21 +38,23 @@ io.on('connection', socket => {
       socket.emit('admin', {isSuccess: false})
     }
   })
-  socket.on('answer', ({answer, answerAlt}) => {
+  socket.on('answer', payload => {
+    payload = payload || {answer: '', answerAlt: ''}
+    const {answer, answerAlt} = payload
     if (
       answer.length < 1 || answer.length > 64 || answerAlt.length > 64 ||
       answers.findIndex(i => i.nickname === user.nickname) !== -1) {
       socket.emit('answer', {isSuccess: false})
     } else {
-      const payload = {
+      const response = {
         room: user.room,
         nickname: user.nickname,
         answer,
         answerAlt
       }
-      answers.push(payload)
+      answers.push(response)
       if (adminIo) {
-        adminIo.emit('answer.receive', payload)
+        adminIo.emit('answer.receive', response)
       }
       socket.emit('answer', {isSuccess: true})
     }

@@ -1,15 +1,15 @@
 require('dotenv').config()
+const Answer = require('./Answer')
 
 const PORT = process.env.PORT || 3333
 const PASSWORD = process.env.PASSWORD || 'admin'
 
 const io = require('socket.io')(PORT)
 let users = []
-let answers = []
-let adminIo = null
+const answers = new Answer()
 
 io.on('connection', socket => {
-  let user = {nickname: '', room: ''}
+  let user = {nickname: '', room: '', isAdmin: false}
   socket.on('login', payload => {
     payload = payload || {nickname: '', room: ''}
     const {nickname, room} = payload
@@ -28,12 +28,14 @@ io.on('connection', socket => {
     console.log('login', response)
   })
   socket.on('admin', payload => {
-    payload = payload || {password: ''}
-    const {password,} = payload
-    if (password === PASSWORD && adminIo === null) {
-      adminIo = socket
-      socket.emit('admin', {isSuccess: true})
-      socket.emit('answers.receive', {answers})
+    payload = payload || {password: '', room: ''}
+    const {password, room,} = payload
+    if (password === PASSWORD) {
+      user.isAdmin = true
+      user.room = room
+      socket.join('admin.' + room)
+      socket.emit('admin', {isSuccess: true,})
+      socket.emit('answers.receive', {answers: answers.getAnswers(room)})
     } else {
       socket.emit('admin', {isSuccess: false})
     }
@@ -43,7 +45,8 @@ io.on('connection', socket => {
     const {answer, answerAlt} = payload
     if (
       answer.length < 1 || answer.length > 64 || answerAlt.length > 64 ||
-      answers.findIndex(i => i.nickname === user.nickname) !== -1) {
+      answers.hasAnswer(user.nickname, user.room)
+    ) {
       socket.emit('answer', {isSuccess: false})
     } else {
       const response = {
@@ -52,26 +55,22 @@ io.on('connection', socket => {
         answer,
         answerAlt
       }
-      answers.push(response)
-      if (adminIo) {
-        adminIo.emit('answer.receive', response)
-      }
+      answers.putAnswer(response)
+      io.to('admin.' + user.room).emit('answer.receive', response)
       socket.emit('answer', {isSuccess: true})
     }
   })
-  socket.on('reset', room => {
-    if (socket === adminIo) {
-      answers = answers.filter(answer => answer.room !== room)
-      adminIo.emit('reset.answers', {isSuccess: true})
-      io.to(room).emit('reset', {isSuccess: true})
+  socket.on('reset', () => {
+    if (user.isAdmin) {
+      answers.resetRoom(user.room)
+      io.to('admin.' + user.room).emit('reset.answers', {isSuccess: true})
+      io.to(user.room).emit('reset', {isSuccess: true})
     }
   })
   socket.on('disconnect', () => {
     if (user.nickname.length > 0) {
       users = users.filter(u => u !== user.nickname)
       console.log('disconnect', user.nickname)
-    } else if (adminIo === socket) {
-      adminIo = null
     }
   })
 })

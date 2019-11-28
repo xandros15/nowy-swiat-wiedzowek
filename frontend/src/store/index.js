@@ -78,13 +78,13 @@ export default new Vuex.Store({
       }
     },
     //admin
-    ['admin.login'] ({commit,}, {password}) {
+    ['admin.login'] ({commit,}, {password, room}) {
       const {$socket} = this._vm
-      $socket.emit('admin', {password})
+      $socket.emit('admin', {password, room})
       commit('setPassword', password)
     },
-    ['admin.reset'] (store, room) {
-      this._vm.$socket.emit('reset', room)
+    ['admin.reset'] () {
+      this._vm.$socket.emit('reset')
     },
     ['socket.reset.answers'] ({commit}, {isSuccess}) {
       if (isSuccess) {

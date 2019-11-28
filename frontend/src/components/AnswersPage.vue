@@ -27,21 +27,12 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex'
+  import { mapActions, mapState } from 'vuex'
 
   export default {
     name: 'AnswersPage',
-    props: ['room'],
-    computed: mapState({
-      answers (state) {
-        return state.answers.filter(answer => answer.room === this.room)
-      }
-    }),
-    methods: {
-      reset () {
-        this.$store.dispatch('admin.reset', this.room)
-      }
-    }
+    computed: mapState(['answers']),
+    methods: mapActions({reset: 'admin.reset'}),
   }
 </script>
 

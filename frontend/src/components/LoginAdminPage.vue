@@ -11,12 +11,13 @@
 <script>
   export default {
     name: 'LoginPage',
+    props: ['room'],
     data () {
       return {password: ''}
     },
     methods: {
       loginAdmin () {
-        this.$store.dispatch('admin.login', {password: this.password})
+        this.$store.dispatch('admin.login', {password: this.password, room: this.room})
       }
     }
   }

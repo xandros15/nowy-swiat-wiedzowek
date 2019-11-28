@@ -1,7 +1,7 @@
 <template>
     <div id="app">
-        <AnswersPage :room="room" v-if="isLogged && isAdmin"/>
-        <LoginAdminPage v-else/>
+        <AnswersPage v-if="isLogged && isAdmin"/>
+        <LoginAdminPage :room="room" v-else/>
     </div>
 </template>
 

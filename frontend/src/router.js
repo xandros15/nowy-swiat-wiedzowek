@@ -10,14 +10,16 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes: [
     {
-      path: '/',
-      name: 'TeamPage',
-      component: TeamPage,
+      path: '/:room(\\w{3,8})/admin',
+      name: 'AdminPage',
+      component: AdminPage,
+      props: true,
     },
     {
-      path: '/admin',
-      name: 'admin',
-      component: AdminPage,
+      path: '/:room(\\w{3,8})',
+      name: 'TeamPage',
+      component: TeamPage,
+      props: true,
     },
   ]
 })

@@ -12,13 +12,14 @@
 
   export default {
     name: 'LoginPage',
+    props: ['room'],
     data () {
       return {nickname: ''}
     },
     methods: {
       login () {
         if (this.nickname.length > 2 && this.nickname.length < 16) {
-          this.$store.dispatch('login', {nickname: this.nickname}).then(() => this.nickname = '')
+          this.$store.dispatch('login', {nickname: this.nickname, room: this.room}).then(() => this.nickname = '')
         } else {
           alert('Nazwa nie może być krótsza niż 3 znaki i dłuższa niż 16 znaków.')
         }

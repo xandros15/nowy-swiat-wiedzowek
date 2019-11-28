@@ -9,12 +9,14 @@ let answers = []
 let adminIo = null
 
 io.on('connection', socket => {
-  let user = {nickname: '',}
-  socket.on('login', ({nickname}) => {
+  let user = {nickname: '', room: ''}
+  socket.on('login', ({nickname, room}) => {
     const payload = {isSuccess: true, nickname}
     if (users.indexOf(nickname) === -1 &&
       nickname.length > 2 && nickname.length < 16
     ) {
+      socket.join(room)
+      user.room = room
       user.nickname = nickname
       users.push(nickname)
     } else {
@@ -39,6 +41,7 @@ io.on('connection', socket => {
       socket.emit('answer', {isSuccess: false})
     } else {
       const payload = {
+        room: user.room,
         nickname: user.nickname,
         answer,
         answerAlt
@@ -50,11 +53,11 @@ io.on('connection', socket => {
       socket.emit('answer', {isSuccess: true})
     }
   })
-  socket.on('reset', () => {
+  socket.on('reset', room => {
     if (socket === adminIo) {
-      answers = []
+      answers = answers.filter(answer => answer.room !== room)
       adminIo.emit('reset.answers', {isSuccess: true})
-      adminIo.broadcast.emit('reset', {isSuccess: true})
+      io.to(room).emit('reset', {isSuccess: true})
     }
   })
   socket.on('disconnect', () => {

@@ -46,9 +46,9 @@ export default new Vuex.Store({
         commit('setAnswer', {answer, answerAlt})
       }
     },
-    ['login'] (store, {nickname}) {
+    ['login'] (store, {nickname, room}) {
       const {$socket} = this._vm
-      $socket.emit('login', {nickname})
+      $socket.emit('login', {nickname, room})
     },
     ['socket.login'] ({commit}, {isSuccess, nickname}) {
       if (isSuccess) {
@@ -83,8 +83,8 @@ export default new Vuex.Store({
       $socket.emit('admin', {password})
       commit('setPassword', password)
     },
-    ['admin.reset'] () {
-      this._vm.$socket.emit('reset')
+    ['admin.reset'] (store, room) {
+      this._vm.$socket.emit('reset', room)
     },
     ['socket.reset.answers'] ({commit}, {isSuccess}) {
       if (isSuccess) {

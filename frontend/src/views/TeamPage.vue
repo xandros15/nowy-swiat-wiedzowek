@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <LoginPage v-if="!isLogged"/>
+        <LoginPage :room="room" v-if="!isLogged"/>
         <AnswerPage v-else/>
     </div>
 </template>
@@ -12,6 +12,7 @@
 
   export default {
     name: 'TeamPage',
+    props: ['room'],
     components: {
       AnswerPage,
       LoginPage,

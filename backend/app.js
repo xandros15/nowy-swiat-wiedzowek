@@ -4,6 +4,18 @@ const Answer = require('./Answer')
 const PORT = process.env.PORT || 3333
 const PASSWORD = process.env.PASSWORD || 'admin'
 
+const passwords = {
+  'nami': process.env.PASSWORD_NAMI,
+  'xmascon': process.env.PASSWORD_XMASS,
+  'remcon': process.env.PASSWORD_REM,
+}
+
+const rooms = [
+  'nami',
+  'xmascon',
+  'remcon',
+]
+
 const io = require('socket.io')(PORT)
 let users = []
 const answers = new Answer()
@@ -15,7 +27,8 @@ io.on('connection', socket => {
     const {nickname, room} = payload
     const response = {isSuccess: true, nickname}
     if (users.indexOf(nickname) === -1 &&
-      nickname.length > 2 && nickname.length < 16
+      nickname.length > 2 && nickname.length < 16 &&
+      rooms.indexOf(room) !== -1
     ) {
       socket.join(room)
       user.room = room
@@ -30,7 +43,7 @@ io.on('connection', socket => {
   socket.on('admin', payload => {
     payload = payload || {password: '', room: ''}
     const {password, room,} = payload
-    if (password === PASSWORD) {
+    if (passwords[room] && password === passwords[room]) {
       user.isAdmin = true
       user.room = room
       socket.join('admin.' + room)

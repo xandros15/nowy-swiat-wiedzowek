@@ -2,7 +2,8 @@ require('dotenv').config()
 const Answer = require('./Answer')
 
 const PORT = process.env.PORT || 3333
-const PASSWORD = process.env.PASSWORD || 'admin'
+// old code
+// const PASSWORD = process.env.PASSWORD || 'admin'
 
 const passwords = {
   'nami': process.env.PASSWORD_NAMI,
@@ -27,7 +28,7 @@ io.on('connection', socket => {
     const {nickname, room} = payload
     const response = {isSuccess: true, nickname}
     if (users.indexOf(nickname) === -1 &&
-      nickname.length > 2 && nickname.length < 16 &&
+      nickname.length > 0 && nickname.length < 16 &&
       rooms.indexOf(room) !== -1
     ) {
       socket.join(room)

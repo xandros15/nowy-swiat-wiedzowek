@@ -18,10 +18,10 @@
     },
     methods: {
       login () {
-        if (this.nickname.length > 2 && this.nickname.length < 16) {
+        if (this.nickname.length > 0 && this.nickname.length < 16) {
           this.$store.dispatch('login', {nickname: this.nickname, room: this.room}).then(() => this.nickname = '')
         } else {
-          alert('Nazwa nie może być krótsza niż 3 znaki i dłuższa niż 16 znaków.')
+          alert('Nazwa nie może być krótsza niż 1 znaki i dłuższa niż 16 znaków.')
         }
       }
     }

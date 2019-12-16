@@ -67,6 +67,11 @@ export default new Vuex.Store({
     ['setPassword'] (state, password) {
       state.password = password
     },
+    ['logout'] (state) {
+      state.password = ''
+      state.nickname = ''
+      state.isLogged = false
+    }
   },
   actions: {
     ['answer'] ({state, commit}, {answer, answerAlt}) {

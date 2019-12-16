@@ -1,15 +1,18 @@
 <template>
     <div id="app">
         <StatusBar/>
+        <LogoutBar/>
         <router-view/>
     </div>
 </template>
 
 <script>
+  import LogoutBar from './components/LogoutBar'
   import StatusBar from './components/StatusBar'
+
   export default {
     name: 'app',
-    components: {StatusBar},
+    components: {LogoutBar, StatusBar},
   }
 </script>
 

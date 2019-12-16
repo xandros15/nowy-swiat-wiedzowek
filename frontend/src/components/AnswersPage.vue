@@ -11,6 +11,7 @@
                     <th>Drużyna</th>
                     <th>Anime</th>
                     <th>Dodatkowo</th>
+                    <th>Opcje</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -18,6 +19,9 @@
                     <td>{{answer.nickname}}</td>
                     <td>{{answer.answer}}</td>
                     <td>{{answer.answerAlt}}</td>
+                    <td>
+                        <button @click="resetSingle(answer.nickname)">Reset</button>
+                    </td>
                 </tr>
                 </tbody>
             </table>
@@ -32,7 +36,10 @@
   export default {
     name: 'AnswersPage',
     computed: mapState(['answers']),
-    methods: mapActions({reset: 'admin.reset'}),
+    methods: mapActions({
+      resetSingle: 'admin.reset.single',
+      reset: 'admin.reset',
+    }),
   }
 </script>
 

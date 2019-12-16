@@ -38,6 +38,9 @@ export default new Vuex.Store({
     ['resetAnswers'] (state) {
       state.answers = []
     },
+    ['resetAnswer'] (state, nickname) {
+      state.answers = state.answers.filter(answer => answer.nickname !== nickname)
+    },
     ['setPassword'] (state, password) {
       state.password = password
     },
@@ -98,9 +101,19 @@ export default new Vuex.Store({
     ['admin.reset'] () {
       this._vm.$socket.emit('reset')
     },
+    ['admin.reset.single'] (store, nickname) {
+      this._vm.$socket.emit('reset.single', nickname)
+    },
     ['socket.reset.answers'] ({commit}, {isSuccess}) {
       if (isSuccess) {
         commit('resetAnswers')
+      } else {
+        alert('Błąd przy resetowaniu Odpowiedzi.')
+      }
+    },
+    ['socket.reset.single'] ({commit}, {isSuccess, nickname}) {
+      if (isSuccess) {
+        commit('resetAnswer', nickname)
       } else {
         alert('Błąd przy resetowaniu Odpowiedzi.')
       }

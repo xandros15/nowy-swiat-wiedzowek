@@ -81,6 +81,12 @@ io.on('connection', socket => {
       io.to(user.room).emit('reset', {isSuccess: true})
     }
   })
+  socket.on('reset.single', (nickname) => {
+    if (user.isAdmin && typeof nickname === 'string') {
+      answers.resetSingle(user.room, nickname)
+      io.to('admin.' + user.room).emit('reset.single', {isSuccess: true, nickname})
+    }
+  })
   socket.on('disconnect', () => {
     if (user.nickname.length > 0) {
       users = users.filter(u => u !== user.nickname)

@@ -15,6 +15,11 @@ function Answer () {
     answers = answers.filter(answer => answer.room !== room)
   }
 
+  this.resetSingle = (room, nickname) => {
+    console.log('Reset answer from room ' + room + ' from team ' + nickname)
+    answers = answers.filter(answer => answer.room !== room || answer.nickname !== nickname)
+  }
+
   this.putAnswer = (answer) => {
     console.log('Answer', answer)
     answers.push(answer)

@@ -1,12 +1,15 @@
 <template>
     <div id="app">
+        <StatusBar/>
         <router-view/>
     </div>
 </template>
 
 <script>
+  import StatusBar from './components/StatusBar'
   export default {
     name: 'app',
+    components: {StatusBar},
   }
 </script>
 

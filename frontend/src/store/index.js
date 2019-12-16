@@ -8,6 +8,8 @@ export default new Vuex.Store({
     nickname: '',
     isAdmin: false,
     isLogged: false,
+    isConnecting: false,
+    isConnected: false,
     answer: '',
     answerAlt: '',
     login: '',
@@ -15,7 +17,28 @@ export default new Vuex.Store({
     answers: [],
     room: '',
   },
+  getters: {
+    ['status'] (state) {
+      if (state.isConnected) {
+        return 'Connected'
+      } else if (state.isConnecting) {
+        return 'Connecting'
+      } else {
+        return 'Disconnect'
+      }
+    },
+  },
   mutations: {
+    ['connect'] (state) {
+      state.isConnecting = false
+      state.isConnected = true
+    },
+    ['disconnect'] (state) {
+      state.isConnected = false
+    },
+    ['connecting'] (state) {
+      state.isConnecting = true
+    },
     ['changeNickname'] (state, {nickname}) {
       state.nickname = nickname
     },
@@ -80,16 +103,18 @@ export default new Vuex.Store({
     },
     ['socket.reconnect'] ({state, dispatch}) {
       if (state.isLogged) {
-        if (confirm('Rozłączono. Czy chcesz połączyć się ponownie?')) {
-          if (state.nickname) {
-            dispatch('login', {nickname: state.nickname, room: state.room})
-          } else if (state.isAdmin) {
-            dispatch('admin.login', {password: state.password, room: state.room})
-          }
-        } else {
-          document.location.reload()
+        if (state.nickname) {
+          dispatch('login', {nickname: state.nickname, room: state.room})
+        } else if (state.isAdmin) {
+          dispatch('admin.login', {password: state.password, room: state.room})
         }
       }
+    },
+    ['socket.disconnect'] ({commit}) {
+      commit('disconnect')
+    },
+    ['socket.connect'] ({commit}) {
+      commit('connect')
     },
     //admin
     ['admin.login'] ({commit,}, {password, room}) {

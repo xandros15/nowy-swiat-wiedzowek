@@ -16,7 +16,7 @@
 
 <style lang="scss" scoped>
     .logout-bar {
-        position: absolute;
+        position: fixed;
         bottom: 0;
         right: 0;
 

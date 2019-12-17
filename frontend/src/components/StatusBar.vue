@@ -15,7 +15,7 @@
 
 <style lang="scss" scoped>
     .status {
-        position: absolute;
+        position: fixed;
         padding: .5rem;
         bottom: 0;
 

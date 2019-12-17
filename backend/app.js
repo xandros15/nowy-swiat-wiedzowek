@@ -1,5 +1,6 @@
 require('dotenv').config()
 const Answer = require('./Answer')
+const Score = require('./Score')
 
 const PORT = process.env.PORT || 3333
 // old code
@@ -9,6 +10,12 @@ const passwords = {
   'nami': process.env.PASSWORD_NAMI,
   'xmascon': process.env.PASSWORD_XMASS,
   'remcon': process.env.PASSWORD_REM,
+}
+
+const score = {
+  'nami': new Score(),
+  'xmascon': new Score(),
+  'remcon': new Score(),
 }
 
 const rooms = [
@@ -50,6 +57,7 @@ io.on('connection', socket => {
       socket.join('admin.' + room)
       socket.emit('admin', {isSuccess: true,})
       socket.emit('answers.receive', {answers: answers.getAnswers(room)})
+      socket.emit('score', {score: score[user.room].getScore()})
     } else {
       socket.emit('admin', {isSuccess: false})
     }
@@ -72,6 +80,29 @@ io.on('connection', socket => {
       answers.putAnswer(response)
       io.to('admin.' + user.room).emit('answer.receive', response)
       socket.emit('answer', {isSuccess: true})
+    }
+  })
+  socket.on('score', () => {
+    if (score[user.room]) {
+      io.to('admin.' + user.room).emit('score', {score: score[user.room].getScore()})
+    }
+  })
+  socket.on('score.add', (nickname, points) => {
+    if (user.isAdmin && score[user.room]) {
+      score[user.room].addPoints(nickname, points)
+      io.to('admin.' + user.room).emit('score', {score: score[user.room].getScore()})
+    }
+  })
+  socket.on('score.remove', (nickname, points) => {
+    if (user.isAdmin && score[user.room]) {
+      score[user.room].removePoints(nickname, points)
+      io.to('admin.' + user.room).emit('score', {score: score[user.room].getScore()})
+    }
+  })
+  socket.on('score.reset', () => {
+    if (user.isAdmin && score[user.room]) {
+      score[user.room].reset()
+      io.to('admin.' + user.room).emit('score', {score: []})
     }
   })
   socket.on('reset', () => {

@@ -15,6 +15,7 @@ export default new Vuex.Store({
     login: '',
     password: '',
     answers: [],
+    score: [],
     room: '',
   },
   getters: {
@@ -71,7 +72,10 @@ export default new Vuex.Store({
       state.password = ''
       state.nickname = ''
       state.isLogged = false
-    }
+    },
+    ['setScore'] (state, score) {
+      state.score = score
+    },
   },
   actions: {
     ['answer'] ({state, commit}, {answer, answerAlt}) {
@@ -134,6 +138,15 @@ export default new Vuex.Store({
     ['admin.reset.single'] (store, nickname) {
       this._vm.$socket.emit('reset.single', nickname)
     },
+    ['admin.point.add'] (store, nickname) {
+      this._vm.$socket.emit('score.add', nickname, 1)
+    },
+    ['admin.point.remove'] (store, nickname) {
+      this._vm.$socket.emit('score.remove', nickname, 1)
+    },
+    ['admin.score.reset'] () {
+      this._vm.$socket.emit('score.reset')
+    },
     ['socket.reset.answers'] ({commit}, {isSuccess}) {
       if (isSuccess) {
         commit('resetAnswers')
@@ -165,6 +178,9 @@ export default new Vuex.Store({
         commit('pushAnswer', answer)
       }
     },
+    ['socket.score'] ({commit,}, {score}) {
+      commit('setScore', score)
+    }
   },
   modules: {}
 })

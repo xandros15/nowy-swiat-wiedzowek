@@ -21,24 +21,37 @@
                     <td>{{answer.answerAlt}}</td>
                     <td>
                         <button @click="resetSingle(answer.nickname)">Reset</button>
+                        <button @click="pointAdd(answer.nickname)">+1 pkt</button>
+                        <button @click="pointRemove(answer.nickname)">-1 pkt</button>
                     </td>
                 </tr>
                 </tbody>
             </table>
         </div>
         <h3 class="title" v-else>Nie ma jeszcze odpowiedzi.</h3>
+        <div class="flex">
+            <Score/>
+            <div>
+                <button @click="scoreReset" class="button">Reset Punktów</button>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
   import { mapActions, mapState } from 'vuex'
+  import Score from './Score'
 
   export default {
     name: 'AnswersPage',
+    components: {Score},
     computed: mapState(['answers']),
     methods: mapActions({
       resetSingle: 'admin.reset.single',
       reset: 'admin.reset',
+      pointRemove: 'admin.point.remove',
+      pointAdd: 'admin.point.add',
+      scoreReset: 'admin.score.reset',
     }),
   }
 </script>

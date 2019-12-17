@@ -1,23 +1,23 @@
 function Answer () {
   let answers = []
 
-  this.hasAnswer = (name, room) => {
-    return answers.findIndex(answer => answer.nickname === name && answer.room === room) !== -1
+  this.hasAnswer = (nickname) => {
+    return answers.findIndex(answer => answer.nickname === nickname) !== -1
   }
 
-  this.getAnswers = (room) => {
-    console.log('List answers from ' + room)
-    return answers.filter(answer => answer.room === room)
+  this.getAnswers = () => {
+    console.log('List answers')
+    return answers
   }
 
-  this.resetRoom = (room) => {
-    console.log('Reset answers from room ' + room)
-    answers = answers.filter(answer => answer.room !== room)
+  this.resetRoom = () => {
+    console.log('Reset answers')
+    answers = []
   }
 
-  this.resetSingle = (room, nickname) => {
-    console.log('Reset answer from room ' + room + ' from team ' + nickname)
-    answers = answers.filter(answer => answer.room !== room || answer.nickname !== nickname)
+  this.resetSingle = (nickname) => {
+    console.log('Reset answer from team ' + nickname)
+    answers = answers.filter(answer => answer.nickname !== nickname)
   }
 
   this.putAnswer = (answer) => {

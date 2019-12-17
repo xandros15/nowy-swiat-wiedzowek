@@ -1,6 +1,5 @@
 require('dotenv').config()
-const Answer = require('./Answer')
-const Score = require('./Score')
+const Rooms = require('./Rooms')
 
 const PORT = process.env.PORT || 3333
 // old code
@@ -12,21 +11,10 @@ const passwords = {
   'remcon': process.env.PASSWORD_REM,
 }
 
-const score = {
-  'nami': new Score(),
-  'xmascon': new Score(),
-  'remcon': new Score(),
-}
-
-const rooms = [
-  'nami',
-  'xmascon',
-  'remcon',
-]
+const rooms = new Rooms(Object.keys(passwords))
 
 const io = require('socket.io')(PORT)
 let users = []
-const answers = new Answer()
 
 io.on('connection', socket => {
   let user = {nickname: '', room: '', isAdmin: false}
@@ -36,7 +24,7 @@ io.on('connection', socket => {
     const response = {isSuccess: true, nickname}
     if (users.indexOf(nickname) === -1 &&
       nickname.length > 0 && nickname.length < 16 &&
-      rooms.indexOf(room) !== -1
+      rooms.isAvailable(room)
     ) {
       socket.join(room)
       user.room = room
@@ -56,8 +44,8 @@ io.on('connection', socket => {
       user.room = room
       socket.join('admin.' + room)
       socket.emit('admin', {isSuccess: true,})
-      socket.emit('answers.receive', {answers: answers.getAnswers(room)})
-      socket.emit('score', {score: score[user.room].getScore()})
+      socket.emit('answers.receive', {answers: rooms.answers(user).getAnswers()})
+      socket.emit('score', {score: rooms.score(user).getScore()})
     } else {
       socket.emit('admin', {isSuccess: false})
     }
@@ -67,54 +55,51 @@ io.on('connection', socket => {
     const {answer, answerAlt} = payload
     if (
       answer.length < 1 || answer.length > 64 || answerAlt.length > 64 ||
-      answers.hasAnswer(user.nickname, user.room)
+      rooms.answers(user).hasAnswer(user.nickname)
     ) {
       socket.emit('answer', {isSuccess: false})
     } else {
       const response = {
-        room: user.room,
         nickname: user.nickname,
         answer,
         answerAlt
       }
-      answers.putAnswer(response)
+      rooms.answers(user).putAnswer(response)
       io.to('admin.' + user.room).emit('answer.receive', response)
       socket.emit('answer', {isSuccess: true})
     }
   })
   socket.on('score', () => {
-    if (score[user.room]) {
-      io.to('admin.' + user.room).emit('score', {score: score[user.room].getScore()})
-    }
+    io.to('admin.' + user.room).emit('score', {score: rooms.score(user).getScore()})
   })
   socket.on('score.add', (nickname, points) => {
-    if (user.isAdmin && score[user.room]) {
-      score[user.room].addPoints(nickname, points)
-      io.to('admin.' + user.room).emit('score', {score: score[user.room].getScore()})
+    if (user.isAdmin) {
+      rooms.score(user).addPoints(nickname, points)
+      io.to('admin.' + user.room).emit('score', {score: rooms.score(user).getScore()})
     }
   })
   socket.on('score.remove', (nickname, points) => {
-    if (user.isAdmin && score[user.room]) {
-      score[user.room].removePoints(nickname, points)
-      io.to('admin.' + user.room).emit('score', {score: score[user.room].getScore()})
+    if (user.isAdmin) {
+      rooms.score(user).removePoints(nickname, points)
+      io.to('admin.' + user.room).emit('score', {score: rooms.score(user).getScore()})
     }
   })
   socket.on('score.reset', () => {
-    if (user.isAdmin && score[user.room]) {
-      score[user.room].reset()
+    if (user.isAdmin) {
+      rooms.score(user).reset()
       io.to('admin.' + user.room).emit('score', {score: []})
     }
   })
   socket.on('reset', () => {
     if (user.isAdmin) {
-      answers.resetRoom(user.room)
+      rooms.answers(user).resetRoom()
       io.to('admin.' + user.room).emit('reset.answers', {isSuccess: true})
       io.to(user.room).emit('reset', {isSuccess: true})
     }
   })
   socket.on('reset.single', (nickname) => {
     if (user.isAdmin && typeof nickname === 'string') {
-      answers.resetSingle(user.room, nickname)
+      rooms.answers(user).resetSingle(nickname)
       io.to('admin.' + user.room).emit('reset.single', {isSuccess: true, nickname})
     }
   })

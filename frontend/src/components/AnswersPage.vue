@@ -20,7 +20,7 @@
                     <td>{{answer.answer}}</td>
                     <td>{{answer.answerAlt}}</td>
                     <td>
-                        <button @click="resetSingle(answer.nickname)">Reset</button>
+                        <button @click="resetSingle(answer.nickname)">Usuń</button>
                         <button @click="pointAdd(answer.nickname)">+1 pkt</button>
                         <button @click="pointRemove(answer.nickname)">-1 pkt</button>
                         <button @click="tieAdd(answer.nickname)">+1 tie</button>

@@ -84,6 +84,18 @@ io.on('connection', socket => {
       io.to('admin.' + user.room).emit('score', {score: rooms.score(user).getScore()})
     }
   })
+  socket.on('tiebreaker.add', (nickname, points) => {
+    if (user.isAdmin) {
+      rooms.score(user).addTiebreaker(nickname, points)
+      io.to('admin.' + user.room).emit('score', {score: rooms.score(user).getScore()})
+    }
+  })
+  socket.on('tiebreaker.remove', (nickname, points) => {
+    if (user.isAdmin) {
+      rooms.score(user).removeTiebreaker(nickname, points)
+      io.to('admin.' + user.room).emit('score', {score: rooms.score(user).getScore()})
+    }
+  })
   socket.on('score.reset', () => {
     if (user.isAdmin) {
       rooms.score(user).reset()

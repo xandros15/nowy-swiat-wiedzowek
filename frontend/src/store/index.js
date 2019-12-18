@@ -144,6 +144,12 @@ export default new Vuex.Store({
     ['admin.point.remove'] (store, nickname) {
       this._vm.$socket.emit('score.remove', nickname, 1)
     },
+    ['admin.tiebreaker.add'] (store, nickname) {
+      this._vm.$socket.emit('tiebreaker.add', nickname, 1)
+    },
+    ['admin.tiebreaker.remove'] (store, nickname) {
+      this._vm.$socket.emit('tiebreaker.remove', nickname, 1)
+    },
     ['admin.score.reset'] () {
       this._vm.$socket.emit('score.reset')
     },

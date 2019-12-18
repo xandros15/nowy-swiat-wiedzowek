@@ -4,12 +4,14 @@
         <tr>
             <th>Drużyna</th>
             <th>Punkty</th>
+            <th>Tiebreakery</th>
         </tr>
         </thead>
         <tbody>
         <tr :key="k" v-for="(team, k) in score">
             <td>{{team.nickname}}</td>
             <td>{{team.points}}</td>
+            <td>{{team.tiebreaker}}</td>
         </tr>
         </tbody>
     </table>

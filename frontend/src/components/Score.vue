@@ -2,13 +2,13 @@
     <table class="table" v-if="score.length > 0">
         <thead>
         <tr>
-            <th>Drużyna</th>
-            <th>Punkty</th>
+            <th @click="sort('team')">Drużyna</th>
+            <th @click="sort('points')">Punkty</th>
             <th>Tiebreakery</th>
         </tr>
         </thead>
         <tbody>
-        <tr :key="k" v-for="(team, k) in score">
+        <tr :key="k" v-for="(team, k) in sorted">
             <td>{{team.nickname}}</td>
             <td>{{team.points}}</td>
             <td>{{team.tiebreaker}}</td>
@@ -22,7 +22,30 @@
 
   export default {
     name: "Score",
-    computed: mapState(['score']),
+    data: () => {
+      return {
+        sortType: ''
+      }
+    },
+    computed: {
+      sorted () {
+        const score = this.score;
+        if (this.sortType === 'team') {
+          score.sort((a, b) => a.nickname.localeCompare(b.nickname));
+        }
+        if (this.sortType === 'points') {
+          score.sort((a, b) => a.points === b.points ? a.tiebreaker - b.tiebreaker : a.points - b.points)
+        }
+
+        return score
+      },
+      ...mapState(['score'])
+    },
+    methods: {
+      sort (type) {
+        this.sortType = type
+      }
+    }
   }
 </script>
 
@@ -60,6 +83,7 @@
             border: 1px solid #dbdbdb;
             padding: .5em .75em;
             vertical-align: top;
+            cursor: pointer;
         }
 
         & thead, & tbody {

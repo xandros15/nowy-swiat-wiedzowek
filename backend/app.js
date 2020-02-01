@@ -1,17 +1,13 @@
 require('dotenv').config()
 const Rooms = require('./Rooms')
-
+const yaml = require('js-yaml')
+const fs = require('fs')
 const PORT = process.env.PORT || 3333
-// old code
-// const PASSWORD = process.env.PASSWORD || 'admin'
 
-const passwords = {
-  'nami': process.env.PASSWORD_NAMI,
-  'xmascon': process.env.PASSWORD_XMASS,
-  'remcon': process.env.PASSWORD_REM,
-}
-
-const rooms = new Rooms(Object.keys(passwords))
+//load yaml
+const settings = yaml.safeLoad(fs.readFileSync(__dirname + '/settings.yaml', 'utf8'))
+const passwords = settings.passwords
+const rooms = new Rooms(settings.rooms)
 
 const io = require('socket.io')(PORT)
 let users = []
@@ -39,7 +35,7 @@ io.on('connection', socket => {
   socket.on('admin', payload => {
     payload = payload || {password: '', room: ''}
     const {password, room,} = payload
-    if (passwords[room] && password === passwords[room]) {
+    if (passwords[room] && parseInt(password) === parseInt(passwords[room])) {
       user.isAdmin = true
       user.room = room
       socket.join('admin.' + room)

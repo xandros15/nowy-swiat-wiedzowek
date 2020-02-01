@@ -5,6 +5,7 @@
   "main": "app.js",
   "dependencies": {
     "dotenv": "^8.2.0",
+    "js-yaml": "^3.13.1",
     "socket.io": "^2.3.0"
   },
   "devDependencies": {},

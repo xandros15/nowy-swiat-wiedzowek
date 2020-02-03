@@ -17,7 +17,7 @@
   export default {
     name: "RoomsPage",
     created () {
-      fetch('/rooms.json')
+      fetch('/resources/rooms.json')
         .then(r => r.json())
         .then(rooms => this.rooms = rooms)
         .catch(() => this.rooms = [])

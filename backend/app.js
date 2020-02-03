@@ -2,6 +2,8 @@ require('dotenv').config()
 const Rooms = require('./Rooms')
 const yaml = require('js-yaml')
 const fs = require('fs')
+const app = require('express')()
+const http = require('http').createServer(app)
 const PORT = process.env.PORT || 3333
 
 //load yaml
@@ -9,7 +11,7 @@ const settings = yaml.safeLoad(fs.readFileSync(__dirname + '/settings.yaml', 'ut
 const passwords = settings.passwords
 const rooms = new Rooms(settings.rooms)
 
-const io = require('socket.io')(PORT)
+const io = require('socket.io')(http)
 let users = []
 
 io.on('connection', socket => {
@@ -119,4 +121,10 @@ io.on('connection', socket => {
   })
 })
 
-console.log('listening on *:' + PORT)
+app.get('/resources/rooms.json', function (req, res) {
+  res.send(JSON.stringify(settings.rooms))
+})
+
+http.listen(PORT, function () {
+  console.log('listening on *:' + PORT)
+})

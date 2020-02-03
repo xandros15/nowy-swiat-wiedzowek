@@ -37,7 +37,7 @@ io.on('connection', socket => {
   socket.on('admin', payload => {
     payload = payload || {password: '', room: ''}
     const {password, room,} = payload
-    if (passwords[room] && parseInt(password) === parseInt(passwords[room])) {
+    if (passwords[room] && password === passwords[room]) {
       user.isAdmin = true
       user.room = room
       socket.join('admin.' + room)

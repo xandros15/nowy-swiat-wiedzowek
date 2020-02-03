@@ -3,7 +3,7 @@
         <h2 class="title">Odpowiedzi</h2>
         <div class="flex" v-if="answers.length > 0">
             <div class="button-group">
-                <button @click="reset" class="button">Resetuj</button>
+                <button @click="reset" class="button">Resetuj Odpowiedzi</button>
             </div>
             <table class="table">
                 <thead>
@@ -32,9 +32,14 @@
         </div>
         <h3 class="title" v-else>Nie ma jeszcze odpowiedzi.</h3>
         <div class="flex">
-            <Score/>
-            <div>
-                <button @click="scoreReset" class="button">Reset Punktów</button>
+            <div class="flex-item">
+                <router-link :to="{name: 'ScorePage', params: {room}}" class="a" target="_blank">
+                    Otwórz punktacje w innej karcie
+                </router-link>
+            </div>
+            <Score class="flex-item"/>
+            <div class="flex-item">
+                <button @click="scoreReset" class="button">Resetuj Punkty</button>
             </div>
         </div>
     </div>
@@ -47,7 +52,7 @@
   export default {
     name: 'AnswersPage',
     components: {Score},
-    computed: mapState(['answers']),
+    computed: mapState(['answers', 'room']),
     methods: mapActions({
       resetSingle: 'admin.reset.single',
       reset: 'admin.reset',
@@ -64,6 +69,16 @@
     .title {
         color: #f2f2f2;
         text-shadow: 2px 2px 2px #020202;
+    }
+
+    .a {
+        text-decoration: none;
+        color: #2c3e50;
+        transition: color .3s;
+
+        &:hover {
+            color: #610d12;
+        }
     }
 
     .button {
@@ -85,6 +100,11 @@
     .flex {
         display: flex;
         flex-direction: column;
+        margin-bottom: .3rem;
+
+        &-item {
+            margin-bottom: .3rem;
+        }
     }
 
     .table {
@@ -93,6 +113,7 @@
         margin: .3rem;
         border-collapse: collapse;
         border-spacing: 0;
+        width: 100%;
 
         & th, & td {
             text-align: left;

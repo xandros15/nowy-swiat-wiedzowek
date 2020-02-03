@@ -1,25 +1,22 @@
 <template>
     <div id="app">
-        <div v-if="isLogged && isAdmin">
-            <h2 class="title">Punktacja</h2>
-            <div class="flex">
-                <Score/>
-            </div>
+        <h2 class="title">Punktacja</h2>
+        <div class="flex">
+            <Score/>
         </div>
-        <LoginAdminPage :room="room" v-else/>
     </div>
 </template>
 
 <script>
-  import { mapState } from 'vuex'
   import Score from '../components/Score'
-  import LoginAdminPage from '../components/LoginAdminPage'
 
   export default {
     name: 'ScorePage',
-    components: {Score, LoginAdminPage},
+    components: {Score,},
     props: ['room'],
-    computed: mapState(['isLogged', 'isAdmin']),
+    created () {
+      this.$store.dispatch('score.listen', {room: this.room})
+    },
   }
 </script>
 

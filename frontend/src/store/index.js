@@ -90,6 +90,11 @@ export default new Vuex.Store({
       $socket.emit('login', {nickname, room})
       commit('changeRoom', room)
     },
+    ['score.listen'] ({commit}, {room}) {
+      const {$socket} = this._vm
+      $socket.emit('score', {room})
+      commit('changeRoom', room)
+    },
     ['socket.login'] ({commit}, {isSuccess, nickname}) {
       if (isSuccess) {
         commit('successfulLogin')

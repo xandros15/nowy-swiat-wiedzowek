@@ -41,6 +41,7 @@ io.on('connection', socket => {
       user.isAdmin = true
       user.room = room
       socket.join('admin.' + room)
+      socket.join('score.' + room)
       socket.emit('admin', {isSuccess: true,})
       socket.emit('answers.receive', {answers: rooms.answers(user).getAnswers()})
       socket.emit('score', {score: rooms.score(user).getScore()})
@@ -67,37 +68,40 @@ io.on('connection', socket => {
       socket.emit('answer', {isSuccess: true})
     }
   })
-  socket.on('score', () => {
-    io.to('admin.' + user.room).emit('score', {score: rooms.score(user).getScore()})
+  socket.on('score', payload => {
+    payload = payload || {room: ''}
+    const {room,} = payload
+    socket.join('score.' + room)
+    socket.emit('score', {score: rooms.score({room}).getScore()})
   })
   socket.on('score.add', (nickname, points) => {
     if (user.isAdmin) {
       rooms.score(user).addPoints(nickname, points)
-      io.to('admin.' + user.room).emit('score', {score: rooms.score(user).getScore()})
+      io.to('score.' + user.room).emit('score', {score: rooms.score(user).getScore()})
     }
   })
   socket.on('score.remove', (nickname, points) => {
     if (user.isAdmin) {
       rooms.score(user).removePoints(nickname, points)
-      io.to('admin.' + user.room).emit('score', {score: rooms.score(user).getScore()})
+      io.to('score.' + user.room).emit('score', {score: rooms.score(user).getScore()})
     }
   })
   socket.on('tiebreaker.add', (nickname, points) => {
     if (user.isAdmin) {
       rooms.score(user).addTiebreaker(nickname, points)
-      io.to('admin.' + user.room).emit('score', {score: rooms.score(user).getScore()})
+      io.to('score.' + user.room).emit('score', {score: rooms.score(user).getScore()})
     }
   })
   socket.on('tiebreaker.remove', (nickname, points) => {
     if (user.isAdmin) {
       rooms.score(user).removeTiebreaker(nickname, points)
-      io.to('admin.' + user.room).emit('score', {score: rooms.score(user).getScore()})
+      io.to('score.' + user.room).emit('score', {score: rooms.score(user).getScore()})
     }
   })
   socket.on('score.reset', () => {
     if (user.isAdmin) {
       rooms.score(user).reset()
-      io.to('admin.' + user.room).emit('score', {score: []})
+      io.to('score.' + user.room).emit('score', {score: rooms.score(user).getScore()})
     }
   })
   socket.on('reset', () => {

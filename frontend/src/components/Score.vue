@@ -4,14 +4,14 @@
         <tr>
             <th @click="sort('team')">Drużyna</th>
             <th @click="sort('points')">Punkty</th>
-            <th>Tiebreakery</th>
+            <th v-if="hasTiebreakers">Tiebreakery</th>
         </tr>
         </thead>
         <tbody>
         <tr :key="k" v-for="(team, k) in sorted">
             <td>{{team.nickname}}</td>
             <td>{{team.points}}</td>
-            <td>{{team.tiebreaker}}</td>
+            <td v-if="hasTiebreakers">{{team.tiebreaker}}</td>
         </tr>
         </tbody>
     </table>
@@ -38,6 +38,14 @@
         }
 
         return score
+      },
+      hasTiebreakers () {
+        for (const team of this.score) {
+          if (team.tiebreaker !== 0) {
+            return true
+          }
+        }
+        return false
       },
       ...mapState(['score'])
     },

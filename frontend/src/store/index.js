@@ -142,7 +142,9 @@ export default new Vuex.Store({
       this._vm.$socket.emit('reset')
     },
     ['admin.reset.single'] (store, nickname) {
-      this._vm.$socket.emit('reset.single', nickname)
+      if (confirm(`Are you sure to remove ${nickname}'s answer?`)) {
+        this._vm.$socket.emit('reset.single', nickname)
+      }
     },
     ['admin.point.add'] (store, nickname) {
       this._vm.$socket.emit('score.add', nickname, 1)
@@ -157,7 +159,9 @@ export default new Vuex.Store({
       this._vm.$socket.emit('tiebreaker.remove', nickname, 1)
     },
     ['admin.score.reset'] () {
-      this._vm.$socket.emit('score.reset')
+      if (confirm(`Are you sure you want to wipe whole score sheet?`)) {
+        this._vm.$socket.emit('score.reset')
+      }
     },
     ['socket.reset.answers'] ({commit}, {isSuccess}) {
       if (isSuccess) {

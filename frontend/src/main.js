@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueSocketIO from 'vue-socket.io'
+import VueToastr from 'vue-toastr'
 import App from './App.vue'
 import router from './router'
 import store from './store'
@@ -15,6 +16,8 @@ Vue.use(new VueSocketIO({
     mutationPrefix: 'socket.'
   },
 }))
+
+Vue.use(VueToastr)
 
 new Vue({
   router,

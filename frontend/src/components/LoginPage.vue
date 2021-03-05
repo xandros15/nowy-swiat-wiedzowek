@@ -21,7 +21,7 @@
         if (this.nickname.length > 0 && this.nickname.length < 16) {
           this.$store.dispatch('login', {nickname: this.nickname, room: this.room}).then(() => this.nickname = '')
         } else {
-          alert('Nazwa nie może być krótsza niż 1 znaki i dłuższa niż 16 znaków.')
+          this.$toastr.e('Nazwa nie może być krótsza niż 1 znaki i dłuższa niż 16 znaków.')
         }
       }
     }

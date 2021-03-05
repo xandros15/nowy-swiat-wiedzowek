@@ -33,7 +33,7 @@
           answerAlt: this.$refs.answerAlt.value.trim(),
         }
         if (payload.answer.length < 1 || payload.answer.length > 64 || payload.answerAlt.length > 64) {
-          alert('Twoja odpowiedź jest za długa lub za krótka')
+          this.$toastr.e('Twoja odpowiedź jest za długa lub za krótka')
         } else {
           this.$store.dispatch('answer', payload)
         }

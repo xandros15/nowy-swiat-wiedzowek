@@ -100,13 +100,14 @@ export default new Vuex.Store({
         commit('successfulLogin')
         commit('changeNickname', {nickname})
       } else {
-        alert('Błąd w dołączeniu do gry, może zły nickname?')
+        this._vm.$toastr.e('Błąd w dołączeniu do gry, może zły nickname?')
       }
     },
     ['socket.answer'] ({commit}, {isSuccess}) {
       if (!isSuccess) {
-        alert('Wysłałeś już swoją odpowiedź.')
+        this._vm.$toastr.e('Wysłałeś już swoją odpowiedź.')
       } else {
+        this._vm.$toastr.s('Odpowiedź została wysłana.')
         commit('setAnswer', {answer: '', answerAlt: ''})
       }
     },
@@ -162,21 +163,21 @@ export default new Vuex.Store({
       if (isSuccess) {
         commit('resetAnswers')
       } else {
-        alert('Błąd przy resetowaniu Odpowiedzi.')
+        this._vm.$toastr.e('Błąd przy resetowaniu Odpowiedzi.')
       }
     },
     ['socket.reset.single'] ({commit}, {isSuccess, nickname}) {
       if (isSuccess) {
         commit('resetAnswer', nickname)
       } else {
-        alert('Błąd przy resetowaniu Odpowiedzi.')
+        this._vm.$toastr.e('Błąd przy resetowaniu Odpowiedzi.')
       }
     },
     ['socket.admin'] ({commit,}, {isSuccess}) {
       if (isSuccess) {
         commit('successfulLogin', true)
       } else {
-        alert('Błąd przy logowaniu.')
+        this._vm.$toastr.e('Błąd przy logowaniu.')
       }
     },
     ['socket.answer.receive'] ({commit,}, answer) {

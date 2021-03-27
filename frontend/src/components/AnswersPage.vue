@@ -23,6 +23,7 @@
                         <button @click="resetSingle(answer.nickname)">Usuń</button>
                         <button @click="pointAdd(answer.nickname)">+1 pkt</button>
                         <button @click="pointRemove(answer.nickname)">-1 pkt</button>
+                        <button @click="pointRemove3(answer.nickname)">-3 pkt</button>
                         <button @click="tieAdd(answer.nickname)">+1 tie</button>
                         <button @click="tieRemove(answer.nickname)">-1 tie</button>
                     </td>
@@ -57,6 +58,7 @@
       resetSingle: 'admin.reset.single',
       reset: 'admin.reset',
       pointRemove: 'admin.point.remove',
+      pointRemove3: 'admin.point.remove3',
       pointAdd: 'admin.point.add',
       tieRemove: 'admin.tiebreaker.remove',
       tieAdd: 'admin.tiebreaker.add',

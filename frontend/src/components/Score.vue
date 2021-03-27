@@ -3,31 +3,25 @@
         <thead>
         <tr>
             <th @click="sort('team')">Drużyna</th>
+            <th>Fever</th>
             <th @click="sort('points')">Punkty</th>
             <th>Tiebreakery</th>
             <th v-if="isAdmin">Powiadomienia</th>
         </tr>
         </thead>
         <tbody>
-        <tr :key="k" v-for="(team, k) in sorted">
-            <td>{{team.nickname}}</td>
-            <td>{{team.points}}</td>
-            <td>{{team.tiebreaker}}</td>
-            <td v-if="isAdmin">
-                <button @click="notify({type:'turn', name:team.nickname})">Tura</button>
-                <button @click="notify({type:'correct', name:team.nickname})">Poprawna</button>
-                <button @click="notify({type:'incorrect', name:team.nickname})">Niepoprawna</button>
-            </td>
-        </tr>
+        <TeamScore :isAdmin="isAdmin" :key="k" :team="team" :top="topScore" v-for="(team, k) in sorted"></TeamScore>
         </tbody>
     </table>
 </template>
 
 <script>
   import { mapState } from 'vuex'
+  import TeamScore from './TeamScore'
 
   export default {
     name: "Score",
+    components: {TeamScore},
     props: {
       isAdmin: {
         type: Boolean,
@@ -51,6 +45,11 @@
 
         return score
       },
+      topScore () {
+        const score = this.score;
+        score.sort((a, b) => b.points - a.points)
+        return score[0] ? score[0].points : 0
+      },
       hasTiebreakers () {
         for (const team of this.score) {
           if (team.tiebreaker !== 0) {
@@ -65,26 +64,6 @@
       sort (type) {
         this.sortType = type
       },
-      notify ({type, name}) {
-        switch (type) {
-          case 'turn':
-            this.$store.dispatch('admin.notify', {
-              type: 'warning', message: `Za chwilę zacznie się tura ${name}, bądźcie gotowi.`,
-            })
-            break;
-          case 'correct':
-            this.$store.dispatch('admin.notify', {
-              type: 'success', message: `${name} odpowiedział poprawnie.`,
-            })
-            break;
-          case 'incorrect':
-            this.$store.dispatch('admin.notify', {
-              type: 'error', message: `${name} odpowiedział niepoprawnie.`,
-            })
-            break;
-          default:
-        }
-      }
     }
   }
 </script>

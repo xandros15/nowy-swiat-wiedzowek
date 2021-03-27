@@ -163,6 +163,9 @@ export default new Vuex.Store({
         this._vm.$socket.emit('score.reset')
       }
     },
+    ['admin.notify'] (store, {type, message}) {
+      this._vm.$socket.emit('admin.notify', {type, message})
+    },
     ['socket.reset.answers'] ({commit}, {isSuccess}) {
       if (isSuccess) {
         commit('resetAnswers')
@@ -193,6 +196,16 @@ export default new Vuex.Store({
       for (const answer of answers) {
         commit('pushAnswer', answer)
       }
+    },
+    ['socket.notification'] (store, {message, type}) {
+      const types = {
+        'error': 'error',
+        'warning': 'warning',
+        'success': 'success',
+      }
+
+      type = types[type] || 'info'
+      this._vm.$toastr.Add({type, msg: message})
     },
     ['socket.score'] ({commit,}, {score}) {
       commit('setScore', score)

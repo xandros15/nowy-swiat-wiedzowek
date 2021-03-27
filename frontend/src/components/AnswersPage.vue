@@ -37,7 +37,7 @@
                     Otwórz punktacje w innej karcie
                 </router-link>
             </div>
-            <Score class="flex-item"/>
+            <Score :isAdmin="true" class="flex-item"/>
             <div class="flex-item">
                 <button @click="scoreReset" class="button">Resetuj Punkty</button>
             </div>

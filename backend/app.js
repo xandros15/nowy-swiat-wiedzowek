@@ -49,6 +49,11 @@ io.on('connection', socket => {
       socket.emit('admin', {isSuccess: false})
     }
   })
+  socket.on('admin.notify', payload => {
+    if (user.isAdmin) {
+      io.to(user.room).emit('notification', payload)
+    }
+  })
   socket.on('answer', payload => {
     payload = payload || {answer: '', answerAlt: ''}
     const {answer, answerAlt} = payload

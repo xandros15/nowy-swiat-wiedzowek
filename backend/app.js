@@ -21,7 +21,7 @@ io.on('connection', socket => {
     const {nickname, room} = payload
     const response = {isSuccess: true, nickname}
     if (users.indexOf(nickname) === -1 &&
-      nickname.length > 0 && nickname.length < 16 &&
+      nickname.trim().length > 0 && nickname.trim().length < 16 &&
       rooms.isAvailable(room)
     ) {
       socket.join(room)

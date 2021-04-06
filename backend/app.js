@@ -25,6 +25,18 @@ const io = require('socket.io')(http, {origins})
 
 let users = []
 
+const validateNickname = nickname => {
+  if (typeof nickname !== 'string') {
+    return false
+  }
+
+  if (nickname.trim().length < 1 && nickname.length < 16) {
+    return false
+  }
+
+  return !/[\u2000-\u3000]/.test(nickname)//if hasn't cheat whitespace
+}
+
 io.on('connection', socket => {
   let user = {nickname: '', room: '', isAdmin: false}
   socket.on('login', payload => {
@@ -32,7 +44,7 @@ io.on('connection', socket => {
     const {nickname, room} = payload
     const response = {isSuccess: true, nickname}
     if (users.indexOf(nickname) === -1 &&
-      nickname.trim().length > 0 && nickname.trim().length < 16 &&
+      validateNickname(nickname) &&
       rooms.isAvailable(room)
     ) {
       socket.join(room)

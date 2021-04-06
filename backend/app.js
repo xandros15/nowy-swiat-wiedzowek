@@ -11,7 +11,18 @@ const settings = yaml.safeLoad(fs.readFileSync(__dirname + '/settings.yaml', 'ut
 const passwords = settings.passwords
 const rooms = new Rooms(settings.rooms)
 
-const io = require('socket.io')(http)
+const origins = (origin, fn) => {
+  return fn(null, true)
+}
+
+//@todo should add origins as array of domains?
+// origins: [
+//   'http://localhost:8080',
+//   'http://192.168.0.1:8080',
+// ],
+
+const io = require('socket.io')(http, {origins})
+
 let users = []
 
 io.on('connection', socket => {

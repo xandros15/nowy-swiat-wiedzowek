@@ -1,7 +1,7 @@
 <template>
     <div>
         <h2 class="title">Odpowiedzi</h2>
-        <div class="flex" v-if="answers.length > 0">
+        <div class="block" v-if="answers.length > 0">
             <div class="button-group">
                 <button @click="reset" class="button">Resetuj Odpowiedzi</button>
             </div>
@@ -32,14 +32,14 @@
             </table>
         </div>
         <h3 class="title" v-else>Nie ma jeszcze odpowiedzi.</h3>
-        <div class="flex">
-            <div class="flex-item">
+        <div class="block">
+            <div class="block">
                 <router-link :to="{name: 'ScorePage', params: {room}}" class="a" target="_blank">
                     Otwórz punktacje w innej karcie
                 </router-link>
             </div>
             <Score :isAdmin="true" class="flex-item"/>
-            <div class="flex-item">
+            <div class="block-item">
                 <button @click="scoreReset" class="button">Resetuj Punkty</button>
             </div>
         </div>
@@ -71,6 +71,8 @@
     .title {
         color: #f2f2f2;
         text-shadow: 2px 2px 2px #020202;
+        padding: .83em;
+        margin: 0;
     }
 
     .a {
@@ -99,10 +101,11 @@
         }
     }
 
-    .flex {
+    .block {
         display: flex;
         flex-direction: column;
         margin-bottom: .3rem;
+        padding: 1rem;
 
         &-item {
             margin-bottom: .3rem;

@@ -24,9 +24,12 @@
     .title {
         color: #f2f2f2;
         text-shadow: 2px 2px 2px #020202;
+        padding: .83em;
+        margin: 0;
     }
 
     .flex {
+        padding: 1rem;
         display: flex;
         flex-direction: column;
     }

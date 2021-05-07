@@ -2,9 +2,9 @@
     <table class="table" v-if="score.length > 0">
         <thead>
         <tr>
-            <th @click="sort('team')">Drużyna</th>
+            <th @click="sort('team')" class="sortable">Drużyna</th>
             <th>Fever</th>
-            <th @click="sort('points')">Punkty</th>
+            <th @click="sort('points')" class="sortable">Punkty</th>
             <th>Tiebreakery</th>
             <th v-if="isAdmin">Powiadomienia</th>
         </tr>
@@ -35,18 +35,18 @@
     },
     computed: {
       sorted () {
-        const score = this.score;
+        let score = [...this.score];
         if (this.sortType === 'team') {
           score.sort((a, b) => a.nickname.localeCompare(b.nickname));
         }
-        if (this.sortType === 'points') {
-          score.sort((a, b) => a.points === b.points ? a.tiebreaker - b.tiebreaker : a.points - b.points)
+        if (!this.sortType || this.sortType === 'points') {
+          score.sort((b, a) => a.points === b.points ? a.tiebreaker - b.tiebreaker : a.points - b.points)
         }
 
         return score
       },
       topScore () {
-        const score = this.score;
+        let score = [...this.score];
         score.sort((a, b) => b.points - a.points)
         return score[0] ? score[0].points : 0
       },
@@ -102,7 +102,6 @@
             border: 1px solid #dbdbdb;
             padding: .5em .75em;
             vertical-align: top;
-            cursor: pointer;
         }
 
         & thead, & tbody {
@@ -120,5 +119,9 @@
         & tbody tr:nth-child(even), & tbody tr:hover {
             background-color: #fafafa;
         }
+    }
+
+    .sortable {
+        cursor: pointer;
     }
 </style>

@@ -5,6 +5,7 @@
             <div class="button-group">
                 <button @click="reset" class="button">Resetuj Odpowiedzi</button>
             </div>
+            <BulkPoints v-if="selected.length > 0"/>
             <table class="table">
                 <thead>
                 <tr>
@@ -15,21 +16,22 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr :key="k" v-for="(answer, k) in answers">
-                    <td>{{answer.nickname}}</td>
-                    <td>{{answer.answer}}</td>
-                    <td>{{answer.answerAlt}}</td>
-                    <td>
+                <tr :class="{selected: selected.indexOf(answer.nickname) !== -1}" :key="k"
+                    v-for="(answer, k) in answers">
+                    <td @click.prevent="toggleSelect(answer.nickname)" class="tb-25 clickable">{{answer.nickname}}</td>
+                    <td @click.prevent="toggleSelect(answer.nickname)" class="tb-25 clickable">{{answer.answer}}</td>
+                    <td @click.prevent="toggleSelect(answer.nickname)" class="tb-25 clickable">{{answer.answerAlt}}</td>
+                    <td class="tb-25">
                         <button @click="resetSingle(answer.nickname)">Usuń</button>
                         <button @click="pointAdd(answer.nickname)">+1 pkt</button>
                         <button @click="pointRemove(answer.nickname)">-1 pkt</button>
-                        <button @click="pointRemove3(answer.nickname)">-3 pkt</button>
                         <button @click="tieAdd(answer.nickname)">+1 tie</button>
                         <button @click="tieRemove(answer.nickname)">-1 tie</button>
                     </td>
                 </tr>
                 </tbody>
             </table>
+            <small>Możesz wybrać odpowiedzi do zbiorowych akcji</small>
         </div>
         <h3 class="title" v-else>Nie ma jeszcze odpowiedzi.</h3>
         <div class="block">
@@ -47,32 +49,53 @@
 </template>
 
 <script>
-  import { mapActions, mapState } from 'vuex'
+  import { mapActions, mapMutations, mapState } from 'vuex'
+  import BulkPoints from './BulkPoints'
   import Score from './Score'
 
   export default {
     name: 'AnswersPage',
-    components: {Score},
-    computed: mapState(['answers', 'room']),
-    methods: mapActions({
-      resetSingle: 'admin.reset.single',
-      reset: 'admin.reset',
-      pointRemove: 'admin.point.remove',
-      pointRemove3: 'admin.point.remove3',
-      pointAdd: 'admin.point.add',
-      tieRemove: 'admin.tiebreaker.remove',
-      tieAdd: 'admin.tiebreaker.add',
-      scoreReset: 'admin.score.reset',
-    }),
+    components: {BulkPoints, Score},
+    computed: mapState(['answers', 'room', 'selected']),
+    methods: {
+      ...mapMutations({
+        selectAnswer: 'selectAnswer',
+        unselectAnswer: 'unselectAnswer',
+      }),
+      ...mapActions({
+        resetSingle: 'admin.reset.single',
+        reset: 'admin.reset',
+        pointRemove: 'admin.point.remove',
+        pointAdd: 'admin.point.add',
+        tieRemove: 'admin.tiebreaker.remove',
+        tieAdd: 'admin.tiebreaker.add',
+        scoreReset: 'admin.score.reset',
+      }),
+      toggleSelect (nickname) {
+        if (this.selected.indexOf(nickname) === -1) {
+          this.selectAnswer(nickname)
+        } else {
+          this.unselectAnswer(nickname)
+        }
+      }
+    }
   }
 </script>
 
 <style lang="scss" scoped>
+    .clickable {
+        cursor: pointer;
+    }
+
     .title {
         color: #f2f2f2;
         text-shadow: 2px 2px 2px #020202;
         padding: .83em;
         margin: 0;
+    }
+
+    .tb-25 {
+        width: 25%;
     }
 
     .a {
@@ -119,6 +142,14 @@
         border-collapse: collapse;
         border-spacing: 0;
         width: 100%;
+
+        & .selected {
+            background-color: rgb(107, 211, 117) !important;
+
+            &:hover {
+                background-color: rgb(96, 192, 97) !important;
+            }
+        }
 
         & th, & td {
             text-align: left;

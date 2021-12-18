@@ -17,6 +17,7 @@ export default new Vuex.Store({
     answers: [],
     score: [],
     room: '',
+    selected: [],
   },
   getters: {
     ['status'] (state) {
@@ -75,6 +76,15 @@ export default new Vuex.Store({
     },
     ['setScore'] (state, score) {
       state.score = score
+    },
+    ['selectAnswer'] (state, nickname) {
+      state.selected.push(nickname)
+    },
+    ['unselectAnswer'] (state, nickname) {
+      state.selected = state.selected.filter(t => t !== nickname)
+    },
+    ['resetSelectAnswer'] (state) {
+      state.selected = []
     },
   },
   actions: {
@@ -146,14 +156,30 @@ export default new Vuex.Store({
         this._vm.$socket.emit('reset.single', nickname)
       }
     },
+    ['admin.bulkpoints'] ({state, commit}, {points, tiebreaker}) {
+      for (const selected of state.selected) {
+        if (points !== 0) {
+          this._vm.$socket.emit(
+            points > 0 ? 'score.add' : 'score.remove',
+            selected,
+            Math.abs(points)
+          )
+        }
+        if (tiebreaker !== 0) {
+          this._vm.$socket.emit(
+            tiebreaker > 0 ? 'tiebreaker.add' : 'tiebreaker.remove',
+            selected,
+            Math.abs(tiebreaker)
+          )
+        }
+      }
+      commit('resetSelectAnswer')
+    },
     ['admin.point.add'] (store, nickname) {
       this._vm.$socket.emit('score.add', nickname, 1)
     },
     ['admin.point.remove'] (store, nickname) {
       this._vm.$socket.emit('score.remove', nickname, 1)
-    },
-    ['admin.point.remove3'] (store, nickname) {
-      this._vm.$socket.emit('score.remove', nickname, 3)
     },
     ['admin.tiebreaker.add'] (store, nickname) {
       this._vm.$socket.emit('tiebreaker.add', nickname, 1)
@@ -172,6 +198,7 @@ export default new Vuex.Store({
     ['socket.reset.answers'] ({commit}, {isSuccess}) {
       if (isSuccess) {
         commit('resetAnswers')
+        commit('resetSelectAnswer')
       } else {
         this._vm.$toastr.e('Błąd przy resetowaniu Odpowiedzi.')
       }

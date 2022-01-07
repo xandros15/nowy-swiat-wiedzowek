@@ -5,7 +5,7 @@
             <div class="button-group">
                 <button @click="reset" class="button">Resetuj Odpowiedzi</button>
             </div>
-            <BulkPoints v-if="selected.length > 0"/>
+            <BulkPoints/>
             <table class="table">
                 <thead>
                 <tr>
@@ -138,7 +138,7 @@
     .table {
         color: #363636;
         background-color: #fff;
-        margin: .3rem;
+        margin: 0 .3rem;
         border-collapse: collapse;
         border-spacing: 0;
         width: 100%;

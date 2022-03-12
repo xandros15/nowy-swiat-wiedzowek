@@ -1,3 +1,4 @@
+import escape from 'escape-html'
 import Vue from 'vue'
 import Vuex from 'vuex'
 import socket from '../services/socket'
@@ -232,20 +233,24 @@ export default new Vuex.Store({
       }
 
       type = types[type] || 'info'
-      this._vm.$toastr.Add({type, msg: message})
+      const msg = escape(message)
+      this._vm.$toastr.Add({type, msg})
     },
     ['socket.score'] ({commit,}, {score}) {
       commit('setScore', score)
     },
     ['socket.notice.login'] (store, response) {
       if (response.isSuccess) {
-        this._vm.$toastr.Add({type: 'success', msg: `${response.nickname} successful join to game.`})
+        const msg = escape(`${response.nickname} successful join to game.`)
+        this._vm.$toastr.Add({type: 'success', msg})
       } else {
-        this._vm.$toastr.Add({type: 'warning', msg: `${response.nickname} failed join to game.`})
+        const msg = escape(`${response.nickname} failed join to game.`)
+        this._vm.$toastr.Add({type: 'warning', msg})
       }
     },
     ['socket.notice.disconnect'] (store, user) {
-      this._vm.$toastr.Add({type: 'error', msg: `${user.nickname} disconnected from game.`})
+      const msg = escape(`${user.nickname} disconnected from game.`)
+      this._vm.$toastr.Add({type: 'error', msg})
     },
   },
   modules: {}

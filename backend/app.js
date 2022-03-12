@@ -50,6 +50,9 @@ io.on('connection', socket => {
       response.isSuccess = false
     }
     socket.emit('login', response)
+    if (user.room) {//send admin someone login to app
+      io.to('admin.' + user.room).emit('notice.login', response)
+    }
     console.log('login', response)
   })
   socket.on('admin', payload => {
@@ -143,6 +146,9 @@ io.on('connection', socket => {
   socket.on('disconnect', () => {
     if (user.nickname.length > 0) {
       users = users.filter(u => u !== user.nickname)
+      if (user.room) {//send admin someone disconnect from app
+        io.to('admin.' + user.room).emit('notice.disconnect', user)
+      }
       console.log('disconnect', user.nickname)
     }
   })

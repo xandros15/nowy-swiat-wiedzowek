@@ -236,7 +236,17 @@ export default new Vuex.Store({
     },
     ['socket.score'] ({commit,}, {score}) {
       commit('setScore', score)
-    }
+    },
+    ['socket.notice.login'] (store, response) {
+      if (response.isSuccess) {
+        this._vm.$toastr.Add({type: 'success', msg: `${response.nickname} successful join to game.`})
+      } else {
+        this._vm.$toastr.Add({type: 'warning', msg: `${response.nickname} failed join to game.`})
+      }
+    },
+    ['socket.notice.disconnect'] (store, user) {
+      this._vm.$toastr.Add({type: 'error', msg: `${user.nickname} disconnected from game.`})
+    },
   },
   modules: {}
 })

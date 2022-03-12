@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import socket from '../services/socket'
 
 Vue.use(Vuex)
 
@@ -90,19 +91,16 @@ export default new Vuex.Store({
   actions: {
     ['answer'] ({state, commit}, {answer, answerAlt}) {
       if (state.isLogged) {
-        const {$socket} = this._vm
-        $socket.emit('answer', {answer, answerAlt})
+        socket.emit('answer', {answer, answerAlt})
         commit('setAnswer', {answer, answerAlt})
       }
     },
     ['login'] ({commit}, {nickname, room}) {
-      const {$socket} = this._vm
-      $socket.emit('login', {nickname, room})
+      socket.emit('login', {nickname, room})
       commit('changeRoom', room)
     },
     ['score.listen'] ({commit}, {room}) {
-      const {$socket} = this._vm
-      $socket.emit('score', {room})
+      socket.emit('score', {room})
       commit('changeRoom', room)
     },
     ['socket.login'] ({commit}, {isSuccess, nickname}) {
@@ -143,30 +141,29 @@ export default new Vuex.Store({
     },
     //admin
     ['admin.login'] ({commit,}, {password, room}) {
-      const {$socket} = this._vm
-      $socket.emit('admin', {password, room})
+      socket.emit('admin', {password, room})
       commit('setPassword', password)
       commit('changeRoom', room)
     },
     ['admin.reset'] () {
-      this._vm.$socket.emit('reset')
+      socket.emit('reset')
     },
     ['admin.reset.single'] (store, nickname) {
       if (confirm(`Are you sure to remove ${nickname}'s answer?`)) {
-        this._vm.$socket.emit('reset.single', nickname)
+        socket.emit('reset.single', nickname)
       }
     },
     ['admin.bulkpoints'] ({state, commit}, {points, tiebreaker}) {
       for (const selected of state.selected) {
         if (points !== 0) {
-          this._vm.$socket.emit(
+          socket.emit(
             points > 0 ? 'score.add' : 'score.remove',
             selected,
             Math.abs(points)
           )
         }
         if (tiebreaker !== 0) {
-          this._vm.$socket.emit(
+          socket.emit(
             tiebreaker > 0 ? 'tiebreaker.add' : 'tiebreaker.remove',
             selected,
             Math.abs(tiebreaker)
@@ -176,24 +173,24 @@ export default new Vuex.Store({
       commit('resetSelectAnswer')
     },
     ['admin.point.add'] (store, nickname) {
-      this._vm.$socket.emit('score.add', nickname, 1)
+      socket.emit('score.add', nickname, 1)
     },
     ['admin.point.remove'] (store, nickname) {
-      this._vm.$socket.emit('score.remove', nickname, 1)
+      socket.emit('score.remove', nickname, 1)
     },
     ['admin.tiebreaker.add'] (store, nickname) {
-      this._vm.$socket.emit('tiebreaker.add', nickname, 1)
+      socket.emit('tiebreaker.add', nickname, 1)
     },
     ['admin.tiebreaker.remove'] (store, nickname) {
-      this._vm.$socket.emit('tiebreaker.remove', nickname, 1)
+      socket.emit('tiebreaker.remove', nickname, 1)
     },
     ['admin.score.reset'] () {
       if (confirm(`Are you sure you want to wipe whole score sheet?`)) {
-        this._vm.$socket.emit('score.reset')
+        socket.emit('score.reset')
       }
     },
     ['admin.notify'] (store, {type, message}) {
-      this._vm.$socket.emit('admin.notify', {type, message})
+      socket.emit('admin.notify', {type, message})
     },
     ['socket.reset.answers'] ({commit}, {isSuccess}) {
       if (isSuccess) {

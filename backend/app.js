@@ -4,6 +4,7 @@ const yaml = require('js-yaml')
 const fs = require('fs')
 const app = require('express')()
 const http = require('http').createServer(app)
+const {Server} = require('socket.io')
 const PORT = process.env.PORT || 3333
 
 //load yaml
@@ -11,17 +12,11 @@ const settings = yaml.safeLoad(fs.readFileSync(__dirname + '/settings.yaml', 'ut
 const passwords = settings.passwords
 const rooms = new Rooms(settings.rooms)
 
-const origins = (origin, fn) => {
-  return fn(null, true)
-}
-
-//@todo should add origins as array of domains?
-// origins: [
-//   'http://localhost:8080',
-//   'http://192.168.0.1:8080',
-// ],
-
-const io = require('socket.io')(http, {origins})
+const io = new Server(http, {
+  cors: {
+    origin: '*',
+  }
+})
 
 let users = []
 

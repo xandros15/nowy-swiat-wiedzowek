@@ -1,3 +1,4 @@
+import { io } from 'socket.io-client'
 import Vue from 'vue'
 import VueSocketIO from 'vue-socket.io'
 import VueToastr from 'vue-toastr'
@@ -7,9 +8,11 @@ import store from './store'
 
 Vue.config.productionTip = false
 
+const socket = io(process.env.NODE_ENV === 'development' ? 'http://192.168.0.61:3333' : '')
+
 Vue.use(new VueSocketIO({
-  debug: true,
-  connection: process.env.NODE_ENV === 'development' ? 'http://192.168.0.61:3333' : '',
+  debug: process.env.NODE_ENV !== 'development',
+  connection: socket,
   vuex: {
     store,
     actionPrefix: 'socket.',

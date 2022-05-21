@@ -121,11 +121,6 @@ export default new Vuex.Store({
         commit('setAnswer', {answer: '', answerAlt: ''})
       }
     },
-    ['socket.reset'] ({commit}, {isSuccess}) {
-      if (isSuccess) {
-        commit('setAnswer', {answer: '', answerAlt: ''})
-      }
-    },
     ['socket.reconnect'] ({state, dispatch}) {
       if (state.isLogged) {
         if (state.nickname) {

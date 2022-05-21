@@ -16,11 +16,13 @@
 <script>
   export default {
     name: "RoomsPage",
+    sockets: {
+      rooms (rooms) {
+        this.rooms = rooms
+      }
+    },
     created () {
-      fetch('/resources/rooms.json')
-        .then(r => r.json())
-        .then(rooms => this.rooms = rooms)
-        .catch(() => this.rooms = [])
+      this.$socket.emit('rooms')
     },
     data () {
       return {

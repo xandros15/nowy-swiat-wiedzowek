@@ -152,6 +152,9 @@ io.on('connection', socket => {
       console.log('disconnect', user.nickname)
     }
   })
+  socket.on('rooms', () => {
+    socket.emit('rooms', settings.rooms)
+  })
 })
 
 app.get('/resources/rooms.json', function (req, res) {

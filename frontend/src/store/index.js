@@ -2,6 +2,7 @@ import escape from 'escape-html'
 import Vue from 'vue'
 import Vuex from 'vuex'
 import socket from '../services/socket'
+import t from '../services/translator'
 
 Vue.use(Vuex)
 
@@ -233,7 +234,8 @@ export default new Vuex.Store({
       }
 
       type = types[type] || 'info'
-      const msg = escape(message)
+      let msg = escape(message)
+      msg = t(msg)
       this._vm.$toastr.Add({type, msg})
     },
     ['socket.score'] ({commit,}, {score}) {
@@ -251,6 +253,9 @@ export default new Vuex.Store({
     ['socket.notice.disconnect'] (store, user) {
       const msg = escape(`${user.nickname} disconnected from game.`)
       this._vm.$toastr.Add({type: 'error', msg})
+    },
+    ['socket.user.kick'] ({commit}) {
+      commit('logout')
     },
   },
   modules: {}

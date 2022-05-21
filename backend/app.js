@@ -38,7 +38,8 @@ io.on('connection', socket => {
     payload = payload || {nickname: '', room: ''}
     const {nickname, room} = payload
     const response = {isSuccess: true, nickname}
-    if (users.indexOf(nickname) === -1 &&
+    if (
+      users.indexOf(nickname) === -1 &&
       validateNickname(nickname) &&
       rooms.isAvailable(room)
     ) {
@@ -78,21 +79,30 @@ io.on('connection', socket => {
   socket.on('answer', payload => {
     payload = payload || {answer: '', answerAlt: ''}
     const {answer, answerAlt} = payload
+    if (!user.room || !user.nickname) {
+      socket.emit('notification', {message: 'ERROR_USER_NO_SET', type: 'error'})
+      socket.emit('socket.user.kick')
+
+      return
+    }
     if (
-      answer.length < 1 || answer.length > 64 || answerAlt.length > 64 ||
+      answer.length < 1 ||
+      answer.length > 64 ||
+      answerAlt.length > 64 ||
       rooms.answers(user).hasAnswer(user.nickname)
     ) {
       socket.emit('answer', {isSuccess: false})
-    } else {
-      const response = {
-        nickname: user.nickname,
-        answer,
-        answerAlt
-      }
-      rooms.answers(user).putAnswer(response)
-      io.to('admin.' + user.room).emit('answer.receive', response)
-      socket.emit('answer', {isSuccess: true})
+
+      return
     }
+    const response = {
+      nickname: user.nickname,
+      answer,
+      answerAlt
+    }
+    rooms.answers(user).putAnswer(response)
+    io.to('admin.' + user.room).emit('answer.receive', response)
+    socket.emit('answer', {isSuccess: true})
   })
   socket.on('score', payload => {
     payload = payload || {room: ''}

@@ -5,14 +5,15 @@
         <td>{{team.points}}</td>
         <td>{{team.tiebreaker}}</td>
         <td v-if="isAdmin">
-            <button @click="notify({type:'turn', name:team.nickname})">Tura</button>
-            <button @click="notify({type:'correct', name:team.nickname})">Poprawna</button>
-            <button @click="notify({type:'incorrect', name:team.nickname})">Niepoprawna</button>
+            <button @click="addPoint(team.nickname)">+1 pkt</button>
+            <button @click="removePoint(team.nickname)">-1 pkt</button>
         </td>
     </tr>
 </template>
 
 <script>
+  import { mapActions } from 'vuex'
+
   export default {
     name: "TeamScore",
     props: ['team', 'top', 'isAdmin'],
@@ -30,26 +31,10 @@
       },
     },
     methods: {
-      notify ({type, name}) {
-        switch (type) {
-          case 'turn':
-            this.$store.dispatch('admin.notify', {
-              type: 'warning', message: `Za chwilę zacznie się tura ${name}, bądźcie gotowi.`,
-            })
-            break;
-          case 'correct':
-            this.$store.dispatch('admin.notify', {
-              type: 'success', message: `${name} odpowiedział poprawnie.`,
-            })
-            break;
-          case 'incorrect':
-            this.$store.dispatch('admin.notify', {
-              type: 'error', message: `${name} odpowiedział niepoprawnie.`,
-            })
-            break;
-          default:
-        }
-      }
+      ...mapActions({
+        addPoint: 'admin.point.add',
+        removePoint: 'admin.point.remove',
+      }),
     }
   }
 </script>

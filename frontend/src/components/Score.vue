@@ -6,7 +6,7 @@
             <th>Fever</th>
             <th @click="sort('points')" class="sortable">Punkty</th>
             <th>Tiebreakery</th>
-            <th v-if="isAdmin">Powiadomienia</th>
+            <th v-if="isAdmin">Dodatki</th>
         </tr>
         </thead>
         <tbody>

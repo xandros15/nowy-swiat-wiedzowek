@@ -17,19 +17,19 @@ const router = new VueRouter({
       component: RoomsPage,
     },
     {
-      path: '/:room(\\w{3,8})/admin',
+      path: '/:room([\\w-]{2,18})/admin',
       name: 'AdminPage',
       component: AdminPage,
       props: true,
     },
     {
-      path: '/:room(\\w{3,8})/score',
+      path: '/:room([\\w-]{2,18})/score',
       name: 'ScorePage',
       component: ScorePage,
       props: true,
     },
     {
-      path: '/:room(\\w{3,8})',
+      path: '/:room([\\w-]{2,18})',
       name: 'TeamPage',
       component: TeamPage,
       props: true,

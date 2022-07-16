@@ -33,6 +33,7 @@ const validateNickname = nickname => {
 }
 
 io.on('connection', socket => {
+
   let user = {nickname: '', room: '', isAdmin: false}
   socket.on('login', payload => {
     payload = payload || {nickname: '', room: ''}
@@ -54,7 +55,6 @@ io.on('connection', socket => {
     if (user.room) {//send admin someone login to app
       io.to('admin.' + user.room).emit('notice.login', response)
     }
-    console.log('login', response)
   })
   socket.on('admin', payload => {
     payload = payload || {password: '', room: ''}
@@ -159,7 +159,6 @@ io.on('connection', socket => {
       if (user.room) {//send admin someone disconnect from app
         io.to('admin.' + user.room).emit('notice.disconnect', user)
       }
-      console.log('disconnect', user.nickname)
     }
   })
   socket.on('rooms', () => {

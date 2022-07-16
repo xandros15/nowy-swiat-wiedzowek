@@ -10,14 +10,17 @@ function Answer () {
   }
 
   this.resetRoom = () => {
+    console.log(`Reset answers`)
     answers = []
   }
 
   this.resetSingle = (nickname) => {
+    console.log(`Reset user ${answer.nickname} answer`)
     answers = answers.filter(answer => answer.nickname !== nickname)
   }
 
   this.putAnswer = (answer) => {
+    console.log(`User ${answer.nickname} answer ${answer}`)
     answers.push(answer)
   }
 }

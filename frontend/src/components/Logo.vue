@@ -15,7 +15,7 @@
         padding-top: 1rem;
 
         &-image {
-            max-width: 360px;
+            max-width: 320px;
         }
     }
 </style>

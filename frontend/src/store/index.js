@@ -238,10 +238,10 @@ export default new Vuex.Store({
     },
     ['socket.notice.login'] (store, response) {
       if (response.isSuccess) {
-        const msg = escape(`${response.nickname} successful join to game.`)
+        const msg = escape(`${response.nickname} join to game.`)
         this._vm.$toastr.Add({type: 'success', msg})
       } else {
-        const msg = escape(`${response.nickname} failed join to game.`)
+        const msg = escape(`${response.nickname} cannot join to game.`)
         this._vm.$toastr.Add({type: 'warning', msg})
       }
     },

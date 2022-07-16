@@ -1,14 +1,16 @@
 <template>
     <div class="logout-bar" v-if="isLogged">
-        <button @click="logout" class="button">Logout</button>
+        <Btn @click="logout" class="button">Logout</Btn>
     </div>
 </template>
 
 <script>
   import { mapMutations, mapState } from 'vuex'
+  import Btn from './Btn'
 
   export default {
     name: "LogoutBar",
+    components: {Btn},
     computed: mapState(['isLogged']),
     methods: mapMutations(['logout']),
   }
@@ -19,21 +21,5 @@
         position: fixed;
         bottom: 0;
         right: 0;
-
-        .button {
-            text-transform: uppercase;
-            outline: 0;
-            background: #b84d08;
-            border: 0;
-            padding: 15px;
-            color: #fff;
-            font-size: 14px;
-            cursor: pointer;
-
-            &:hover, &:active, &:focus {
-                background: #d15208;
-
-            }
-        }
     }
 </style>

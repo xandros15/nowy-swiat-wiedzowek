@@ -11,7 +11,7 @@
                     <input :value="answerAlt" autocomplete="off" class="answer-form-input" id="answer-alt"
                            ref="answerAlt">
                 </div>
-                <button class="answer-form-button">Wyślij</button>
+                <Btn class="answer-form-button">Wyślij</Btn>
             </form>
         </div>
     </div>
@@ -19,9 +19,11 @@
 
 <script>
   import { mapState } from 'vuex'
+  import Btn from './Btn'
 
   export default {
     name: 'AnswerPage',
+    components: {Btn},
     computed: mapState({
       answer: state => state.answer,
       answerAlt: state => state.answerAlt,
@@ -74,22 +76,8 @@
                 box-sizing: border-box;
                 font-size: 14px;
             }
-
             &-button {
-                text-transform: uppercase;
-                outline: 0;
-                background: #b84d08;
                 width: 100%;
-                border: 0;
-                padding: 15px;
-                color: #fff;
-                font-size: 14px;
-                cursor: pointer;
-
-                &:hover, &:active, &:focus {
-                    background: #d15208;
-
-                }
             }
         }
     }

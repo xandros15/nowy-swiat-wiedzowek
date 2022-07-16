@@ -17,6 +17,13 @@
 </script>
 
 <style lang="scss">
+    :root {
+        --bg-color-1: #b85f1b;
+        --bg-color-2: #c2874d;
+        --button-color: #b84d08;
+        --button-color-over: #d15208;
+    }
+
     #app {
         font-family: 'Avenir', Helvetica, Arial, sans-serif;
         -webkit-font-smoothing: antialiased;
@@ -32,12 +39,17 @@
         height: 100%;
     }
 
-    body {
-        background: #b85f1b; /* fallback for old browsers */
-        background: -webkit-linear-gradient(right, #b85f1b, #c2874d);
-        background: -moz-linear-gradient(right, #b85f1b, #c2874d);
-        background: -o-linear-gradient(right, #b85f1b, #c2874d);
-        background: linear-gradient(to left, #b85f1b, #c2874d);
+    #app {
+        box-sizing: border-box;
+    }
+
+    #app {
+        overflow: auto;
+        background: var(--bg-color-1); /* fallback for old browsers */
+        background: -webkit-linear-gradient(right, var(--bg-color-1), var(--bg-color-2));
+        background: -moz-linear-gradient(right, var(--bg-color-1), var(--bg-color-2));
+        background: -o-linear-gradient(right, var(--bg-color-1), var(--bg-color-2));
+        background: linear-gradient(to left, var(--bg-color-1), var(--bg-color-2));
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
     }

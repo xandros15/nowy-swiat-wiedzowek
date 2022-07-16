@@ -53,7 +53,7 @@
         padding: .5rem;
         color: #eee;
         text-shadow: 1px 1px 5px #000;
-        background-color: #b84d08;
+        background-color: var(--bg-color-1);
         font-weight: bold;
         margin: 1rem auto 0;
 

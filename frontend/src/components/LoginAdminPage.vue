@@ -3,14 +3,16 @@
         <form @submit.prevent="loginAdmin" class="login-form">
             <h2 class="title">Admin panel</h2>
             <input class="login-form-input" placeholder="hasło" title="hasło" type="password" v-model="password"/>
-            <button class="login-form-button">Zaloguj się</button>
+            <Btn class="login-form-button">Zaloguj się</Btn>
         </form>
     </div>
 </template>
 
 <script>
+  import Btn from './Btn'
   export default {
     name: 'LoginPage',
+    components: {Btn},
     props: ['room'],
     data () {
       return {password: ''}
@@ -53,20 +55,7 @@
             }
 
             &-button {
-                text-transform: uppercase;
-                outline: 0;
-                background: #b84d08;
                 width: 100%;
-                border: 0;
-                padding: 15px;
-                color: #fff;
-                font-size: 14px;
-                cursor: pointer;
-
-                &:hover, &:active, &:focus {
-                    background: #d15208;
-
-                }
             }
         }
     }

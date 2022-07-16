@@ -10,7 +10,7 @@
         </tr>
         </thead>
         <tbody>
-        <TeamScore :isAdmin="isAdmin" :key="k" :team="team" :top="topScore" v-for="(team, k) in sorted"></TeamScore>
+        <TeamScore :isAdmin="isAdmin" :key="k" :team="team" :top="topScore" v-for="(team, k) in sorted"/>
         </tbody>
     </table>
 </template>
@@ -69,27 +69,6 @@
 </script>
 
 <style lang="scss" scoped>
-    .flex {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .button {
-        text-transform: uppercase;
-        outline: 0;
-        background: #b84d08;
-        border: 0;
-        padding: 15px;
-        color: #fff;
-        font-size: 14px;
-        cursor: pointer;
-
-        &:hover, &:active, &:focus {
-            background: #d15208;
-
-        }
-    }
-
     .table {
         color: #363636;
         background-color: #fff;

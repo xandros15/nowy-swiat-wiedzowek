@@ -3,7 +3,7 @@
         <h2 class="title">Odpowiedzi</h2>
         <div class="block" v-if="answers.length > 0">
             <div class="button-group">
-                <button @click="reset" class="button">Resetuj Odpowiedzi</button>
+                <Btn @click="reset" class="button">Resetuj Odpowiedzi</Btn>
             </div>
             <BulkPoints/>
             <table class="table">
@@ -42,7 +42,7 @@
             </div>
             <Score :isAdmin="true" class="flex-item"/>
             <div class="block-item">
-                <button @click="scoreReset" class="button">Resetuj Punkty</button>
+                <Btn @click="scoreReset" class="button">Resetuj Punkty</Btn>
             </div>
         </div>
     </div>
@@ -50,12 +50,13 @@
 
 <script>
   import { mapActions, mapMutations, mapState } from 'vuex'
+  import Btn from './Btn'
   import BulkPoints from './BulkPoints'
   import Score from './Score'
 
   export default {
     name: 'AnswersPage',
-    components: {BulkPoints, Score},
+    components: {Btn, BulkPoints, Score},
     computed: mapState(['answers', 'room', 'selected']),
     methods: {
       ...mapMutations({
@@ -108,21 +109,21 @@
         }
     }
 
-    .button {
-        text-transform: uppercase;
-        outline: 0;
-        background: #b84d08;
-        border: 0;
-        padding: 15px;
-        color: #fff;
-        font-size: 14px;
-        cursor: pointer;
+    /*.button {*/
+    /*    text-transform: uppercase;*/
+    /*    outline: 0;*/
+    /*    background: #b84d08;*/
+    /*    border: 0;*/
+    /*    padding: 15px;*/
+    /*    color: #fff;*/
+    /*    font-size: 14px;*/
+    /*    cursor: pointer;*/
 
-        &:hover, &:active, &:focus {
-            background: #d15208;
+    /*    &:hover, &:active, &:focus {*/
+    /*        background: #d15208;*/
 
-        }
-    }
+    /*    }*/
+    /*}*/
 
     .block {
         display: flex;

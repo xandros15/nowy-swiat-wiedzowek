@@ -1,6 +1,6 @@
 <template>
     <div class="logout-bar" v-if="isLogged">
-        <Btn @click="logout" class="button">Logout</Btn>
+        <Btn @click.native="logout" class="button">Logout</Btn>
     </div>
 </template>
 

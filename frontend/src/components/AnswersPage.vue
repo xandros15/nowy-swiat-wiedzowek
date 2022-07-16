@@ -3,7 +3,7 @@
         <h2 class="title">Odpowiedzi</h2>
         <div class="block" v-if="answers.length > 0">
             <div class="button-group">
-                <Btn @click="reset" class="button">Resetuj Odpowiedzi</Btn>
+                <Btn @click.native="reset" class="button">Resetuj Odpowiedzi</Btn>
             </div>
             <BulkPoints/>
             <table class="table">
@@ -42,7 +42,7 @@
             </div>
             <Score :isAdmin="true" class="flex-item"/>
             <div class="block-item">
-                <Btn @click="scoreReset" class="button">Resetuj Punkty</Btn>
+                <Btn @click.native="scoreReset" class="button">Resetuj Punkty</Btn>
             </div>
         </div>
     </div>

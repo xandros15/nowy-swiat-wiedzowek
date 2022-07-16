@@ -57,6 +57,12 @@ io.on('connection', socket => {
     }
     console.log('login', response)
   })
+  socket.on('logout', () => {
+    if (user.nickname.length > 0) {
+      console.log('logout', user)
+      users = users.filter(u => u !== user.nickname)
+    }
+  })
   socket.on('admin', payload => {
     payload = payload || {password: '', room: ''}
     const {password, room,} = payload

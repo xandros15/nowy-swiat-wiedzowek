@@ -5,14 +5,14 @@
 </template>
 
 <script>
-  import { mapMutations, mapState } from 'vuex'
+  import { mapActions, mapState } from 'vuex'
   import Btn from './Btn'
 
   export default {
     name: "LogoutBar",
     components: {Btn},
     computed: mapState(['isLogged']),
-    methods: mapMutations(['logout']),
+    methods: mapActions(['logout']),
   }
 </script>
 

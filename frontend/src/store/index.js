@@ -106,6 +106,10 @@ export default new Vuex.Store({
       socket.emit('login', {nickname, room})
       commit('changeRoom', room)
     },
+    ['logout'] ({commit}) {
+      socket.emit('logout')
+      commit('logout')
+    },
     ['score.listen'] ({commit}, {room}) {
       socket.emit('score', {room})
       commit('changeRoom', room)

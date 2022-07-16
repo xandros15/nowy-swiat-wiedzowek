@@ -1,5 +1,6 @@
 <template>
     <div id="app">
+        <Logo/>
         <h2 class="title">Punktacja</h2>
         <div class="flex">
             <Score/>
@@ -8,11 +9,12 @@
 </template>
 
 <script>
+  import Logo from '../components/Logo'
   import Score from '../components/Score'
 
   export default {
     name: 'ScorePage',
-    components: {Score,},
+    components: {Logo, Score,},
     props: ['room'],
     created () {
       this.$store.dispatch('score.listen', {room: this.room})

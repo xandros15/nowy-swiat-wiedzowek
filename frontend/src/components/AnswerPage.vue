@@ -1,5 +1,6 @@
 <template>
     <div class="answer-wrapper">
+        <Logo/>
         <div class="answer-container">
             <form @submit.prevent="sendAnswer" class="answer-form">
                 <div>
@@ -20,10 +21,11 @@
 <script>
   import { mapState } from 'vuex'
   import Btn from './Btn'
+  import Logo from './Logo'
 
   export default {
     name: 'AnswerPage',
-    components: {Btn},
+    components: {Logo, Btn},
     computed: mapState({
       answer: state => state.answer,
       answerAlt: state => state.answerAlt,
@@ -48,7 +50,7 @@
     .answer {
         &-container {
             width: 360px;
-            padding: 8% 0 0;
+            padding: 2rem 0 0;
             margin: auto;
         }
 

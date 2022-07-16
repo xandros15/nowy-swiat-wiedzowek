@@ -1,5 +1,5 @@
 <template>
-    <div id="app">
+    <div class="animatsuri" id="app">
         <StatusBar/>
         <LogoutBar/>
         <router-view/>
@@ -22,6 +22,13 @@
         --bg-color-2: #c2874d;
         --button-color: #b84d08;
         --button-color-over: #d15208;
+
+        & .animatsuri {
+            --bg-color-1: #3b469f;
+            --bg-color-2: #4edde8;
+            --button-color: #2f3a73;
+            --button-color-over: #576c9b;
+        }
     }
 
     #app {

@@ -1,19 +1,24 @@
 <template>
-    <div class="login-container">
-        <form @submit.prevent="login" class="login-form">
-            <h2 class="title">Wprowadź nazwę dużyny i wciśnij "dołącz".</h2>
-            <input class="login-form-input" placeholder="nazwa drużyny" title="nazwa drużyny" v-model="nickname"/>
-            <Btn class="login-form-button">Dołącz</Btn>
-        </form>
+    <div>
+        <Logo/>
+        <div class="login-container">
+            <form @submit.prevent="login" class="login-form">
+                <h2 class="title">Wprowadź nazwę dużyny i wciśnij "dołącz".</h2>
+                <input class="login-form-input" placeholder="nazwa drużyny" title="nazwa drużyny" v-model="nickname"/>
+                <Btn class="login-form-button">Dołącz</Btn>
+            </form>
+        </div>
     </div>
 </template>
 
 <script>
 
   import Btn from './Btn'
+  import Logo from './Logo'
+
   export default {
     name: 'LoginPage',
-    components: {Btn},
+    components: {Logo, Btn},
     props: ['room'],
     data () {
       return {nickname: ''}
@@ -34,7 +39,7 @@
     .login {
         &-container {
             width: 360px;
-            padding: 8% 0 0;
+            padding: 2rem 0 0;
             margin: auto;
         }
 

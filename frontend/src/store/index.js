@@ -34,6 +34,7 @@ export default new Vuex.Store({
     },
   },
   mutations: {
+    //connection status
     ['connect'] (state) {
       state.isConnecting = false
       state.isConnected = true
@@ -44,6 +45,7 @@ export default new Vuex.Store({
     ['connecting'] (state) {
       state.isConnecting = true
     },
+    //join to game
     ['changeNickname'] (state, {nickname}) {
       state.nickname = nickname
     },
@@ -55,6 +57,7 @@ export default new Vuex.Store({
       state.isLogged = true
       state.isAdmin = isAdmin
     },
+    //answer
     ['setAnswer'] (state, {answer, answerAlt}) {
       state.answer = answer
       state.answerAlt = answerAlt
@@ -77,9 +80,11 @@ export default new Vuex.Store({
       state.nickname = ''
       state.isLogged = false
     },
+    //list of total score
     ['setScore'] (state, score) {
       state.score = score
     },
+    //bulk
     ['selectAnswer'] (state, nickname) {
       state.selected.push(nickname)
     },

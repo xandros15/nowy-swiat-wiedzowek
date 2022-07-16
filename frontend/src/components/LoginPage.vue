@@ -6,6 +6,14 @@
                 <h2 class="title">Wprowadź nazwę dużyny i wciśnij "dołącz".</h2>
                 <input class="login-form-input" placeholder="nazwa drużyny" title="nazwa drużyny" v-model="nickname"/>
                 <Btn class="login-form-button">Dołącz</Btn>
+                <div class="nicknames" v-if="nicknames.length > 0">
+                    <small class="nicknames-description">Ostatnio używane:</small>
+                    <Btn :key="lastNickname" @click.prevent.native="selectNickname(lastNickname)"
+                         class="nicknames-button"
+                         v-for="lastNickname in nicknames">
+                        {{lastNickname}}
+                    </Btn>
+                </div>
             </form>
         </div>
     </div>
@@ -13,6 +21,7 @@
 
 <script>
 
+  import { addNickname, forgotNickname, getNicknames } from '../services/nickname-storage'
   import Btn from './Btn'
   import Logo from './Logo'
 
@@ -21,12 +30,29 @@
     components: {Logo, Btn},
     props: ['room'],
     data () {
-      return {nickname: ''}
+      return {
+        nickname: '',
+        nicknames: [],
+      }
+    },
+    created () {
+      this.nicknames = getNicknames()
     },
     methods: {
+      selectNickname (nickname) {
+        if (nickname.length > 0 && nickname.length < 16) {
+          this.nickname = nickname
+        }
+      },
+      forgotNickname (nickname) {
+        forgotNickname(nickname)
+        this.nicknames = getNicknames()
+      },
       login () {
         if (this.nickname.length > 0 && this.nickname.length < 16) {
           this.$store.dispatch('login', {nickname: this.nickname, room: this.room}).then(() => this.nickname = '')
+          addNickname(this.nickname)
+          this.nicknames = getNicknames()
         } else {
           this.$toastr.e('Nazwa nie może być krótsza niż 1 znaki i dłuższa niż 16 znaków.')
         }
@@ -36,6 +62,22 @@
 </script>
 
 <style lang="scss" scoped>
+    .nicknames {
+
+        &-description {
+            display: block;
+            text-align: left;
+            margin: .5rem 0;
+        }
+
+        &-button {
+            text-transform: none;
+            margin-bottom: .3rem;
+            width: 100%;
+            display: block;
+        }
+    }
+
     .login {
         &-container {
             width: 360px;

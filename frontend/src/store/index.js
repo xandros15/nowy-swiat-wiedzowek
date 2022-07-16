@@ -254,9 +254,6 @@ export default new Vuex.Store({
       const msg = escape(`${user.nickname} disconnected from game.`)
       this._vm.$toastr.Add({type: 'error', msg})
     },
-    ['socket.user.kick'] ({commit}) {
-      commit('logout')
-    },
   },
   modules: {}
 })

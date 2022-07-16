@@ -7,4 +7,4 @@ function t (input) {
   return CODES[input] || input
 }
 
-export default {t}
+export default t

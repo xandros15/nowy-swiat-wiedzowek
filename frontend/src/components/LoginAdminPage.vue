@@ -2,7 +2,13 @@
     <div class="login-container">
         <form @submit.prevent="loginAdmin" class="login-form">
             <h2 class="title">Admin panel</h2>
-            <input class="login-form-input" placeholder="hasło" title="hasło" type="password" v-model="password"/>
+            <input autocomplete
+                   class="login-form-input"
+                   placeholder="hasło"
+                   title="hasło"
+                   type="password"
+                   v-model="password"
+            />
             <Btn class="login-form-button">Zaloguj się</Btn>
         </form>
     </div>

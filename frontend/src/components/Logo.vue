@@ -1,6 +1,6 @@
 <template>
     <div class="logo">
-        <img alt="logo animatsuri" class="logo-image" src="../images/animatsuri.png">
+        <img alt="logo ryukon" class="logo-image" src="../images/ryucon.png">
     </div>
 </template>
 

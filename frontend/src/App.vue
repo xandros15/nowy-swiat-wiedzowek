@@ -1,5 +1,5 @@
 <template>
-    <div class="animatsuri" id="app">
+    <div class="ryukon" id="app">
         <StatusBar/>
         <LogoutBar/>
         <router-view/>
@@ -29,6 +29,13 @@
             --button-color: #2f3a73;
             --button-color-over: #576c9b;
         }
+
+        & .ryukon {
+            --bg-color-1: #f5ad33;
+            --bg-color-2: #eb7c6c;
+            --button-color: #5f4c8b;
+            --button-color-over: #32274f;
+        }
     }
 
     #app {
@@ -53,10 +60,7 @@
     #app {
         overflow: auto;
         background: var(--bg-color-1); /* fallback for old browsers */
-        background: -webkit-linear-gradient(right, var(--bg-color-1), var(--bg-color-2));
-        background: -moz-linear-gradient(right, var(--bg-color-1), var(--bg-color-2));
-        background: -o-linear-gradient(right, var(--bg-color-1), var(--bg-color-2));
-        background: linear-gradient(to left, var(--bg-color-1), var(--bg-color-2));
+        background: linear-gradient(to bottom, var(--bg-color-1), var(--bg-color-2));
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
     }

@@ -1,6 +1,5 @@
 <template>
     <div>
-        <Logo/>
         <div class="login-container">
             <form @submit.prevent="login" class="login-form">
                 <h2 class="title">Wprowadź nazwę dużyny i wciśnij "dołącz".</h2>
@@ -23,11 +22,10 @@
 
   import { addNickname, forgotNickname, getNicknames } from '../services/nickname-storage'
   import Btn from './Btn'
-  import Logo from './Logo'
 
   export default {
     name: 'LoginPage',
-    components: {Logo, Btn},
+    components: {Btn},
     props: ['room'],
     data () {
       return {

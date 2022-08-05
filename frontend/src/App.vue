@@ -1,5 +1,5 @@
 <template>
-    <div class="ryukon" id="app">
+    <div id="app">
         <StatusBar/>
         <LogoutBar/>
         <router-view/>

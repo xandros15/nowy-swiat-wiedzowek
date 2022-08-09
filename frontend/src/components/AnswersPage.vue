@@ -9,6 +9,7 @@
             <table class="table">
                 <thead>
                 <tr>
+                    <th>#</th>
                     <th>Drużyna</th>
                     <th>Anime</th>
                     <th>Dodatkowo</th>
@@ -18,6 +19,7 @@
                 <tbody>
                 <tr :class="{selected: selected.indexOf(answer.nickname) !== -1}" :key="k"
                     v-for="(answer, k) in answers">
+                    <td>{{k + 1}}</td>
                     <td @click.prevent="toggleSelect(answer.nickname)" class="tb-25 clickable">{{answer.nickname}}</td>
                     <td @click.prevent="toggleSelect(answer.nickname)" class="tb-25 clickable">{{answer.answer}}</td>
                     <td @click.prevent="toggleSelect(answer.nickname)" class="tb-25 clickable">{{answer.answerAlt}}</td>

@@ -1,5 +1,5 @@
 <template>
-    <div id="app">
+    <div class="hikari" id="app">
         <StatusBar/>
         <LogoutBar/>
         <router-view/>
@@ -35,6 +35,13 @@
             --bg-color-2: #eb7c6c;
             --button-color: #5f4c8b;
             --button-color-over: #32274f;
+        }
+
+        & .hikari {
+            --bg-color-1: #672663;
+            --bg-color-2: #fedc71;
+            --button-color: #672663;
+            --button-color-over: #8b3a87;
         }
     }
 

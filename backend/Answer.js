@@ -6,21 +6,22 @@ function Answer () {
   }
 
   this.getAnswers = () => {
+    console.log('List answers')
     return answers
   }
 
   this.resetRoom = () => {
-    console.log(`Reset answers`)
+    console.log('Reset answers')
     answers = []
   }
 
   this.resetSingle = (nickname) => {
-    console.log(`Reset user ${nickname} answer`)
+    console.log('Reset answer from team ' + nickname)
     answers = answers.filter(answer => answer.nickname !== nickname)
   }
 
   this.putAnswer = (answer) => {
-    console.log(`User ${answer.nickname} answer ${answer}`)
+    console.log('Answer', answer)
     answers.push(answer)
   }
 }

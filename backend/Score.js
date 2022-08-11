@@ -2,15 +2,17 @@ function Score () {
   let score = []
 
   this.getScore = () => {
+    console.log('List score')
     return score
   }
 
   this.reset = () => {
+    console.log('Reset score')
     score = []
   }
 
   this.removeTiebreaker = (nickname, points) => {
-    console.log(`Remove tiebreaker point for ${nickname}`)
+    console.log('Remove ' + points + ' tiebreakers from ' + nickname)
     const index = score.findIndex(item => item.nickname === nickname)
 
     if (index !== -1) {
@@ -25,7 +27,7 @@ function Score () {
   }
 
   this.addTiebreaker = (nickname, points) => {
-    console.log(`Add tiebreaker point for ${nickname}`)
+    console.log('Add ' + points + ' tiebreakers to ' + nickname)
     const index = score.findIndex(item => item.nickname === nickname)
 
     if (index !== -1) {
@@ -40,7 +42,7 @@ function Score () {
   }
 
   this.addPoints = (nickname, points) => {
-    console.log(`Add point for ${nickname}`)
+    console.log('Add ' + points + ' points to ' + nickname)
     const index = score.findIndex(item => item.nickname === nickname)
 
     if (index !== -1) {
@@ -55,7 +57,7 @@ function Score () {
   }
 
   this.removePoints = (nickname, points) => {
-    console.log(`Remove point for ${nickname}`)
+    console.log('Remove ' + points + ' points from ' + nickname)
     const index = score.findIndex(item => item.nickname === nickname)
 
     if (index !== -1) {

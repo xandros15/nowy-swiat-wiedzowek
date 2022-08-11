@@ -15,7 +15,7 @@ function Answer () {
   }
 
   this.resetSingle = (nickname) => {
-    console.log(`Reset user ${answer.nickname} answer`)
+    console.log(`Reset user ${nickname} answer`)
     answers = answers.filter(answer => answer.nickname !== nickname)
   }
 

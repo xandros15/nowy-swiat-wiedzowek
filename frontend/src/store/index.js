@@ -18,6 +18,7 @@ export default new Vuex.Store({
     login: '',
     password: '',
     answers: [],
+    lastAnswers: [],
     score: [],
     room: '',
     selected: [],
@@ -67,6 +68,7 @@ export default new Vuex.Store({
       state.answers.push(answer)
     },
     ['resetAnswers'] (state) {
+      state.lastAnswers = state.answers
       state.answers = []
     },
     ['resetAnswer'] (state, nickname) {

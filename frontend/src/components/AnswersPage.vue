@@ -6,9 +6,15 @@
                 <Btn @click.native="reset" class="button">Resetuj Odpowiedzi</Btn>
             </div>
             <div class="mb-1 mt-1">
-                <label class="clickable">Dodatkowo <input type="checkbox" v-model="columnsToShow"
-                                                          value="alt-answer"/></label>
-                <label class="clickable">Opcje <input type="checkbox" v-model="columnsToShow" value="options"/></label>
+                <label class="clickable">Dodatkowo
+                    <input type="checkbox" v-model="columnsToShow" value="alt-answer"/>
+                </label>
+                <label class="clickable">Opcje
+                    <input type="checkbox" v-model="columnsToShow" value="options"/>
+                </label>
+                <label class="clickable">Ostatnio
+                    <input type="checkbox" v-model="columnsToShow" value="last-time"/>
+                </label>
             </div>
             <BulkPoints/>
             <table class="table">
@@ -16,6 +22,7 @@
                 <tr>
                     <th>#</th>
                     <th>Drużyna</th>
+                    <th v-if="columnsToShow.indexOf('last-time') !== -1">Ostatnio</th>
                     <th>Anime</th>
                     <th v-if="columnsToShow.indexOf('alt-answer') !== -1">Dodatkowo</th>
                     <th v-if="columnsToShow.indexOf('options') !== -1">Opcje</th>
@@ -26,6 +33,10 @@
                     v-for="(answer, k) in answers">
                     <td class="tb-number">{{k + 1}}</td>
                     <td @click.prevent="toggleSelect(answer.nickname)" class="clickable">{{answer.nickname}}</td>
+                    <td @click.prevent="toggleSelect(answer.nickname)"
+                        class="clickable" v-if="columnsToShow.indexOf('last-time') !== -1">
+                        {{lastAnswerOfNickname(answer.nickname)}}
+                    </td>
                     <td @click.prevent="toggleSelect(answer.nickname)" class="clickable">{{answer.answer}}</td>
                     <td @click.prevent="toggleSelect(answer.nickname)" class="tb-25 clickable"
                         v-if="columnsToShow.indexOf('alt-answer') !== -1">{{answer.answerAlt}}
@@ -74,7 +85,19 @@
         ]
       }
     },
-    computed: mapState(['answers', 'room', 'selected']),
+    computed: {
+      ...mapState(['answers', 'room', 'selected', 'lastAnswers',]),
+      lastAnswerOfNickname () {
+        return nickname => {
+          for (const lastAnswer of this.lastAnswers) {
+            if (lastAnswer.nickname === nickname) {
+              return lastAnswer.answer
+            }
+          }
+          return '';
+        }
+      },
+    },
     methods: {
       ...mapMutations({
         selectAnswer: 'selectAnswer',
@@ -137,22 +160,6 @@
             color: #610d12;
         }
     }
-
-    /*.button {*/
-    /*    text-transform: uppercase;*/
-    /*    outline: 0;*/
-    /*    background: #b84d08;*/
-    /*    border: 0;*/
-    /*    padding: 15px;*/
-    /*    color: #fff;*/
-    /*    font-size: 14px;*/
-    /*    cursor: pointer;*/
-
-    /*    &:hover, &:active, &:focus {*/
-    /*        background: #d15208;*/
-
-    /*    }*/
-    /*}*/
 
     .block {
         display: flex;

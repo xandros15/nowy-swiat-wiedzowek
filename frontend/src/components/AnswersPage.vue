@@ -5,6 +5,11 @@
             <div class="button-group">
                 <Btn @click.native="reset" class="button">Resetuj Odpowiedzi</Btn>
             </div>
+            <div class="mb-1 mt-1">
+                <label class="clickable">Dodatkowo <input type="checkbox" v-model="columnsToShow"
+                                                          value="alt-answer"/></label>
+                <label class="clickable">Opcje <input type="checkbox" v-model="columnsToShow" value="options"/></label>
+            </div>
             <BulkPoints/>
             <table class="table">
                 <thead>
@@ -12,18 +17,20 @@
                     <th>#</th>
                     <th>Drużyna</th>
                     <th>Anime</th>
-                    <th>Dodatkowo</th>
-                    <th>Opcje</th>
+                    <th v-if="columnsToShow.indexOf('alt-answer') !== -1">Dodatkowo</th>
+                    <th v-if="columnsToShow.indexOf('options') !== -1">Opcje</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr :class="{selected: selected.indexOf(answer.nickname) !== -1}" :key="k"
                     v-for="(answer, k) in answers">
-                    <td>{{k + 1}}</td>
-                    <td @click.prevent="toggleSelect(answer.nickname)" class="tb-25 clickable">{{answer.nickname}}</td>
-                    <td @click.prevent="toggleSelect(answer.nickname)" class="tb-25 clickable">{{answer.answer}}</td>
-                    <td @click.prevent="toggleSelect(answer.nickname)" class="tb-25 clickable">{{answer.answerAlt}}</td>
-                    <td class="tb-25">
+                    <td class="tb-number">{{k + 1}}</td>
+                    <td @click.prevent="toggleSelect(answer.nickname)" class="clickable">{{answer.nickname}}</td>
+                    <td @click.prevent="toggleSelect(answer.nickname)" class="clickable">{{answer.answer}}</td>
+                    <td @click.prevent="toggleSelect(answer.nickname)" class="tb-25 clickable"
+                        v-if="columnsToShow.indexOf('alt-answer') !== -1">{{answer.answerAlt}}
+                    </td>
+                    <td v-if="columnsToShow.indexOf('options') !== -1">
                         <button @click="resetSingle(answer.nickname)">Usuń</button>
                         <button @click="pointAdd(answer.nickname)">+1 pkt</button>
                         <button @click="pointRemove(answer.nickname)">-1 pkt</button>
@@ -59,6 +66,14 @@
   export default {
     name: 'AnswersPage',
     components: {Btn, BulkPoints, Score},
+    data () {
+      return {
+        columnsToShow: [
+          'alt-answer',
+          'options',
+        ]
+      }
+    },
     computed: mapState(['answers', 'room', 'selected']),
     methods: {
       ...mapMutations({
@@ -88,6 +103,18 @@
 <style lang="scss" scoped>
     .clickable {
         cursor: pointer;
+    }
+
+    .tb-number {
+        width: 5px
+    }
+
+    .mb-1 {
+        margin-bottom: .3rem;
+    }
+
+    .mt-1 {
+        margin-top: .3rem;
     }
 
     .title {

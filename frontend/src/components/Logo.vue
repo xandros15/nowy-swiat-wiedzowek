@@ -1,6 +1,5 @@
 <template>
     <div class="logo">
-        <img alt="logo hikari" class="logo-image" src="../images/hikari.png">
     </div>
 </template>
 

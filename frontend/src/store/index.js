@@ -1,3 +1,5 @@
+import { getLocalRefreshToken, setLocalAccessToken, setLocalRefreshToken, setLocalState } from '@/api/auth'
+import router from '@/router'
 import escape from 'escape-html'
 import Vue from 'vue'
 import Vuex from 'vuex'
@@ -8,6 +10,9 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    auth_url: false,
+    auth_proceed: false,
+    adminRooms: [],
     nickname: '',
     isAdmin: false,
     isLogged: false,
@@ -24,6 +29,9 @@ export default new Vuex.Store({
     selected: [],
   },
   getters: {
+    ['hasRoom'] (state) {
+      return state.adminRooms.length > 0
+    },
     ['status'] (state) {
       if (state.isConnected) {
         return 'Connected'
@@ -35,6 +43,30 @@ export default new Vuex.Store({
     },
   },
   mutations: {
+    //auth
+    ['auth.proceed_off'] (state) {
+      state.auth_proceed = false
+    },
+    ['auth.proceed_toggle'] (state) {
+      state.auth_proceed = !state.auth_proceed
+    },
+    ['auth.url'] (state, {auth_url, auth_state}) {
+      setLocalState(auth_state)
+      state.auth_url = auth_url
+    },
+    ['auth.refresh'] (state, {refresh_token, access_token}) {
+      if (refresh_token) {
+        setLocalRefreshToken(refresh_token)
+        setLocalAccessToken(access_token)
+      } else {
+        setLocalRefreshToken(null)
+        setLocalAccessToken(null)
+      }
+    },
+    ['auth.logout'] () {
+      setLocalRefreshToken(null)
+      setLocalAccessToken(null)
+    },
     //connection status
     ['connect'] (state) {
       state.isConnecting = false
@@ -98,6 +130,58 @@ export default new Vuex.Store({
     },
   },
   actions: {
+    //auth
+    ['auth.logout'] ({commit}) {
+      commit('auth.logout')
+      location.reload()
+    },
+    ['socket.authenticate.url'] ({commit}, auth_url) {
+      const auth_state = (new URL(auth_url)).searchParams.get('state')
+      if (auth_state) {
+        commit('auth.url', {auth_url, auth_state})
+      }
+    },
+    ['socket.authenticate.code'] ({commit}, tokens) {//save tokens in browser
+      commit('auth.proceed_off')
+      if (tokens) {
+        commit('auth.refresh', tokens)
+        commit('successfulLogin', true)
+        router.replace({name: 'AdminPanel'})
+        return
+      }
+      alert('Session expired, try to login once again.')
+      commit('auth.refresh', {refresh_token: false})
+    },
+    ['socket.authenticate.refresh_token'] ({commit}, tokens) {//save tokens in browser
+      commit('auth.proceed_off')
+      if (tokens) {
+        commit('auth.refresh', tokens)
+        commit('successfulLogin', true)
+        router.replace({name: 'AdminPanel'})
+        return
+      }
+      alert('Session expired, try to login once again.')
+      commit('auth.refresh', {refresh_token: false})
+      router.replace({name: 'OauthLogin'})
+    },
+    ['socket.admin.room.create'] (state, payload) {
+      if (payload.isSuccess === false) {
+        this._vm.$toastr.e(t('Creating new room failed.'))
+        return
+      }
+      this._vm.$toastr.s(t('Created new room.'))
+      //admin.room.join
+    },
+    ['socket.admin.rooms'] ({state}, payload) {
+      state.adminRooms = payload
+    },
+    ['socket.admin.room.join'] (store, {code}) {
+      if (code === 'ROOM_NO_EXISTS') {
+        this._vm.$toastr.e(t(code))
+        router.replace({name: 'AdminPanel'})
+      }
+    },
+    ///
     ['answer'] ({state, commit}, {answer, answerAlt}) {
       if (state.isLogged) {
         socket.emit('answer', {answer, answerAlt})
@@ -108,20 +192,29 @@ export default new Vuex.Store({
       socket.emit('login', {nickname, room})
       commit('changeRoom', room)
     },
-    ['logout'] ({commit}) {
+    ['logout'] ({state, commit}) {
       socket.emit('logout')
       commit('logout')
+      if (state.isAdmin) {
+        commit('auth.logout')
+        router.replace({name: 'OauthLogin'})
+      }
     },
     ['score.listen'] ({commit}, {room}) {
       socket.emit('score', {room})
       commit('changeRoom', room)
     },
-    ['socket.login'] ({commit}, {isSuccess, nickname}) {
+    ['socket.login'] ({commit}, {isSuccess, nickname, code}) {
       if (isSuccess) {
         commit('successfulLogin')
         commit('changeNickname', {nickname})
-      } else {
-        this._vm.$toastr.e('Błąd w dołączeniu do gry, może zły nickname?')
+      } else if (code === 'ROOM_NO_EXISTS') {
+        this._vm.$toastr.e(t(code))
+        router.replace({name: 'LobbyPage'})
+      } else if (code === 'USER_EXISTS') {
+        this._vm.$toastr.e(t(code))
+      } else if (code === 'INVALID_NICKNAME') {
+        this._vm.$toastr.e(t(code))
       }
     },
     ['socket.answer'] ({commit}, {isSuccess}) {
@@ -133,11 +226,17 @@ export default new Vuex.Store({
       }
     },
     ['socket.reconnect'] ({state, dispatch}) {
+      this._vm.$toastr.s(t('RECONNECTED'))
       if (state.isLogged) {
         if (state.nickname) {
           dispatch('login', {nickname: state.nickname, room: state.room})
         } else if (state.isAdmin) {
-          dispatch('admin.login', {password: state.password, room: state.room})
+          const refreshToken = getLocalRefreshToken()
+          if (!refreshToken) {
+            router.replace({name: 'OauthLogin'})
+            return
+          }
+          socket.emit('authenticate.refresh_token', refreshToken)
         }
       }
     },
@@ -148,11 +247,6 @@ export default new Vuex.Store({
       commit('connect')
     },
     //admin
-    ['admin.login'] ({commit,}, {password, room}) {
-      socket.emit('admin', {password, room})
-      commit('setPassword', password)
-      commit('changeRoom', room)
-    },
     ['admin.reset'] () {
       socket.emit('reset')
     },
@@ -193,7 +287,7 @@ export default new Vuex.Store({
       socket.emit('tiebreaker.remove', nickname, 1)
     },
     ['admin.score.reset'] () {
-      if (confirm(`Are you sure you want to wipe whole score sheet?`)) {
+      if (confirm(t()`Are you sure you want to wipe whole score sheet?`)) {
         socket.emit('score.reset')
       }
     },
@@ -256,10 +350,13 @@ export default new Vuex.Store({
         this._vm.$toastr.Add({type: 'warning', msg})
       }
     },
-    ['socket.notice.disconnect'] (store, user) {
-      const msg = escape(`${user.nickname} disconnected from game.`)
+    ['socket.notice.disconnect'] (store, nickname) {
+      const msg = escape(`${nickname} disconnected from game.`)
       this._vm.$toastr.Add({type: 'error', msg})
     },
+    ['socket.error'] (store, {code}) {
+      this._vm.$toastr.e(t(code))
+    }
   },
   modules: {}
 })

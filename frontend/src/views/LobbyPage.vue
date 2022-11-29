@@ -15,7 +15,7 @@
 
 <script>
   export default {
-    name: "RoomsPage",
+    name: "LobbyPage",
     sockets: {
       rooms (rooms) {
         this.rooms = rooms

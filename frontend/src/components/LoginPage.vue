@@ -4,7 +4,7 @@
         <div class="login-container">
             <form @submit.prevent="login" class="login-form">
                 <h2 class="title">Wprowadź swoją nazwę drużyny i wciśnij "dołącz".</h2>
-                <input class="login-form-input" placeholder="nazwa drużyny" title="nazwa drużyny" v-model="nickname"/>
+                <input class="login-form-input" placeholder="nazwa drużyny" title="nazwa drużyny" v-model.trim="nickname"/>
                 <Btn class="login-form-button">Dołącz</Btn>
                 <div class="nicknames" v-if="nicknames.length > 0">
                     <small class="nicknames-description">Ostatnio używane:</small>

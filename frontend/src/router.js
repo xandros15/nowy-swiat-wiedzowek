@@ -1,9 +1,12 @@
+import store from '@/store'
+import AdminPanelPage from '@/views/AdminPanelPage'
+import AdminRoomPage from '@/views/AdminRoomPage'
+import LobbyPage from '@/views/LobbyPage'
+import OauthLoginPage from '@/views/OauthLoginPage'
+import ScorePage from '@/views/ScorePage'
+import TeamPage from '@/views/TeamPage'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import AdminPage from './views/AdminPage'
-import RoomsPage from './views/RoomsPage'
-import ScorePage from './views/ScorePage'
-import TeamPage from './views/TeamPage'
 
 Vue.use(VueRouter)
 
@@ -12,29 +15,52 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes: [
     {
-      path: '/',
-      name: 'RoomPage',
-      component: RoomsPage,
+      path: '/login',
+      name: 'OauthLogin',
+      component: OauthLoginPage,
     },
     {
-      path: '/:room([\\w-]{2,18})/admin',
-      name: 'AdminPage',
-      component: AdminPage,
+      path: '/admin-panel',
+      name: 'AdminPanel',
+      component: AdminPanelPage,
+    },
+    {
+      path: '/admin-panel/:room([\\w-_]{3,16})',
+      name: 'AdminRoom',
+      component: AdminRoomPage,
       props: true,
     },
     {
-      path: '/:room([\\w-]{2,18})/score',
+      path: '/',
+      name: 'LobbyPage',
+      component: LobbyPage,
+    },
+    {
+      path: '/:room([\\w-_]{3,16})/score',
       name: 'ScorePage',
       component: ScorePage,
       props: true,
     },
     {
-      path: '/:room([\\w-]{2,18})',
+      path: '/:room([\\w-_]{3,16})',
       name: 'TeamPage',
       component: TeamPage,
       props: true,
     },
   ]
+})
+
+const adminRoutes = [
+  'AdminPanel',
+  'AdminRoom',
+]
+
+router.beforeEach((to, from, next) => {
+  if (adminRoutes.indexOf(to.name) !== -1 && !store.state.isAdmin) {
+    next({name: 'OauthLogin'})
+    return
+  }
+  next()
 })
 
 export default router

@@ -27,7 +27,7 @@
         return (this.team.points / Math.max(this.top, 1)) > 0.66
       },
       feverCalc () {
-        return this.team.points / Math.max(this.top, 1)
+        return Math.max(0, this.team.points / Math.max(this.top, 1))
       },
     },
     methods: {

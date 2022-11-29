@@ -4,7 +4,7 @@
         <div class="answer-container">
             <form @submit.prevent="sendAnswer" class="answer-form">
                 <div>
-                    <label class="answer-form-label" for="answer">Anime: </label>
+                    <label class="answer-form-label" for="answer">Odpowiedź: </label>
                     <input :value="answer" autocomplete="off" class="answer-form-input" id="answer" ref="answer">
                 </div>
                 <div>

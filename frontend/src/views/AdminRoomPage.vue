@@ -65,6 +65,11 @@
         <Btn @click.native="scoreReset" class="button">Resetuj Punkty</Btn>
       </div>
     </div>
+    <div class="block">
+      <router-link :to="{name: 'RoomQrCodePage', params: {room}}" class="a" target="_blank">
+        Wygeneruj kod QR do pokoju
+      </router-link>
+    </div>
   </div>
 </template>
 

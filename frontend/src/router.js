@@ -3,6 +3,7 @@ import AdminPanelPage from '@/views/AdminPanelPage'
 import AdminRoomPage from '@/views/AdminRoomPage'
 import LobbyPage from '@/views/LobbyPage'
 import OauthLoginPage from '@/views/OauthLoginPage'
+import RoomQrCodePage from '@/views/RoomQrCodePage'
 import ScorePage from '@/views/ScorePage'
 import TeamPage from '@/views/TeamPage'
 import Vue from 'vue'
@@ -45,6 +46,12 @@ const router = new VueRouter({
       path: '/:room([\\w-_]{3,16})',
       name: 'TeamPage',
       component: TeamPage,
+      props: true,
+    },
+    {
+      path: '/qr/:room([\\w-_]{3,16})',
+      name: 'RoomQrCodePage',
+      component: RoomQrCodePage,
       props: true,
     },
   ]

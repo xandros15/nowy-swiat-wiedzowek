@@ -287,7 +287,7 @@ export default new Vuex.Store({
       socket.emit('tiebreaker.remove', nickname, 1)
     },
     ['admin.score.reset'] () {
-      if (confirm(t()`Are you sure you want to wipe whole score sheet?`)) {
+      if (confirm(t('CONFIRM_RESET_SCORE'))) {
         socket.emit('score.reset')
       }
     },

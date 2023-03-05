@@ -1,9 +1,10 @@
-function Room ({name, scores, answers, owner}) {
+function Room ({name, scores, answers, owner, takeovers}) {
   const room = {
     name: name,
     scores: scores,
     answers: answers,
-    owner: owner
+    owner: owner,
+    takeovers: takeovers,
   }
 
   this.name = () => room.name
@@ -21,6 +22,11 @@ function Room ({name, scores, answers, owner}) {
   this.putAnswer = answer => room ? room.answers.putAnswer(answer) : false
 
   this.isOwner = ownerId => room.owner === ownerId
+
+  this.takeover = nickname => room ? room.takeovers.takeover(nickname) : false
+  this.getTakeovers = () => room ? room.takeovers.getList() : []
+  this.resetTakeover = () => room ? room.takeovers.reset() : false
+  this.hasTakeover = nickname => room ? room.takeovers.hasTakeover(nickname) : false
 }
 
 module.exports = Room

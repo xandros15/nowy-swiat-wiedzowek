@@ -54,6 +54,10 @@
       <small>Możesz wybrać odpowiedzi do zbiorowych akcji</small>
     </div>
     <h3 class="title" v-else>Nie ma jeszcze odpowiedzi.</h3>
+      <div class="block">
+          <h3 class="title">Przejęcia:</h3>
+          <Takeovers/>
+      </div>
     <div class="block">
       <div class="block">
         <router-link :to="{name: 'ScorePage', params: {room}}" class="a" target="_blank">
@@ -74,6 +78,7 @@
 </template>
 
 <script>
+import Takeovers from '@/components/Takeovers'
 import { mapActions, mapMutations, mapState } from 'vuex'
 import Btn from '@/components/Btn'
 import BulkPoints from '@/components/BulkPoints'
@@ -81,7 +86,7 @@ import Score from '@/components/Score'
 
 export default {
   name: 'AnswersPage',
-  components: {Btn, BulkPoints, Score},
+  components: {Takeovers, Btn, BulkPoints, Score},
   data () {
     return {
       columnsToShow: [

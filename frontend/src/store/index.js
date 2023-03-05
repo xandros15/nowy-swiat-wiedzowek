@@ -27,6 +27,8 @@ export default new Vuex.Store({
     score: [],
     room: '',
     selected: [],
+    takeovers: [],
+    takeover: false,
   },
   getters: {
     ['hasRoom'] (state) {
@@ -127,6 +129,15 @@ export default new Vuex.Store({
     },
     ['resetSelectAnswer'] (state) {
       state.selected = []
+    },
+    ['takeover'] (state, takeover) {
+      state.takeover = takeover
+    },
+    ['resetTakeover'] (state) {
+      state.takeover = false
+    },
+    ['setTakeovers'] (state, takeovers) {
+      state.takeovers = takeovers
     },
   },
   actions: {
@@ -356,7 +367,27 @@ export default new Vuex.Store({
     },
     ['socket.error'] (store, {code}) {
       this._vm.$toastr.e(t(code))
-    }
+    },
+    ['takeover'] ({state}) {
+      if (state.isLogged && !state.takeover) {
+        socket.emit('takeover')
+      }
+    },
+    ['socket.takeover'] ({commit}, {isSuccess, takeover}) {
+      if (isSuccess === true) {
+        commit('takeover', takeover)
+      }
+    },
+    ['socket.takeover.reset'] ({commit}) {
+      commit('resetTakeover')
+    },
+    ['socket.takeover.list'] ({commit}, {takeovers}) {
+      commit('setTakeovers', takeovers)
+    },
+    ['takeover.reset'] ({commit}) {
+      socket.emit('takeover.reset')
+      commit('setTakeovers', [])
+    },
   },
   modules: {}
 })

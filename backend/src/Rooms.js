@@ -1,11 +1,18 @@
 const Answer = require('./Answer')
 const Score = require('./Score')
 const Room = require('./Room')
+const Takeovers = require('./Takeovers')
 
 function Rooms () {
   let rooms = []
 
-  this.createEmpty = () => new Room({name: null, owner: null, answers: new Answer(), scores: new Score()})
+  this.createEmpty = () => new Room({
+    name: null,
+    owner: null,
+    answers: new Answer(),
+    scores: new Score(),
+    takeovers: new Takeovers(),
+  })
 
   this.create = ({name, owner}) => {
     if (this.find(name) === null) {
@@ -13,6 +20,7 @@ function Rooms () {
         name,
         scores: new Score(),
         answers: new Answer(),
+        takeovers: new Takeovers(),
         owner
       })
       rooms.push(room)
@@ -32,6 +40,11 @@ function Rooms () {
   this.answers = roomName => {
     const room = this.find(roomName)
     return room ? room.answers : new Answer()
+  }
+
+  this.takeovers = roomName => {
+    const room = this.find(roomName)
+    return room ? room.takeovers : new Takeovers()
   }
 
   this.isAvailable = roomName => {

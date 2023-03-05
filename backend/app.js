@@ -61,7 +61,9 @@ const adminRoutes = [
   'tiebreaker.remove',
   //answers
   'reset',
-  'reset.single'
+  'reset.single',
+  //takeovers
+  'takeover.reset',
 ]
 
 io.on('connection', socket => {
@@ -197,6 +199,7 @@ io.on('connection', socket => {
     socket.emit('admin', {isSuccess: true,})
     socket.emit('answers.receive', {answers: socket.data.room.getAnswers()})
     socket.emit('score', {score: socket.data.room.getScore()})
+    socket.emit('takeover.list', {takeovers: socket.data.room.getTakeovers()})
   })
   socket.on('admin.notify', payload => {
     if (socket.data.isAdmin) {
@@ -247,6 +250,29 @@ io.on('connection', socket => {
       io.to('admin.' + socket.data.room.name()).emit('reset.single', {isSuccess: true, nickname})
     }
   })
+  //takeover
+  socket.on('takeover', () => {
+    if (!socket.data.room || !socket.data.nickname) {
+      socket.emit('notification', {message: 'ERROR_USER_NO_SET', type: 'error'})
+      socket.emit('socket.data.kick')
+
+      return
+    }
+
+    const takeover = socket.data.room.takeover(socket.data.nickname)
+    if (takeover === false) {
+      socket.emit('takeover', {isSuccess: false})
+      return
+    }
+    io.to('admin.' + socket.data.room.name()).emit('takeover.list', {takeovers: socket.data.room.getTakeovers()})
+    socket.emit('takeover', {takeover, isSuccess: true})
+    console.log('User takeover', {takeover})
+  })
+  socket.on('takeover.reset', () => {
+    socket.data.room.resetTakeover()
+    io.to(socket.data.room.name()).emit('takeover.reset')
+    console.log('Reset takeover')
+  })
 
   //users
   socket.on('answer', payload => {
@@ -295,7 +321,7 @@ io.on('connection', socket => {
     socket.data.room = room
     socket.data.roomname = roomname
     socket.data.nickname = nickname
-    socket.emit('login', {isSuccess: true, nickname})
+    socket.emit('login', {isSuccess: true, nickname, takeover: room.hasTakeover(nickname)})
     io.to('admin.' + socket.data.room.name()).emit('notice.login', {isSuccess: true, nickname})
     console.log('login', {isSuccess: true, nickname})
   })

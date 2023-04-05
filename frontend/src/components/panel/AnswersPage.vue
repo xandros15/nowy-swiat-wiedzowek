@@ -70,7 +70,7 @@
 
 <script>
   import { mapActions, mapMutations, mapState } from 'vuex'
-  import Btn from './Btn'
+  import Btn from '../Btn'
   import BulkPoints from './BulkPoints'
   import Score from './Score'
 

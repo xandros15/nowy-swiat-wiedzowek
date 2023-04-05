@@ -15,7 +15,7 @@
 </template>
 
 <script>
-  import Btn from './Btn'
+  import Btn from '../Btn'
   export default {
     name: 'LoginPage',
     components: {Btn},

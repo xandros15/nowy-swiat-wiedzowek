@@ -18,6 +18,7 @@
 
 <style lang="scss" scoped>
     .logout-bar {
+        z-index: 999;
         position: fixed;
         bottom: 0;
         right: 0;

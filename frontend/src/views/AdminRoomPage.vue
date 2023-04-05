@@ -78,11 +78,11 @@
 </template>
 
 <script>
-import Takeovers from '@/components/Takeovers'
+import Takeovers from '@/components/panel/Takeovers'
 import { mapActions, mapMutations, mapState } from 'vuex'
 import Btn from '@/components/Btn'
-import BulkPoints from '@/components/BulkPoints'
-import Score from '@/components/Score'
+import BulkPoints from '@/components/panel/BulkPoints'
+import Score from '@/components/panel/Score'
 
 export default {
   name: 'AnswersPage',

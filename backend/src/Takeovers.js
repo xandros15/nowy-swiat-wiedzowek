@@ -14,6 +14,15 @@ function Takeovers () {
     return false
   }
 
+  this.getTakeover = name => {
+    for (const takeover of takeovers) {
+      if (name === takeover.name) {
+        return takeover
+      }
+    }
+    return false
+  }
+
   this.reset = () => {
     firstTakeoverTime = null
     takeovers = []

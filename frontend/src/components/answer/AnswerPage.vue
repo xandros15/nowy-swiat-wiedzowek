@@ -13,16 +13,6 @@
                            ref="answerAlt">
                 </div>
                 <Btn class="answer-form-button mb">Wyślij</Btn>
-                <p v-if="takeover">
-                    {{ place }}
-                </p>
-                <button
-                        type="button"
-                        class="button-takeover"
-                        :class="{'button-takeover-locked': !!takeover}"
-                        @click="sendTakeover">
-                    Takeover
-                </button>
             </form>
         </div>
     </div>
@@ -30,8 +20,8 @@
 
 <script>
   import { mapState } from 'vuex'
-  import Btn from './Btn'
-  import Logo from './Logo'
+  import Btn from '../Btn'
+  import Logo from '../Logo'
 
   export default {
     name: 'AnswerPage',
@@ -40,16 +30,12 @@
       ...mapState({
         answer: state => state.answer,
         answerAlt: state => state.answerAlt,
-        takeover: state => state.takeover,
       }),
       place () {
         return this.takeover.place === 1 ? '#1' : `#${this.takeover.place} (${this.takeover.time / 1000}s)`
       },
     },
     methods: {
-      sendTakeover () {
-        this.$store.dispatch('takeover')
-      },
       sendAnswer () {
         const payload = {
           answer: this.$refs.answer.value.trim(),
@@ -80,6 +66,7 @@
       font-size: 14px;
       cursor: pointer;
       width: 100%;
+      height: 80px;
 
       &:hover, &:active, &:focus {
         background: #008f00;
@@ -104,7 +91,7 @@
             margin: 0 auto 100px;
             padding: 45px;
             text-align: center;
-            box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+            border: 2px solid #000;
 
             &-label {
                 font-weight: bold;
@@ -114,7 +101,7 @@
                 outline: 0;
                 background: #f2f2f2;
                 width: 100%;
-                border: 0;
+                border: 2px solid #000;
                 margin: 0 0 15px;
                 padding: 15px;
                 box-sizing: border-box;

@@ -27,6 +27,7 @@ function Room ({name, scores, answers, owner, takeovers}) {
   this.getTakeovers = () => room ? room.takeovers.getList() : []
   this.resetTakeover = () => room ? room.takeovers.reset() : false
   this.hasTakeover = nickname => room ? room.takeovers.hasTakeover(nickname) : false
+  this.getTakeover = nickname => room ? room.takeovers.getTakeover(nickname) : false
 }
 
 module.exports = Room

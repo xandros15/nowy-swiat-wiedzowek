@@ -8,13 +8,14 @@
   export default {
     name: "StatusBar",
     computed: {
-      ...mapGetters(['status'])
+      ...mapGetters({'status': 'status'})
     }
   }
 </script>
 
 <style lang="scss" scoped>
     .status {
+        z-index: 999;
         position: fixed;
         padding: .5rem;
         bottom: 0;

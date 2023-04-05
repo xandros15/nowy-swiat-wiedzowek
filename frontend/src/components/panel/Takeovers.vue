@@ -10,7 +10,7 @@
 <script>
   import { mapState } from 'vuex'
   import Takeover from './Takeover'
-  import Btn from './Btn'
+  import Btn from '../Btn'
 
   export default {
     components: {Takeover, Btn},

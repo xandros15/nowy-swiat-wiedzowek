@@ -215,14 +215,15 @@ export default new Vuex.Store({
       socket.emit('score', {room})
       commit('changeRoom', room)
     },
-    ['socket.login'] ({commit}, {isSuccess, nickname, code}) {
+    ['socket.login'] ({commit}, {isSuccess, nickname, takeover, code}) {
       if (isSuccess) {
         commit('successfulLogin')
+        commit('takeover', takeover)
         commit('changeNickname', {nickname})
       } else if (code === 'ROOM_NO_EXISTS') {
         this._vm.$toastr.e(t(code))
         router.replace({name: 'LobbyPage'})
-      } else if (code === 'USER_EXISTS') {
+      } else if (code === 'ERROR_USER_EXISTS') {
         this._vm.$toastr.e(t(code))
       } else if (code === 'INVALID_NICKNAME') {
         this._vm.$toastr.e(t(code))

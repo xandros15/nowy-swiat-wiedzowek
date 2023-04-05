@@ -321,7 +321,8 @@ io.on('connection', socket => {
     socket.data.room = room
     socket.data.roomname = roomname
     socket.data.nickname = nickname
-    socket.emit('login', {isSuccess: true, nickname, takeover: room.hasTakeover(nickname)})
+    const takeover = room.getTakeover(nickname)
+    socket.emit('login', {isSuccess: true, nickname, takeover})
     io.to('admin.' + socket.data.room.name()).emit('notice.login', {isSuccess: true, nickname})
     console.log('login', {isSuccess: true, nickname})
   })

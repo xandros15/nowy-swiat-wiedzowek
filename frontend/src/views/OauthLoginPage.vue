@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import OauthLogin from '../components/OauthLogin'
+import OauthLogin from '../components/panel/OauthLogin'
 
 export default {
   name: 'OauthLoginPage',

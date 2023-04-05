@@ -17,7 +17,7 @@
 
 <script>
   import { mapState } from 'vuex'
-  import TeamScore from './TeamScore'
+  import TeamScore from "@/components/TeamScore";
 
   export default {
     name: "Score",

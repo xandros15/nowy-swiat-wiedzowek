@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import QRcode from '@/components/QRcode'
+import QRcode from '@/components/panel/QRcode'
 
 export default {
   name: 'RoomQrCodePage',

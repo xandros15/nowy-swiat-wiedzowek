@@ -16,9 +16,10 @@
         outline: 0;
         transition: background-color .3s;
         background: var(--button-color);
-        border: 0;
+        border: 2px solid black;
+        font-weight: 700;
         padding: 15px;
-        color: #fff;
+        color: #eee;
         font-size: 14px;
         cursor: pointer;
 

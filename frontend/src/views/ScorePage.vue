@@ -48,7 +48,6 @@ import {mapState} from "vuex";
             ...score[key],
           })
         }
-        console.log(sorted)
 
         return sorted
       },

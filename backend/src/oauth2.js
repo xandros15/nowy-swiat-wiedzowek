@@ -13,19 +13,23 @@ function nonce (length) {
 }
 
 class Oauth2 {
-  constructor ({client_id, client_secret, redirect_uri}) {
+  constructor ({client_id, client_secret, redirect_uri, auth_url, token_url, userinfo_url, scopes}) {
     this.client_id = client_id
     this.client_secret = client_secret
     this.redirect_uri = redirect_uri
+    this.auth_url = auth_url
+    this.token_url = token_url
+    this.userinfo_url = userinfo_url
+    this.scopes = scopes
   }
 
   getAuthUrl () {
     const state = nonce(12)
-    const url = new URL(AUTH_URL)
+    const url = new URL(this.auth_url)
     url.searchParams.set('response_type', 'code')
     url.searchParams.set('client_id', this.client_id)
     url.searchParams.set('redirect_uri', this.redirect_uri)
-    url.searchParams.set('scope', '')
+    url.searchParams.set('scope', this.scopes.join(' '))
     url.searchParams.set('state', state)
     return url.toString()
   }
@@ -39,7 +43,7 @@ class Oauth2 {
       code,
     }
     try {
-      const response = await axios.post(TOKEN_URL, data)
+      const response = await axios.post(this.token_url, data)
       return response.data
     } catch (e) {
       return false
@@ -51,12 +55,18 @@ class Oauth2 {
       grant_type: 'refresh_token',
       client_id: this.client_id,
       client_secret: this.client_secret,
-      scope: [],
+      scope: this.scopes,
       refresh_token,
     }
     try {
-      const response = await axios.post(TOKEN_URL, data)
-      return response.data
+      const response = await axios.post(this.token_url, data)
+      const userinfo = await axios.post(this.userinfo_url, {}, {
+        headers:  {
+            accept: 'application/json',
+            authorization: 'Bearer ' + response.data.access_token,
+        }
+      })
+      return {...response.data, userinfo: userinfo.data}
     } catch (e) {
       return false
     }

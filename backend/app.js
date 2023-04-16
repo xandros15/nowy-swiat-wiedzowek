@@ -11,6 +11,10 @@ const oauth = new Oauth2({
   client_id: process.env.OAUTH2_CLIENT,
   client_secret: process.env.OAUTH2_SECRET,
   redirect_uri: process.env.OAUTH2_REDIRECT,
+  auth_url: process.env.OAUTH2_AUTH_URL,
+  token_url: process.env.OAUTH2_TOKEN_URL,
+  userinfo_url: process.env.OIDC_USERINFO_URL,
+  scopes: ['openid', 'email', 'profile'],
 })
 const debug = process.env.DEBUG || false
 
@@ -105,7 +109,7 @@ io.on('connection', socket => {
     try {
       const tokens = await oauth.byCode(code)
       if (tokens !== false) {//login
-        const jwt = jwt_decode(tokens.access_token)
+        const jwt = jwt_decode(tokens.id_token)
         socket.data.isAdmin = true
         socket.data.email = jwt.email
         socket.data.username = jwt.username
@@ -119,11 +123,10 @@ io.on('connection', socket => {
     try {
       const tokens = await oauth.byRefresh(refresh_token)
       if (tokens !== false) {//login
-        const jwt = jwt_decode(tokens.access_token)
         socket.data.isAdmin = true
-        socket.data.email = jwt.email
-        socket.data.username = jwt.username
-        socket.emit('admin.rooms', rooms.getOwnerRooms(jwt.email).map(room => room.name()))
+        socket.data.email = tokens.userinfo.email
+        socket.data.username = tokens.userinfo.username
+        socket.emit('admin.rooms', rooms.getOwnerRooms(tokens.userinfo.email).map(room => room.name()))
       }
       socket.emit('authenticate.refresh_token', tokens)
     } catch (e) {}

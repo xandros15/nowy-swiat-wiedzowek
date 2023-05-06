@@ -240,6 +240,12 @@ io.on('connection', socket => {
       io.to('score.' + socket.data.room.name()).emit('score', {score: socket.data.room.getScore()})
     }
   })
+  socket.on('score.nickname.remove', (nickname) => {
+    if (socket.data.isAdmin) {
+      socket.data.room.removeNickname(nickname)
+      io.to('score.' + socket.data.room.name()).emit('score', {score: socket.data.room.getScore()})
+    }
+  })
   socket.on('reset', () => {
     if (socket.data.isAdmin) {
       socket.data.room.resetAnswers()

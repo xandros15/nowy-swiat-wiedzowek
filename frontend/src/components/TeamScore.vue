@@ -1,5 +1,6 @@
 <template>
     <tr :style="{backgroundColor: this.hasFever ? '#6bd375' : '#fafafa'}">
+        <td>{{team.number}}</td>
         <td>{{team.nickname}}</td>
         <td>{{feverCalc | feverPercent}}</td>
         <td>{{team.points}}</td>
@@ -7,6 +8,8 @@
         <td v-if="isAdmin">
             <button @click="addPoint(team.nickname)">+1 pkt</button>
             <button @click="removePoint(team.nickname)">-1 pkt</button>
+            <button @click="zeroPoint(team.nickname)">Wyzeruj</button>
+            <button @click="removeTeam(team.nickname)">Usuń</button>
         </td>
     </tr>
 </template>
@@ -16,7 +19,7 @@
 
   export default {
     name: "TeamScore",
-    props: ['team', 'top', 'isAdmin'],
+    props: ['team', 'top', 'isAdmin', 'order'],
     filters: {
       feverPercent (value) {
         return Math.round(value * 100) + '%'
@@ -34,6 +37,8 @@
       ...mapActions({
         addPoint: 'admin.point.add',
         removePoint: 'admin.point.remove',
+        zeroPoint: 'admin.point.zero',
+        removeTeam: 'admin.nickname.remove',
       }),
     }
   }

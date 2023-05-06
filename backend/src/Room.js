@@ -9,6 +9,7 @@ function Room ({name, scores, answers, owner, takeovers}) {
 
   this.name = () => room.name
   this.getScore = () => room ? room.scores.getScore() : false
+  this.removeNickname = nickname => room ? room.scores.removeNickname(nickname) : false
   this.resetScore = () => room ? room.scores.reset() : false
   this.removeTiebreaker = (nickname, points) => room ? room.scores.removeTiebreaker(nickname, points) : false
   this.addTiebreaker = (nickname, points) => room ? room.scores.addTiebreaker(nickname, points) : false

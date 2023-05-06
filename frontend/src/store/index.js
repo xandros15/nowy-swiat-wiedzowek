@@ -292,11 +292,20 @@ export default new Vuex.Store({
     ['admin.point.remove'] (store, nickname) {
       socket.emit('score.remove', nickname, 1)
     },
+    ['admin.point.zero'] ({state}, nickname) {
+      const team = state.score.find(team => team.nickname === nickname)
+      if (team) {
+        socket.emit('score.remove', nickname, team.points)
+      }
+    },
     ['admin.tiebreaker.add'] (store, nickname) {
       socket.emit('tiebreaker.add', nickname, 1)
     },
     ['admin.tiebreaker.remove'] (store, nickname) {
       socket.emit('tiebreaker.remove', nickname, 1)
+    },
+    ['admin.nickname.remove'] (store, nickname) {
+      socket.emit('score.nickname.remove', nickname)
     },
     ['admin.score.reset'] () {
       if (confirm(t('CONFIRM_RESET_SCORE'))) {

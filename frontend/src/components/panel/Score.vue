@@ -2,6 +2,7 @@
     <table class="table" v-if="score.length > 0">
         <thead>
         <tr>
+            <th @click="sort(null)" class="sortable">#</th>
             <th @click="sort('team')" class="sortable">Drużyna</th>
             <th>Fever</th>
             <th @click="sort('points')" class="sortable">Punkty</th>
@@ -10,7 +11,7 @@
         </tr>
         </thead>
         <tbody>
-        <TeamScore :isAdmin="isAdmin" :key="k" :team="team" :top="topScore" v-for="(team, k) in sorted"/>
+        <TeamScore :isAdmin="isAdmin" :order="k + 1" :key="k" :team="team" :top="topScore" v-for="(team, k) in sorted"/>
         </tbody>
     </table>
 </template>
@@ -39,7 +40,7 @@
         if (this.sortType === 'team') {
           score.sort((a, b) => a.nickname.localeCompare(b.nickname));
         }
-        if (!this.sortType || this.sortType === 'points') {
+        if (this.sortType === 'points') {
           score.sort((b, a) => a.points === b.points ? a.tiebreaker - b.tiebreaker : a.points - b.points)
         }
 

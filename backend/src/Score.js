@@ -19,6 +19,7 @@ function Score () {
       score[index].tiebreaker -= points
     } else {
       score.push({
+        number: getNextNumber(),
         tiebreaker: points * -1,
         points: 0,
         nickname,
@@ -34,6 +35,7 @@ function Score () {
       score[index].tiebreaker += points
     } else {
       score.push({
+        number: getNextNumber(),
         tiebreaker: points,
         points: 0,
         nickname,
@@ -49,10 +51,19 @@ function Score () {
       score[index].points += points
     } else {
       score.push({
+        number: getNextNumber(),
         tiebreaker: 0,
         points,
         nickname,
       })
+    }
+  }
+
+  this.removeNickname = (nickname) => {
+    console.log('Remove ' + nickname + ' nickname from scoreboard')
+    const index = score.findIndex(item => item.nickname === nickname)
+    if (index !== -1) {
+      score = score.filter(s => s.nickname !== nickname)
     }
   }
 
@@ -64,11 +75,22 @@ function Score () {
       score[index].points -= points
     } else {
       score.push({
+        number: getNextNumber(),
         tiebreaker: 0,
         points: points * -1,
         nickname,
       })
     }
+  }
+
+  function getNextNumber() {
+      let next = 1;
+      for(const single of score){
+        if(single.number >= next){
+            next = single.number + 1
+        }
+      }
+      return next;
   }
 }
 

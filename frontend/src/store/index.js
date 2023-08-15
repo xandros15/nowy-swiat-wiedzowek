@@ -286,6 +286,9 @@ export default new Vuex.Store({
       }
       commit('resetSelectAnswer')
     },
+    ['admin.team.register'](store, nickname) {
+      socket.emit('score.add', nickname, 0)
+    },
     ['admin.point.add'] (store, nickname) {
       socket.emit('score.add', nickname, 1)
     },

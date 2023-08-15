@@ -68,6 +68,12 @@
       <div class="block-item">
         <Btn @click.native="scoreReset" class="button">Resetuj Punkty</Btn>
       </div>
+      <div class="block">
+        <form @submit.prevent="addNewTeam">
+          <input placeholder="nazwa drużyny" title="nazwa drużyny" v-model="teamName">
+          <button>Dodaj drużynę</button>
+        </form>
+      </div>
     </div>
     <div class="block">
       <router-link :to="{name: 'RoomQrCodePage', params: {room}}" class="a" target="_blank">
@@ -92,7 +98,8 @@ export default {
       columnsToShow: [
         'alt-answer',
         'options',
-      ]
+      ],
+      teamName: '',
     }
   },
   props: ['room'],
@@ -126,6 +133,10 @@ export default {
       tieAdd: 'admin.tiebreaker.add',
       scoreReset: 'admin.score.reset',
     }),
+    addNewTeam(){
+      this.$store.dispatch('admin.team.register', this.teamName)
+      this.teamName = ''
+    },
     toggleSelect (nickname) {
       if (this.selected.indexOf(nickname) === -1) {
         this.selectAnswer(nickname)

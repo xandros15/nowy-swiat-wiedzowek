@@ -1,4 +1,16 @@
-function Score () {
+const validateNickname = nickname => {
+  if (typeof nickname !== 'string') {
+    return false
+  }
+
+  if (nickname.trim().length < 1 && nickname.length < 16) {
+    return false
+  }
+
+  return !/[\u2000-\u3000]/.test(nickname)//if hasn't cheat whitespace
+}
+
+function Score() {
   let score = []
 
   this.getScore = () => {
@@ -17,7 +29,7 @@ function Score () {
 
     if (index !== -1) {
       score[index].tiebreaker -= points
-    } else {
+    } else if (validateNickname(nickname)) {
       score.push({
         number: getNextNumber(),
         tiebreaker: points * -1,
@@ -49,7 +61,7 @@ function Score () {
 
     if (index !== -1) {
       score[index].points += points
-    } else {
+    } else if (validateNickname(nickname)) {
       score.push({
         number: getNextNumber(),
         tiebreaker: 0,
@@ -73,7 +85,7 @@ function Score () {
 
     if (index !== -1) {
       score[index].points -= points
-    } else {
+    } else if (validateNickname(nickname)) {
       score.push({
         number: getNextNumber(),
         tiebreaker: 0,
@@ -84,13 +96,13 @@ function Score () {
   }
 
   function getNextNumber() {
-      let next = 1;
-      for(const single of score){
-        if(single.number >= next){
-            next = single.number + 1
-        }
+    let next = 1;
+    for(const single of score){
+      if(single.number >= next){
+        next = single.number + 1
       }
-      return next;
+    }
+    return next;
   }
 }
 

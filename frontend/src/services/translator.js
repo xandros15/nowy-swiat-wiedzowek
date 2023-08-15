@@ -10,6 +10,9 @@ const CODES = {
   'CONFIRM_RESET_SCORE': 'Are you sure to reset score?',
   'VALIDATION_CREATE_ROOM': 'Room name can contains only A-Za-z0-9_- and 3 to 16 characters.',
   'RECONNECTED': 'Połączono ponownie.',
+  'TAKEOVER_LABEL': 'Pozycja przejęcia',
+  'MODE_TAKEOVER': 'Tryb przejęcia',
+  'MODE_ANSWER': 'Tryb odpowiedzi',
 }
 
 function t (input) {

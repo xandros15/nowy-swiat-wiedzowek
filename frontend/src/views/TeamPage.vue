@@ -1,11 +1,18 @@
 <template>
-  <div class="wrapper">
+  <div class="full-screen">
     <LoginPage :room="room" v-if="!isLogged"/>
-    <div class="wrapper" v-else>
-      <div class="mode-bar">
-        <Btn @click.native="switchModes">{{ modeLabel }}</Btn>
+    <div class="full-screen" v-else>
+      <div class="top-bar">
+        <div class="top-bar-left">
+          <div class="place" v-if="takeover">
+            {{t('TAKEOVER_LABEL')}} {{ place }}
+          </div>
+        </div>
+        <div class="top-bar-right">
+          <ModeBtn class="mode-btn" @click.native="switchModes" :label="modeLabel"/>
+        </div>
       </div>
-      <TakeoverPage class="takeover" v-if="isTakeoverMode"/>
+      <TakeoverLargeBtn v-if="isTakeoverMode" :is-takeover="takeover"/>
       <AnswerPage v-else/>
     </div>
   </div>
@@ -15,9 +22,9 @@
 import {mapState} from 'vuex'
 import AnswerPage from '@/components/answer/AnswerPage'
 import LoginPage from '@/components/panel/LoginPage'
-import Btn from "@/components/Btn"
-import TakeoverPage from "@/components/answer/TakeoverPage";
 import t from "@/services/translator";
+import TakeoverLargeBtn from "@/components/answer/TakeoverLargeBtn";
+import ModeBtn from "@/components/answer/ModeBtn";
 
 const MODE_TAKEOVER = 'MODE_TAKEOVER'
 const MODE_ANSWERS = 'MODE_ANSWERS'
@@ -27,10 +34,10 @@ export default {
   name: 'TeamPage',
   props: ['room'],
   components: {
-    TakeoverPage,
+    ModeBtn,
+    TakeoverLargeBtn,
     AnswerPage,
     LoginPage,
-    Btn,
   },
   created() {
     this.$toastr.defaultPosition = 'toast-top-center'
@@ -51,16 +58,22 @@ export default {
   },
   computed: {
     ...mapState(['isLogged']),
+    ...mapState({
+      takeover: state => state.takeover,
+    }),
+    place() {
+      return this.takeover.place === 1 ? '#1' : `#${this.takeover.place} (${this.takeover.time / 1000}s)`
+    },
     isTakeoverMode() {
       return MODE_TAKEOVER === this.mode
     },
     modeLabel() {
       switch (this.mode) {
         case MODE_TAKEOVER:
-          return 'ANSWERS MODE'
+          return t('MODE_TAKEOVER')
         case MODE_ANSWERS:
         default:
-          return 'TAKEOVER MODE'
+          return t('MODE_ANSWER')
       }
     },
   },
@@ -74,28 +87,39 @@ export default {
         default:
           this.mode = MODE_TAKEOVER
       }
+    },
+    t(input) {
+      return t(input);
     }
   }
 }
 </script>
 
-<style lang="scss">
-.wrapper {
-  height: 100%;
-}
-
-.mode-bar {
+<style lang="scss" scoped>
+.top-bar {
+  top: 0;
+  font-weight: bold;
+  display: grid;
+  grid-template-columns: repeat(2, 50%);
   position: fixed;
-  top: 0;
-  right: 0;
-  z-index: 300;
+  width: 100%;
+  background: #bd7840;
+  box-shadow: rgba(0, 0, 0, 0.66) 0 1px 10px 0;
+
+  &-right {
+    text-align: right;
+  }
+
+  &-left {
+    text-align: left;
+    display: flex;
+    align-items: center;
+  }
+
+  .place {
+    margin-left: 1rem;
+    padding: .3rem
+  }
 }
 
-.takeover {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
 </style>

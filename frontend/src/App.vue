@@ -71,4 +71,8 @@
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
     }
+    .full-screen {
+      width: 100%;
+      height: 100%;
+    }
 </style>

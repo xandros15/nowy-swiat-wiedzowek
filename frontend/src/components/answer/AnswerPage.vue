@@ -5,11 +5,11 @@
             <form @submit.prevent="sendAnswer" class="answer-form">
                 <div>
                     <label class="answer-form-label" for="answer">Odpowiedź: </label>
-                    <input :value="answer" autocomplete="off" class="answer-form-input" id="answer" ref="answer">
+                    <input :value="answer" placeholder="np. nazwa anime" autocomplete="off" class="answer-form-input" id="answer" ref="answer">
                 </div>
                 <div>
                     <label class="answer-form-label" for="answer-alt">Dodatkowe dane: </label>
-                    <input :value="answerAlt" autocomplete="off" class="answer-form-input" id="answer-alt"
+                    <input :value="answerAlt" placeholder="np. wykonawca" autocomplete="off" class="answer-form-input" id="answer-alt"
                            ref="answerAlt">
                 </div>
                 <Btn class="answer-form-button mb">Wyślij</Btn>
@@ -79,7 +79,7 @@
     .answer {
         &-container {
             width: 360px;
-            padding: 2rem 0 0;
+            padding: calc(2rem + 46px) 0 0;
             margin: auto;
         }
 
@@ -91,7 +91,7 @@
             margin: 0 auto 100px;
             padding: 45px;
             text-align: center;
-            border: 2px solid #000;
+            box-shadow: 0 0 20px 0 rgba(0,0,0,.2), 0 5px 5px 0 rgba(0,0,0,.24);
 
             &-label {
                 font-weight: bold;
@@ -101,7 +101,7 @@
                 outline: 0;
                 background: #f2f2f2;
                 width: 100%;
-                border: 2px solid #000;
+                border: 0 solid #000;
                 margin: 0 0 15px;
                 padding: 15px;
                 box-sizing: border-box;

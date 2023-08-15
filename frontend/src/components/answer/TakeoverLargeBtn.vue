@@ -1,6 +1,6 @@
 <template>
-  <button @click="click"
-          @touchstart="click"
+  <button @click="sendTakeover"
+          @touchstart="sendTakeover"
           class="takeover-button"
           :class="isTakeover ? 'takeover-button__red' : 'takeover-button__green'">
     TAKEOVER
@@ -16,13 +16,13 @@ export default {
   created () {
     document.body.addEventListener('keyup', ev => {
       if (!this.isTakeover && ev.code === 'Space') {
-        this.click(ev)
+        this.sendTakeover(ev)
       }
     })
   },
   methods: {
-    click (ev) {
-      this.$emit('click', ev)
+    sendTakeover() {
+      this.$store.dispatch('takeover')
     },
   }
 }
@@ -31,6 +31,7 @@ export default {
 <style lang="scss" scoped>
 .takeover-button {
   /** reset start **/
+  border: none;
   margin: 0;
   padding: 0;
   overflow: visible;
@@ -42,12 +43,9 @@ export default {
   -moz-osx-font-smoothing: inherit;
   -webkit-appearance: none;
   /** reset end **/
-
-  font-size: 10vb;
-  border-radius: 80vh;
-  border: 2px solid black;
-  width: 80vh;
-  height: 80vh;
+  width: 100%;
+  height: 100%;
+  font-size: 15vw;
 
   &::-moz-focus-inner {
     border: 0;
@@ -56,12 +54,12 @@ export default {
 
   &__red {
     color: #fff;
-    background-color: #cb4340;
+    background-color: #ff6662;
   }
 
   &__green {
     color: #000;
-    background-color: #39c73e;
+    background-color: #43a047;
   }
 }
 </style>

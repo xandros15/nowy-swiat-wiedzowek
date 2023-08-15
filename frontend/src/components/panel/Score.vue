@@ -103,5 +103,26 @@
 
     .sortable {
         cursor: pointer;
+        padding-right: 18px;
+        position: relative;
+        &:before,
+          &:after {
+          border: 4px solid transparent;
+          content: "";
+          display: block;
+          height: 0;
+          right: 5px;
+          top: 50%;
+          position: absolute;
+          width: 0;
+        }
+        &:before {
+          border-bottom-color: #666;
+          margin-top: -9px;
+        }
+        &:after {
+          border-top-color: #666;
+          margin-top: 1px;
+        }
     }
 </style>

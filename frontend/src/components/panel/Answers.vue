@@ -57,7 +57,7 @@
     </table>
     <footer class="grid-2">
       <BulkPoints class="left"/>
-      <div class="right" style="display: flex">
+      <div class="right" style="display: flex; align-items: flex-end">
         <button @click="reset" class="button button-danger">Resetuj Odpowiedzi</button>
       </div>
     </footer>

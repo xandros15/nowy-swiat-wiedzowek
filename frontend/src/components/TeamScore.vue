@@ -1,17 +1,17 @@
 <template>
-    <tr :style="{backgroundColor: this.hasFever ? '#6bd375' : '#fafafa'}">
-        <td>{{team.number}}</td>
-        <td>{{team.nickname}}</td>
-        <td>{{feverCalc | feverPercent}}</td>
-        <td>{{team.points}}</td>
-        <td>{{team.tiebreaker}}</td>
-        <td v-if="isAdmin">
-            <button @click="addPoint(team.nickname)">+1 pkt</button>
-            <button @click="removePoint(team.nickname)">-1 pkt</button>
-            <button @click="zeroPoint(team.nickname)">Wyzeruj</button>
-            <button @click="removeTeam(team.nickname)">Usuń</button>
-        </td>
-    </tr>
+  <tr>
+    <td>{{ team.number }}</td>
+    <td><span v-if="hasFever">🔥</span>{{ team.nickname }}</td>
+    <td>{{ feverCalc | feverPercent }}</td>
+    <td>{{ team.points }}</td>
+    <td>{{ team.tiebreaker }}</td>
+    <td>
+      <button @click="addPoint(team.nickname)">+1 pkt</button>
+      <button @click="removePoint(team.nickname)">-1 pkt</button>
+      <button @click="zeroPoint(team.nickname)">Wyzeruj</button>
+      <button @click="removeTeam(team.nickname)">Usuń</button>
+    </td>
+  </tr>
 </template>
 
 <script>
@@ -19,17 +19,17 @@
 
   export default {
     name: "TeamScore",
-    props: ['team', 'top', 'isAdmin', 'order'],
+    props: ['team', 'top', 'order'],
     filters: {
-      feverPercent (value) {
+      feverPercent(value) {
         return Math.round(value * 100) + '%'
       }
     },
     computed: {
-      hasFever () {
+      hasFever() {
         return (this.team.points / Math.max(this.top, 1)) > 0.66
       },
-      feverCalc () {
+      feverCalc() {
         return Math.max(0, this.team.points / Math.max(this.top, 1))
       },
     },
@@ -44,12 +44,15 @@
   }
 </script>
 
-<style scoped>
-    td {
-        text-align: left;
-        border: 1px solid #dbdbdb;
-        padding: .5em .75em;
-        vertical-align: top;
-        cursor: pointer;
-    }
+<style lang="scss" scoped>
+td {
+  text-align: left;
+  border: 1px solid #dbdbdb;
+  padding: .5em .75em;
+  vertical-align: top;
+
+  &:hover {
+
+  }
+}
 </style>

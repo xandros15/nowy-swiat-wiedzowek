@@ -58,23 +58,7 @@
           <h3 class="title">Przejęcia:</h3>
           <Takeovers/>
       </div>
-    <div class="block">
-      <div class="block">
-        <router-link :to="{name: 'ScorePage', params: {room}}" class="a" target="_blank">
-          Otwórz punktacje w innej karcie
-        </router-link>
-      </div>
-      <Score :isAdmin="true" class="flex-item"/>
-      <div class="block-item">
-        <Btn @click.native="scoreReset" class="button">Resetuj Punkty</Btn>
-      </div>
-      <div class="block">
-        <form @submit.prevent="addNewTeam">
-          <input placeholder="nazwa drużyny" title="nazwa drużyny" v-model="teamName">
-          <button>Dodaj drużynę</button>
-        </form>
-      </div>
-    </div>
+    <Score class="block" :room="room"/>
     <div class="block">
       <router-link :to="{name: 'RoomQrCodePage', params: {room}}" class="a" target="_blank">
         Wygeneruj kod QR do pokoju
@@ -131,12 +115,7 @@ export default {
       pointAdd: 'admin.point.add',
       tieRemove: 'admin.tiebreaker.remove',
       tieAdd: 'admin.tiebreaker.add',
-      scoreReset: 'admin.score.reset',
     }),
-    addNewTeam(){
-      this.$store.dispatch('admin.team.register', this.teamName)
-      this.teamName = ''
-    },
     toggleSelect (nickname) {
       if (this.selected.indexOf(nickname) === -1) {
         this.selectAnswer(nickname)
@@ -190,7 +169,6 @@ export default {
   display: flex;
   flex-direction: column;
   margin-bottom: .3rem;
-  padding: 1rem;
 
   &-item {
     margin-bottom: .3rem;

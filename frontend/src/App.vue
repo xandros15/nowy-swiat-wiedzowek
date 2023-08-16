@@ -75,4 +75,30 @@
       width: 100%;
       height: 100%;
     }
+    .button {
+      display: inline-block;
+      text-decoration: none;
+      text-transform: uppercase;
+      outline: 0;
+      transition: background-color .3s;
+      background: var(--button-color);
+      border: 0 solid black;
+      font-weight: 700;
+      padding: 15px;
+      color: #eee;
+      font-size: 14px;
+      cursor: pointer;
+
+      &:hover, &:active, &:focus {
+        background: var(--button-color-over);
+      }
+
+      &-danger {
+        color: #eee;
+        background: #9a0000;
+        &:hover, &:active, &:focus {
+          background: #cc0c0c;
+        }
+      }
+    }
 </style>

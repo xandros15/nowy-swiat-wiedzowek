@@ -33,7 +33,7 @@
       </tbody>
       <tbody v-else>
       <tr>
-        <td class="empty" colspan="6">Nie znaleziono drużyn</td>
+        <td class="empty" colspan="6">{{ $t('NO_TEAMS') }}</td>
       </tr>
       </tbody>
     </table>

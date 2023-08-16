@@ -5,11 +5,11 @@
       <div class="top-bar">
         <div class="top-bar-left">
           <div class="place" v-if="takeover">
-            {{t('TAKEOVER_LABEL')}} {{ place }}
+            {{ $t('TAKEOVER_LABEL')}} {{ place }}
           </div>
         </div>
         <div class="top-bar-right">
-          <ModeBtn class="mode-btn" @click.native="switchModes" :label="modeLabel"/>
+          <ModeBtn class="mode-btn" @click.native="switchModes" :label="$t(mode)"/>
         </div>
       </div>
       <TakeoverLargeBtn v-if="isTakeoverMode" :is-takeover="takeover"/>
@@ -27,7 +27,7 @@ import TakeoverLargeBtn from "@/components/answer/TakeoverLargeBtn";
 import ModeBtn from "@/components/answer/ModeBtn";
 
 const MODE_TAKEOVER = 'MODE_TAKEOVER'
-const MODE_ANSWERS = 'MODE_ANSWERS'
+const MODE_ANSWER = 'MODE_ANSWER'
 
 
 export default {
@@ -53,7 +53,7 @@ export default {
   },
   data() {
     return {
-      mode: MODE_ANSWERS,
+      mode: MODE_ANSWER,
     }
   },
   computed: {
@@ -67,30 +67,18 @@ export default {
     isTakeoverMode() {
       return MODE_TAKEOVER === this.mode
     },
-    modeLabel() {
-      switch (this.mode) {
-        case MODE_TAKEOVER:
-          return t('MODE_TAKEOVER')
-        case MODE_ANSWERS:
-        default:
-          return t('MODE_ANSWER')
-      }
-    },
   },
   methods: {
     switchModes() {
       switch (this.mode) {
         case MODE_TAKEOVER:
-          this.mode = MODE_ANSWERS
+          this.mode = MODE_ANSWER
           break;
-        case MODE_ANSWERS:
+        case MODE_ANSWER:
         default:
           this.mode = MODE_TAKEOVER
       }
     },
-    t(input) {
-      return t(input);
-    }
   }
 }
 </script>

@@ -51,7 +51,7 @@
       </tbody>
       <tbody v-else>
       <tr>
-        <td class="empty" colspan="6">Nie ma odpowiedzi</td>
+        <td class="empty" colspan="6">{{ $t('NO_ANSWERS') }}</td>
       </tr>
       </tbody>
     </table>

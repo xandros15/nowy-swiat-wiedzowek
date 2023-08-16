@@ -1,135 +1,34 @@
 <template>
   <div>
-    <h2 class="title">Odpowiedzi</h2>
-    <div class="block" v-if="answers.length > 0">
-      <div class="button-group">
-        <Btn @click.native="reset" class="button">Resetuj Odpowiedzi</Btn>
-      </div>
-      <div class="mb-1 mt-1">
-        <label class="clickable">Dodatkowo
-          <input type="checkbox" v-model="columnsToShow" value="alt-answer"/>
-        </label>
-        <label class="clickable">Opcje
-          <input type="checkbox" v-model="columnsToShow" value="options"/>
-        </label>
-        <label class="clickable">Ostatnio
-          <input type="checkbox" v-model="columnsToShow" value="last-time"/>
-        </label>
-      </div>
-      <BulkPoints/>
-      <table class="table">
-        <thead>
-        <tr>
-          <th>#</th>
-          <th>Drużyna</th>
-          <th v-if="columnsToShow.indexOf('last-time') !== -1">Ostatnio</th>
-          <th>Odpowiedź</th>
-          <th v-if="columnsToShow.indexOf('alt-answer') !== -1">Dodatkowo</th>
-          <th v-if="columnsToShow.indexOf('options') !== -1">Opcje</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr :class="{selected: selected.indexOf(answer.nickname) !== -1}" :key="k"
-            v-for="(answer, k) in answers">
-          <td class="tb-number">{{ k + 1 }}</td>
-          <td @click.prevent="toggleSelect(answer.nickname)" class="clickable">{{ answer.nickname }}</td>
-          <td @click.prevent="toggleSelect(answer.nickname)"
-              class="clickable" v-if="columnsToShow.indexOf('last-time') !== -1">
-            {{ lastAnswerOfNickname(answer.nickname) }}
-          </td>
-          <td @click.prevent="toggleSelect(answer.nickname)" class="clickable">{{ answer.answer }}</td>
-          <td @click.prevent="toggleSelect(answer.nickname)" class="tb-25 clickable"
-              v-if="columnsToShow.indexOf('alt-answer') !== -1">{{ answer.answerAlt }}
-          </td>
-          <td v-if="columnsToShow.indexOf('options') !== -1">
-            <button @click="resetSingle(answer.nickname)">Usuń</button>
-            <button @click="pointAdd(answer.nickname)">+1 pkt</button>
-            <button @click="pointRemove(answer.nickname)">-1 pkt</button>
-            <button @click="tieAdd(answer.nickname)">+1 tie</button>
-            <button @click="tieRemove(answer.nickname)">-1 tie</button>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-      <small>Możesz wybrać odpowiedzi do zbiorowych akcji</small>
-    </div>
-    <h3 class="title" v-else>Nie ma jeszcze odpowiedzi.</h3>
-    <div class="block">
-      <h3 class="title">Przejęcia:</h3>
-      <Takeovers/>
-    </div>
+    <Answers/>
+    <Takeovers class="block"/>
     <Score class="block" :room="room"/>
-    <div class="block" style="margin: 1rem">
-      <QRLink :room="room"/>
-    </div>
+    <QRLink style="margin-top: 1rem" class="block" :room="room"/>
   </div>
 </template>
 
 <script>
 import Takeovers from '@/components/panel/Takeovers'
-import { mapActions, mapMutations, mapState } from 'vuex'
-import Btn from '@/components/Btn'
-import BulkPoints from '@/components/panel/BulkPoints'
 import Score from '@/components/panel/Score'
 import QRLink from "@/components/panel/QRLink";
+import Answers from "@/components/panel/Answers";
 
 export default {
   name: 'AnswersPage',
-  components: {QRLink, Takeovers, Btn, BulkPoints, Score},
-  data() {
-    return {
-      columnsToShow: [
-        'alt-answer',
-        'options',
-      ],
-      teamName: '',
-    }
+  components: {
+    QRLink,
+    Takeovers,
+    Score,
+    Answers
   },
   props: ['room'],
-  computed: {
-    ...mapState(['answers', 'selected', 'lastAnswers',]),
-    lastAnswerOfNickname () {
-      return nickname => {
-        for (const lastAnswer of this.lastAnswers) {
-          if (lastAnswer.nickname === nickname) {
-            return lastAnswer.answer
-          }
-        }
-        return ''
-      }
-    },
-  },
-  created () {
+  created() {
     this.$socket.emit('admin.room.join', {room: this.room})
   },
-  methods: {
-    ...mapMutations({
-      selectAnswer: 'selectAnswer',
-      unselectAnswer: 'unselectAnswer',
-    }),
-    ...mapActions({
-      resetSingle: 'admin.reset.single',
-      reset: 'admin.reset',
-      pointRemove: 'admin.point.remove',
-      pointAdd: 'admin.point.add',
-      tieRemove: 'admin.tiebreaker.remove',
-      tieAdd: 'admin.tiebreaker.add',
-    }),
-    toggleSelect (nickname) {
-      if (this.selected.indexOf(nickname) === -1) {
-        this.selectAnswer(nickname)
-      } else {
-        this.unselectAnswer(nickname)
-      }
-    }
-  }
 }
 </script>
 
 <style lang="scss" scoped>
-.clickable {
-  cursor: pointer;
-}
 
 .tb-number {
   width: 5px
@@ -143,12 +42,6 @@ export default {
   margin-top: .3rem;
 }
 
-.title {
-  color: #f2f2f2;
-  text-shadow: 2px 2px 2px #020202;
-  padding: .83em;
-  margin: 0;
-}
 
 .tb-25 {
   width: 25%;
@@ -174,43 +67,4 @@ export default {
   }
 }
 
-.table {
-  color: #363636;
-  background-color: #fff;
-  margin: 0 .3rem;
-  border-collapse: collapse;
-  border-spacing: 0;
-  width: 100%;
-
-  & .selected {
-    background-color: rgb(107, 211, 117) !important;
-
-    &:hover {
-      background-color: rgb(96, 192, 97) !important;
-    }
-  }
-
-  & th, & td {
-    text-align: left;
-    border: 1px solid #dbdbdb;
-    padding: .5em .75em;
-    vertical-align: top;
-  }
-
-  & thead, & tbody {
-    background-color: transparent
-  }
-
-  & thead td, & thead th {
-    color: #363636;
-  }
-
-  & tbody tr:hover:nth-child(even) {
-    background-color: #f5f5f5;
-  }
-
-  & tbody tr:nth-child(even), & tbody tr:hover {
-    background-color: #fafafa;
-  }
-}
 </style>

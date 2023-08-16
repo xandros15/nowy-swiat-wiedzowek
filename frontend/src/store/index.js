@@ -401,6 +401,9 @@ export default new Vuex.Store({
       socket.emit('takeover.reset')
       commit('setTakeovers', [])
     },
+    ['t'](store, text) {
+      return t(text)
+    }
   },
   modules: {}
 })

@@ -14,7 +14,7 @@
     <table class="table card-body">
       <thead>
       <tr>
-        <th @click="sort(null)" class="sortable">#</th>
+        <th @click="sort(null)" class="sortable" style="width: 15px">#</th>
         <th @click="sort('team')" class="sortable">Drużyna</th>
         <th>Fever</th>
         <th @click="sort('points')" class="sortable">Punkty</th>

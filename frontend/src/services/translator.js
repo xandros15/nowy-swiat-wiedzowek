@@ -13,6 +13,8 @@ const CODES = {
   'TAKEOVER_LABEL': 'Pozycja przejęcia',
   'MODE_TAKEOVER': 'Tryb przejęcia',
   'MODE_ANSWER': 'Tryb odpowiedzi',
+  'NO_ANSWERS': 'Nie ma odpowiedzi',
+  'NO_TEAMS': 'Nie znaleziono drużyn',
 }
 
 function t (input) {

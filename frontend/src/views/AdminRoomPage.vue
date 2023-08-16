@@ -54,15 +54,13 @@
       <small>Możesz wybrać odpowiedzi do zbiorowych akcji</small>
     </div>
     <h3 class="title" v-else>Nie ma jeszcze odpowiedzi.</h3>
-      <div class="block">
-          <h3 class="title">Przejęcia:</h3>
-          <Takeovers/>
-      </div>
-    <Score class="block" :room="room"/>
     <div class="block">
-      <router-link :to="{name: 'RoomQrCodePage', params: {room}}" class="a" target="_blank">
-        Wygeneruj kod QR do pokoju
-      </router-link>
+      <h3 class="title">Przejęcia:</h3>
+      <Takeovers/>
+    </div>
+    <Score class="block" :room="room"/>
+    <div class="block" style="margin: 1rem">
+      <QRLink :room="room"/>
     </div>
   </div>
 </template>
@@ -73,11 +71,12 @@ import { mapActions, mapMutations, mapState } from 'vuex'
 import Btn from '@/components/Btn'
 import BulkPoints from '@/components/panel/BulkPoints'
 import Score from '@/components/panel/Score'
+import QRLink from "@/components/panel/QRLink";
 
 export default {
   name: 'AnswersPage',
-  components: {Takeovers, Btn, BulkPoints, Score},
-  data () {
+  components: {QRLink, Takeovers, Btn, BulkPoints, Score},
+  data() {
     return {
       columnsToShow: [
         'alt-answer',

@@ -15,6 +15,7 @@ const CODES = {
   'MODE_ANSWER': 'Tryb odpowiedzi',
   'NO_ANSWERS': 'Nie ma odpowiedzi',
   'NO_TEAMS': 'Nie znaleziono drużyn',
+  'NO_TAKEOVERS': 'Nie ma przejęć'
 }
 
 function t (input) {

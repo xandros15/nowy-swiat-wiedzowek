@@ -1,20 +1,41 @@
 <template>
-    <div>
-        <h3 class="title">Przejęcia:</h3>
-        <Btn class="button" @click.native="$store.dispatch('takeover.reset')">RESETUJ PRZEJĘCIA</Btn>
-        <ul class="takeovers">
-            <Takeover v-for="(takeover, i) in takeovers" :key="i" :takeover="takeover"/>
-        </ul>
-    </div>
+  <section class="card">
+    <header class="card-header grid-2">
+      <div class="left">
+        <h2 class="title">Przejęcia</h2>
+      </div>
+    </header>
+    <table class="table card-body">
+      <thead>
+      <tr>
+        <th style="width: 15px">#</th>
+        <th>Drużyna</th>
+        <th title="Czas od pierwszego przejęcia" style="cursor: pointer;">Czas*</th>
+      </tr>
+      </thead>
+      <tbody v-if="takeovers.length > 0">
+      <tr v-for="takeover in takeovers" :key="takeover.name">
+        <td>{{ takeover.place }}</td>
+        <td>{{ takeover.name }}</td>
+        <td>{{ takeover.place !== 1 ? `${takeover.time / 1000}s` : '-' }}</td>
+      </tr>
+      </tbody>
+      <tbody v-else>
+      <tr>
+        <td class="empty" colspan="6">{{ $t('NO_TAKEOVERS') }}</td>
+      </tr>
+      </tbody>
+    </table>
+    <footer class="right">
+      <button class="button button-danger" @click="$store.dispatch('takeover.reset')">RESETUJ PRZEJĘCIA</button>
+    </footer>
+  </section>
 </template>
 
 <script>
   import { mapState } from 'vuex'
-  import Takeover from './Takeover'
-  import Btn from '../Btn'
 
   export default {
-    components: {Takeover, Btn},
     name: 'takeovers',
     computed: mapState({
       takeovers: state => state.takeovers,
@@ -23,21 +44,69 @@
 </script>
 
 <style lang="scss" scoped>
-
-.title {
-  color: #f2f2f2;
-  text-shadow: 2px 2px 2px #020202;
-  padding: .83em;
-  margin: 0;
+.left {
+  text-align: left;
+  justify-content: left;
 }
 
-.takeovers {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+.right {
+  text-align: right;
+  justify-content: right;
 }
 
-.button {
-  margin-bottom: 1rem;
+.card {
+  color: #363636;
+  background-color: #fff;
+  margin: .3rem;
+  border: 0 solid transparent;
+  border-radius: .3rem;
+  overflow: auto;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, .2), 0 5px 5px 0 rgba(0, 0, 0, .24);
+
+  &-header {
+    margin: 0 1rem;
+  }
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 50%);
+}
+
+.table {
+  color: #363636;
+  background-color: #fff;
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+
+  & th, & td {
+    text-align: left;
+    border: 1px solid #dbdbdb;
+    padding: .5em .75em;
+    vertical-align: top;
+  }
+
+  & thead, & tbody {
+    background-color: transparent
+  }
+
+  & thead td, & thead th {
+    color: #363636;
+  }
+
+  & tbody tr:hover:nth-child(even) {
+    background-color: #f5f5f5;
+  }
+
+  & tbody tr:nth-child(even), & tbody tr:hover {
+    background-color: #fafafa;
+  }
+  & td.empty {
+    font-style: italic;
+    text-align: center;
+    color: #363636;
+    background-color: #fafafa;
+  }
 }
 </style>

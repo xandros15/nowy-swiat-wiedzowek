@@ -9,7 +9,7 @@
           </div>
         </div>
         <div class="top-bar-right">
-          <ModeBtn class="mode-btn" @click.native="switchModes" :label="$t(mode)"/>
+          <ModeBtn class="mode-btn" @click.native="switchModes" :label="modeLabel"/>
         </div>
       </div>
       <TakeoverLargeBtn v-if="isTakeoverMode" :is-takeover="takeover"/>
@@ -61,6 +61,15 @@ export default {
     ...mapState({
       takeover: state => state.takeover,
     }),
+    modeLabel(){
+      switch (this.mode){
+        case MODE_TAKEOVER:
+          return this.$t(MODE_ANSWER);
+        case MODE_ANSWER:
+        default:
+          return this.$t(MODE_TAKEOVER)
+      }
+    },
     place() {
       return this.takeover.place === 1 ? '#1' : `#${this.takeover.place} (${this.takeover.time / 1000}s)`
     },

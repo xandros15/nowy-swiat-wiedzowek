@@ -1,5 +1,9 @@
 <template>
-  <router-link :to="{name: 'RoomQrCodePage', params: {room}}" class="a" target="_blank">
+  <router-link :to="{name: 'RoomQrCodePage', params: {room}}"
+               style="display: inline-block;
+               margin:auto;
+               text-decoration: none"
+               target="_blank">
     <div class="qr-link">
       <img class="qr-link-image" src="@/images/example-qr.png" alt="example-qr">
       <span class="qr-link-text">Wygeneruj kod QR do pokoju</span>

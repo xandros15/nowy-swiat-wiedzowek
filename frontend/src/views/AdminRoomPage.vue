@@ -3,7 +3,9 @@
     <Answers class="block"/>
     <Takeovers class="block"/>
     <Score class="block" :room="room"/>
-    <QRLink style="margin-top: 1rem" class="block" :room="room"/>
+    <div class="block">
+      <QRLink :room="room"/>
+    </div>
   </div>
 </template>
 

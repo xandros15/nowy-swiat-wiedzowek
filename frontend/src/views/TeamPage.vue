@@ -21,7 +21,7 @@
 <script>
 import {mapState} from 'vuex'
 import AnswerPage from '@/components/answer/AnswerPage'
-import LoginPage from '@/components/panel/LoginPage'
+import LoginPage from '@/components/LoginPage'
 import t from "@/services/translator";
 import TakeoverLargeBtn from "@/components/answer/TakeoverLargeBtn";
 import ModeBtn from "@/components/answer/ModeBtn";

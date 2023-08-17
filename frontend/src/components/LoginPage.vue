@@ -22,8 +22,8 @@
 <script>
 
   import { addNickname, forgotNickname, getNicknames } from '@/services/nickname-storage'
-  import Btn from '../Btn'
-  import Logo from '../Logo'
+  import Btn from './Btn'
+  import Logo from './Logo'
 
   export default {
     name: 'LoginPage',

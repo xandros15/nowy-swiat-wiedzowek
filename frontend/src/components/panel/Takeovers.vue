@@ -2,10 +2,10 @@
   <section class="card">
     <header class="card-header grid-2">
       <div class="left">
-        <h2 class="title">Przejęcia</h2>
+        <h2 class="clickable" @click="hidden = !hidden">Przejęcia</h2>
       </div>
     </header>
-    <table class="table card-body">
+    <table class="table card-body" v-if="!hidden">
       <thead>
       <tr>
         <th style="width: 15px">#</th>
@@ -26,7 +26,7 @@
       </tr>
       </tbody>
     </table>
-    <footer class="right">
+    <footer class="right" v-if="!hidden">
       <button class="button button-danger" @click="$store.dispatch('takeover.reset')">RESETUJ PRZEJĘCIA</button>
     </footer>
   </section>
@@ -37,6 +37,11 @@
 
   export default {
     name: 'takeovers',
+    data() {
+      return {
+        hidden: false,
+      }
+    },
     computed: mapState({
       takeovers: state => state.takeovers,
     }),

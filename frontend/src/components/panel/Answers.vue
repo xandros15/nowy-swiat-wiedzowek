@@ -2,7 +2,7 @@
   <section class="card">
     <header class="card-header grid-2">
       <div class="left">
-        <h2 class="title">Odpowiedzi</h2>
+        <h2 class="clickable" @click="hidden = !hidden">Odpowiedzi</h2>
       </div>
       <div class="right" style="display: flex; align-items: center">
         <label class="clickable">Dodatkowo
@@ -16,7 +16,7 @@
         </label>
       </div>
     </header>
-    <table class="table card-body">
+    <table class="table card-body" v-if="!hidden">
       <thead>
       <tr>
         <th style="width: 15px">#</th>
@@ -55,7 +55,7 @@
       </tr>
       </tbody>
     </table>
-    <footer class="grid-2">
+    <footer class="grid-2" v-if="!hidden">
       <BulkPoints class="left"/>
       <div class="right" style="display: flex; align-items: flex-end">
         <button @click="reset" class="button button-danger">Resetuj Odpowiedzi</button>
@@ -76,6 +76,7 @@ export default {
   },
   data() {
     return {
+      hidden: false,
       columnsToShow: [
         'alt-answer',
         'options',
@@ -149,9 +150,7 @@ export default {
   display: grid;
   grid-template-columns: repeat(2, 50%);
 }
-.clickable {
-  cursor: pointer;
-}
+
 .table {
   color: #363636;
   background-color: #fff;

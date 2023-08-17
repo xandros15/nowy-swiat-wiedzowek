@@ -101,4 +101,7 @@
         }
       }
     }
+    .clickable {
+      cursor: pointer;
+    }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Answers/>
+    <Answers class="block"/>
     <Takeovers class="block"/>
     <Score class="block" :room="room"/>
     <QRLink style="margin-top: 1rem" class="block" :room="room"/>
@@ -30,41 +30,10 @@ export default {
 
 <style lang="scss" scoped>
 
-.tb-number {
-  width: 5px
-}
-
-.mb-1 {
-  margin-bottom: .3rem;
-}
-
-.mt-1 {
-  margin-top: .3rem;
-}
-
-
-.tb-25 {
-  width: 25%;
-}
-
-.a {
-  text-decoration: none;
-  color: #2c3e50;
-  transition: color .3s;
-
-  &:hover {
-    color: #610d12;
-  }
-}
-
 .block {
   display: flex;
   flex-direction: column;
-  margin-bottom: .3rem;
-
-  &-item {
-    margin-bottom: .3rem;
-  }
+  margin: 1rem;
 }
 
 </style>

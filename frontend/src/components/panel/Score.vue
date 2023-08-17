@@ -2,7 +2,7 @@
   <section class="card">
     <header class="card-header grid-2">
       <div class="left">
-        <h2>Punktacja</h2>
+        <h2 class="clickable" @click="hidden = !hidden">Punktacja</h2>
       </div>
       <div class="right input-group">
         <form @submit.prevent="addNewTeam">
@@ -11,7 +11,7 @@
         </form>
       </div>
     </header>
-    <table class="table card-body">
+    <table class="table card-body" v-if="!hidden">
       <thead>
       <tr>
         <th @click="sort(null)" class="sortable" style="width: 15px">#</th>
@@ -37,7 +37,7 @@
       </tr>
       </tbody>
     </table>
-    <footer class="grid-2">
+    <footer class="grid-2" v-if="!hidden">
       <div class="left">
         <router-link :to="{name: 'ScorePage', params: {room}}" class="button" target="_blank">
           Otwórz punktacje w innej karcie
@@ -60,6 +60,7 @@ export default {
   props: ['room'],
   data: () => {
     return {
+      hidden: false,
       sortType: '',
       teamName: '',
     }

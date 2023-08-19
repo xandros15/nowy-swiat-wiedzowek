@@ -100,7 +100,7 @@ export default {
   grid-template-columns: repeat(2, 50%);
   position: fixed;
   width: 100%;
-  background: #bd7840;
+  background: var(--bg-color-2);
   box-shadow: rgba(0, 0, 0, 0.66) 0 1px 10px 0;
 
   &-right {

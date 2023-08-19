@@ -15,7 +15,7 @@
             Room name
           </label>
           <input class="create-room-form-input" v-model="roomName">
-          <Btn class="create-room-form-button">Create Room</Btn>
+          <button class="button create-room-form-button">Create Room</button>
         </form>
       </div>
     </div>
@@ -24,13 +24,11 @@
 
 <script>
 import { getLocalRefreshToken } from '@/api/auth'
-import Btn from '@/components/Btn'
 import t from '@/services/translator'
 import { mapGetters, mapState } from 'vuex'
 
 export default {
   name: 'AdminPanelPage',
-  components: {Btn},
   data () {
     return {roomName: ''}
   },

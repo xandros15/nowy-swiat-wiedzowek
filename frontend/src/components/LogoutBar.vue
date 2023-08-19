@@ -1,16 +1,14 @@
 <template>
     <div class="logout-bar" v-if="isLogged">
-        <Btn @click.native="logout" class="button">Logout</Btn>
+        <button @click="logout" class="button">Logout</button>
     </div>
 </template>
 
 <script>
   import { mapActions, mapState } from 'vuex'
-  import Btn from './Btn'
 
   export default {
     name: "LogoutBar",
-    components: {Btn},
     computed: mapState(['isLogged']),
     methods: mapActions(['logout']),
   }

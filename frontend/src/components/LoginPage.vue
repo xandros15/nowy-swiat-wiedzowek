@@ -1,33 +1,27 @@
 <template>
-    <div>
-        <Logo/>
-        <div class="login-container">
-            <form @submit.prevent="login" class="login-form">
-                <h2 class="title">Wprowadź swoją nazwę drużyny i wciśnij "dołącz".</h2>
-                <input class="login-form-input" placeholder="nazwa drużyny" title="nazwa drużyny" v-model.trim="nickname"/>
-                <Btn class="login-form-button">Dołącz</Btn>
-                <div class="nicknames" v-if="nicknames.length > 0">
-                    <small class="nicknames-description">Ostatnio używane:</small>
-                    <Btn :key="lastNickname" @click.prevent.native="selectNickname(lastNickname)"
-                         class="nicknames-button"
-                         v-for="lastNickname in nicknames">
-                        {{lastNickname}}
-                    </Btn>
-                </div>
-            </form>
-        </div>
-    </div>
+  <div class="login-container">
+    <form @submit.prevent="login" class="login-form">
+      <h2 class="title">Wprowadź swoją nazwę drużyny i wciśnij "dołącz".</h2>
+      <input class="login-form-input" placeholder="nazwa drużyny" title="nazwa drużyny" v-model.trim="nickname"/>
+      <button class="login-form-button button">Dołącz</button>
+      <div class="nicknames" v-if="nicknames.length > 0">
+        <small class="nicknames-description">Ostatnio używane:</small>
+        <button :key="lastNickname" @click.prevent="selectNickname(lastNickname)"
+             class="nicknames-button button"
+             v-for="lastNickname in nicknames">
+          {{ lastNickname }}
+        </button>
+      </div>
+    </form>
+  </div>
 </template>
 
 <script>
 
   import { addNickname, forgotNickname, getNicknames } from '@/services/nickname-storage'
-  import Btn from './Btn'
-  import Logo from './Logo'
 
   export default {
     name: 'LoginPage',
-    components: {Logo, Btn},
     props: ['room'],
     data () {
       return {

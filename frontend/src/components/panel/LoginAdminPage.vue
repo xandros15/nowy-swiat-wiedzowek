@@ -9,16 +9,14 @@
                    type="password"
                    v-model="password"
             />
-            <Btn class="login-form-button">Zaloguj się</Btn>
+            <button class="login-form-button button">Zaloguj się</button>
         </form>
     </div>
 </template>
 
 <script>
-  import Btn from '../Btn'
   export default {
     name: 'LoginPage',
-    components: {Btn},
     props: ['room'],
     data () {
       return {password: ''}

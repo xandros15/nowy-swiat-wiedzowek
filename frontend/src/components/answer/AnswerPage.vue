@@ -4,15 +4,15 @@
         <div class="answer-container">
             <form @submit.prevent="sendAnswer" class="answer-form">
                 <div>
-                    <label class="answer-form-label" for="answer">Odpowiedź: </label>
-                    <input :value="answer" placeholder="np. nazwa anime" autocomplete="off" class="answer-form-input" id="answer" ref="answer">
+                    <label class="answer-form-label" for="answer">{{ $t('ANSWER_LABEL') }}: </label>
+                    <input :value="answer" :placeholder="$t('ANSWER_PLACEHOLDER')" autocomplete="off" class="answer-form-input" id="answer" ref="answer">
                 </div>
                 <div>
-                    <label class="answer-form-label" for="answer-alt">Dodatkowe dane: </label>
-                    <input :value="answerAlt" placeholder="np. wykonawca" autocomplete="off" class="answer-form-input" id="answer-alt"
+                    <label class="answer-form-label" for="answer-alt">{{ $t('ANSWER_ALT_LABEL') }}: </label>
+                    <input :value="answerAlt" :placeholder="$t('ANSWER_ALT_PLACEHOLDER')" autocomplete="off" class="answer-form-input" id="answer-alt"
                            ref="answerAlt">
                 </div>
-                <Btn class="answer-form-button mb">Wyślij</Btn>
+                <button class="answer-form-button button mb">{{ $t('SEND_TEXT') }}</button>
             </form>
         </div>
     </div>
@@ -20,12 +20,12 @@
 
 <script>
   import { mapState } from 'vuex'
-  import Btn from '../Btn'
   import Logo from '../Logo'
+  import t from "@/services/translator";
 
   export default {
     name: 'AnswerPage',
-    components: {Logo, Btn},
+    components: {Logo},
     computed: {
       ...mapState({
         answer: state => state.answer,
@@ -41,8 +41,10 @@
           answer: this.$refs.answer.value.trim(),
           answerAlt: this.$refs.answerAlt.value.trim(),
         }
-        if (payload.answer.length < 1 || payload.answer.length > 64 || payload.answerAlt.length > 64) {
-          this.$toastr.e('Twoja odpowiedź jest za długa lub za krótka')
+        if (payload.answer.length < 1) {
+          this.$toastr.e(t('TOO_SHORT_ANSWER'))
+        } else if (payload.answer.length > 64 || payload.answerAlt.length > 64) {
+          this.$toastr.e(t('TOO_LONG_ANSWER'))
         } else {
           this.$store.dispatch('answer', payload)
         }

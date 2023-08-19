@@ -3,7 +3,7 @@
           @touchstart="sendTakeover"
           class="takeover-button"
           :class="isTakeover ? 'takeover-button__red' : 'takeover-button__green'">
-    TAKEOVER
+    Takeover
   </button>
 </template>
 
@@ -45,7 +45,7 @@ export default {
   /** reset end **/
   width: 100%;
   height: 100%;
-  font-size: 15vw;
+  font-size: 20vw;
 
   &::-moz-focus-inner {
     border: 0;

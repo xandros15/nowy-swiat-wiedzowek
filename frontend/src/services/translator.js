@@ -15,7 +15,14 @@ const CODES = {
   'MODE_ANSWER': 'Tryb odpowiedzi',
   'NO_ANSWERS': 'Nie ma odpowiedzi',
   'NO_TEAMS': 'Nie znaleziono drużyn',
-  'NO_TAKEOVERS': 'Nie ma przejęć'
+  'NO_TAKEOVERS': 'Nie ma przejęć',
+  'ANSWER_LABEL': 'Odpowiedź',
+  'ANSWER_ALT_LABEL': 'Dodatkowe dane',
+  'SEND_TEXT': 'Wyślij',
+  'TOO_SHORT_ANSWER': 'Twoja odpowiedź jest za krótka',
+  'TOO_LONG_ANSWER': 'Twoja odpowiedź jest za długa',
+  'ANSWER_PLACEHOLDER': 'np. nazwa anime',
+  'ANSWER_ALT_PLACEHOLDER': 'np. wykonawca',
 }
 
 function t (input) {

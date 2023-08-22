@@ -3,7 +3,7 @@ const validateNickname = nickname => {
     return false
   }
 
-  if (nickname.trim().length < 1 && nickname.length < 16) {
+  if (nickname.trim().length < 1 || nickname.length > 16) {
     return false
   }
 

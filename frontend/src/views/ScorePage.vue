@@ -1,13 +1,17 @@
 <template>
   <div id="score-page">
     <h2 class="title">Punktacja</h2>
-    <div class="grid" v-if="score.length > 0">
-      <div v-for="(team,v) in sorted" :key="v">
-        <div class="team-name place" :class="`place-${team.place}`">
+    <div class="grid" v-if="sorted.length > 0">
+      <div v-for="(team,v) in sorted" :key="v" class="standing" :class="`place-${team.place}`">
+        <div class="place" :class="`place-${team.place}`">
           {{ team.place }}.
-          {{ team.nickname }}
-          ({{ team.points }}P/{{ team.tiebreaker }}T)
+        </div>
+        <div class="team-name">
           <span v-if="team.hasFever" style="font-size: 80%;">🔥</span>
+          {{ team.nickname }}
+          <span class="points">
+            ({{ team.points }}P/{{ team.tiebreaker }}T)
+          </span>
         </div>
       </div>
     </div>
@@ -53,7 +57,7 @@ import {mapState} from "vuex";
 
         return sorted
       },
-      ...mapState(['score'])
+      ...mapState(['score']),
     },
     created() {
       this.$store.dispatch('score.listen', {room: this.room})
@@ -63,30 +67,47 @@ import {mapState} from "vuex";
 
 <style lang="scss" scoped>
 .title {
+  font-size: 60px;
+  background: rgba(0, 0, 0, 0.83);
   color: #f2f2f2;
-  text-shadow: 2px 2px 2px #020202;
-  padding: .83em;
-  margin: 0;
+  padding: .5rem;
+  display: block;
+  margin: .3rem 0;
 }
 
 .grid {
   margin: 1rem 4rem;
   padding: 1rem;
+}
+
+.standing {
+  text-align: left;
+  font-size: 36px;
+  font-weight: 700;
+  color: #eeeeee;
   display: grid;
-  background: rgba(0, 0, 0, 0.83);
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: 1rem;
-  @media (max-width: 1024px) {
-    grid-template-columns: repeat(1, 1fr);
+  grid-template-columns: 3em 1fr;
+  grid-gap: .3em;
+  margin-bottom: .3em;
+
+  &:hover,
+  &:focus {
+    & .place,
+    & .team-name {
+      background: rgba(0, 0, 0, 0.50);
+    }
   }
 }
 
+.points {
+  float: right;
+}
 
-.team-name {
+.place {
   position: relative;
-  font-size: 32px;
-  font-weight: 700;
-  color: #eeeeee;
+  text-align: right;
+  padding: .3rem .5rem;
+  background: rgba(0, 0, 0, 0.83);
 
   &.place-1:before {
     content: '🥇';
@@ -105,5 +126,10 @@ import {mapState} from "vuex";
     font-size: 80%;
     z-index: -1;
   }
+}
+
+.team-name {
+  padding: .3rem .7rem;
+  background: rgba(0, 0, 0, 0.83);
 }
 </style>

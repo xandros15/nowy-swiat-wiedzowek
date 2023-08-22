@@ -27,26 +27,28 @@ import {mapState} from "vuex";
         score.sort((b, a) => a.points === b.points ? a.tiebreaker - b.tiebreaker : a.points - b.points)
         let sorted = [];
 
-        function getPlace(key) {
-          let place = Number.parseInt(key) + 1;
-          if (
-              score[key - 1]//exist
-              && score[key - 1].points === score[key].points //same points
-              && score[key - 1].tiebreaker === score[key].tiebreaker //same tiebreakers
-          ) {
-            place--
+        function getPlace(current, previous) {
+          if (!previous) {
+            return 1;
           }
 
-          return place;
+          if (
+              current.points === previous.points
+              && current.tiebreaker === previous.tiebreaker
+          ) {
+            return previous.place;
+          }
+
+          return previous.place + 1;
         }
 
         const topPoints = score[0] ? score[0].points : 0
         for (const key in score) {
-          sorted.push({
-            place: getPlace(key),
+          sorted[key] = {
+            place: getPlace(score[key], sorted[key - 1]),
             hasFever: (score[key].points / Math.max(topPoints, 1)) > 0.66,
             ...score[key],
-          })
+          }
         }
 
         return sorted

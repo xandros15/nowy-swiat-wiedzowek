@@ -23,6 +23,8 @@ const CODES = {
   'TOO_LONG_ANSWER': 'Twoja odpowiedź jest za długa',
   'ANSWER_PLACEHOLDER': 'np. nazwa anime',
   'ANSWER_ALT_PLACEHOLDER': 'np. wykonawca',
+  'NO_ROOMS': 'Przepraszam, nie ma aktualnie otwartych pokoi.',
+  'ROOM_LIST': 'Lista pokoi',
 }
 
 function t (input) {

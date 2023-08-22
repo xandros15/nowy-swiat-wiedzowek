@@ -1,23 +1,22 @@
 <template>
-    <div class="room-list">
-        <div v-if="rooms.length > 0">
-            <h1 :key="room" v-for="room in rooms">
-                <router-link :to="{name: 'TeamPage', params: {room}}" class="room-link">
-                    {{room}}
-                </router-link>
-            </h1>
-        </div>
-        <h1 class="h1" v-else>
-            Przepraszam, nie ma aktualnie otwartych pokoi.
-        </h1>
+  <div>
+    <div class="title">{{ $t('ROOM_LIST') }}</div>
+    <div class="room-list" v-if="rooms.length > 0">
+      <router-link :key="room" v-for="room in rooms" :to="{name: 'TeamPage', params: {room}}" class="room">
+        {{ room }}
+      </router-link>
     </div>
+    <div class="no-room" v-else>
+      {{ $t('NO_ROOMS') }}
+    </div>
+  </div>
 </template>
 
 <script>
   export default {
     name: "LobbyPage",
     sockets: {
-      rooms (rooms) {
+      rooms(rooms) {
         this.rooms = rooms
       }
     },
@@ -33,21 +32,45 @@
 </script>
 
 <style lang="scss" scoped>
-    .h1 {
-        font-size: 2rem;
-        color: #f2f2f2;
-        text-shadow: 2px 2px 2px #000;
-        text-decoration: none;
-    }
+.title {
+  font-weight: 700;
+  font-size: 60px;
+  background: rgba(0, 0, 0, 0.83);
+  color: #f2f2f2;
+  padding: .5rem;
+  display: block;
+  margin: .3rem 0;
+}
 
-    .room-link {
-        font-size: 120%;
-        color: #f2f2f2;
-        text-shadow: 2px 2px 2px #000;
-        text-decoration: none;
+.room-list {
+  text-align: left;
+  font-size: 36px;
+  font-weight: 700;
+  color: #eeeeee;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: .3em;
+  margin: .3em;
+}
 
-        &:hover {
-            text-shadow: 1px 1px 1px #000;
-        }
-    }
+.no-room {
+  font-weight: 700;
+  font-size: 36px;
+  padding: .3rem;
+  background: rgba(0, 0, 0, 0.83);
+  color: #f2f2f2;
+  text-decoration: none;
+}
+
+.room {
+  padding: .3rem;
+  background: rgba(0, 0, 0, 0.83);
+  color: #f2f2f2;
+  text-decoration: none;
+
+  &:hover, &:focus {
+    background: rgba(0, 0, 0, 0.50);
+  }
+}
+
 </style>

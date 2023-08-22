@@ -19,6 +19,7 @@
 <script>
 
   import { addNickname, forgotNickname, getNicknames } from '@/services/nickname-storage'
+  import t from "@/services/translator";
 
   export default {
     name: 'LoginPage',
@@ -48,7 +49,7 @@
           addNickname(this.nickname)
           this.nicknames = getNicknames()
         } else {
-          this.$toastr.e('Nazwa nie może być krótsza niż 1 znaki i dłuższa niż 16 znaków.')
+          this.$toastr.e(t('INVALID_TEAM_NAME'))
         }
       }
     }

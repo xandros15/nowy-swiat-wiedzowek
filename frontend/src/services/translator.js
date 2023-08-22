@@ -25,6 +25,7 @@ const CODES = {
   'ANSWER_ALT_PLACEHOLDER': 'np. wykonawca',
   'NO_ROOMS': 'Przepraszam, nie ma aktualnie otwartych pokoi.',
   'ROOM_LIST': 'Lista pokoi',
+  'INVALID_TEAM_NAME': 'Nazwa nie może być krótsza niż 1 znaki i dłuższa niż 16 znaków.',
 }
 
 function t (input) {

@@ -19,7 +19,7 @@
         <th>Fever</th>
         <th @click="sort('points')" class="sortable">Punkty</th>
         <th>Tiebreakery</th>
-        <th style="width: 215px">Dodatki</th>
+        <th style="width: 315px">Dodatki</th>
       </tr>
       </thead>
       <tbody v-if="score.length > 0">
@@ -53,6 +53,7 @@
 <script>
 import {mapActions, mapState} from 'vuex'
 import TeamScore from "@/components/TeamScore";
+import t from "@/services/translator";
 
 export default {
   name: "Score",
@@ -92,10 +93,12 @@ export default {
       this.sortType = type
     },
     addNewTeam() {
-      if (this.teamName.length > 0) {
+      if (this.teamName.length > 0 && this.teamName.length < 16) {
         this.$store.dispatch('admin.team.register', this.teamName)
         this.teamName = ''
+        return
       }
+      this.$toastr.e(t('INVALID_TEAM_NAME'))
     },
   }
 }

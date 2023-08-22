@@ -6,10 +6,14 @@
     <td>{{ team.points }}</td>
     <td>{{ team.tiebreaker }}</td>
     <td>
-      <button @click="addPoint(team.nickname)">+1 pkt</button>
-      <button @click="removePoint(team.nickname)">-1 pkt</button>
-      <button @click="zeroPoint(team.nickname)">Wyzeruj</button>
-      <button @click="removeTeam(team.nickname)">Usuń</button>
+      <div style="width: 315px">
+        <button @click="addPoint(team.nickname)">+1 pkt</button>
+        <button @click="add3Points(team.nickname)">+3 pkt</button>
+        <button @click="addTiebreaker(team.nickname)">+1 tie</button>
+        <button @click="removePoint(team.nickname)">-1 pkt</button>
+        <button @click="zeroPoint(team.nickname)">Wyzeruj</button>
+        <button @click="removeTeam(team.nickname)">Usuń</button>
+      </div>
     </td>
   </tr>
 </template>
@@ -37,6 +41,8 @@
       ...mapActions({
         addPoint: 'admin.point.add',
         removePoint: 'admin.point.remove',
+        add3Points: 'admin.point.add.3',
+        addTiebreaker: 'admin.tiebreaker.add',
         zeroPoint: 'admin.point.zero',
         removeTeam: 'admin.nickname.remove',
       }),

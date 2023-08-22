@@ -292,6 +292,9 @@ export default new Vuex.Store({
     ['admin.point.add'] (store, nickname) {
       socket.emit('score.add', nickname, 1)
     },
+    ['admin.point.add.3'] (store, nickname) {
+      socket.emit('score.add', nickname, 3)
+    },
     ['admin.point.remove'] (store, nickname) {
       socket.emit('score.remove', nickname, 1)
     },

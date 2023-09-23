@@ -1,5 +1,5 @@
 <template>
-    <div id="app" class="hikari">
+    <div id="app" class="tsukimi">
         <StatusBar/>
         <LogoutBar/>
         <router-view/>
@@ -42,6 +42,13 @@
             --bg-color-2: #fedc71;
             --button-color: #672663;
             --button-color-over: #8b3a87;
+        }
+
+        & .tsukimi {
+          --bg-color-1: #2d336c;
+          --bg-color-2: #fedc71;
+          --button-color: #2d336c;
+          --button-color-over: #454d9a
         }
     }
 

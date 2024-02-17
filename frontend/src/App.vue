@@ -1,5 +1,5 @@
 <template>
-    <div id="app" class="tsukimi">
+    <div id="app">
         <StatusBar/>
         <LogoutBar/>
         <router-view/>

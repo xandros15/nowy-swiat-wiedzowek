@@ -1,8 +1,12 @@
-install:
-	docker compose -f ./docker/docker-compose.yml run npm sh -c "npm install --prefix /frontend && npm install --prefix /backend install"
+#!/usr/bin/env make
 
-build:
-	docker compose -f ./docker/docker-compose.yml run npm sh -c "npm run build --prefix /frontend"
+DOCKER_IMAGE_NAME := docker.animesongs.local:5000/quiz-answer
 
-serve:
-	docker compose -f ./docker/docker-compose.yml run -p 8080:8080 npm sh -c "npm run serve --prefix /frontend"
+-include .env
+export
+
+start:
+	docker compose up -d
+
+build-frontend:
+	docker build --target=frontend --tag ${DOCKER_IMAGE_NAME}/frontend:unreleased -f docker/Dockerfile .

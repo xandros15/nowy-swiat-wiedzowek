@@ -5,7 +5,7 @@ const jwt_decode = require('jwt-decode')
 const app = require('express')()
 const http = require('http').createServer(app)
 const {Server} = require('socket.io')
-const PORT = process.env.PORT || 3333
+const PORT = process.env.PORT_BACKEND || 80
 
 const oauth = new Oauth2({
   client_id: process.env.OAUTH2_CLIENT,

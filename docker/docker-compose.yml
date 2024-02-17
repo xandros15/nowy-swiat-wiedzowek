@@ -1,7 +1,0 @@
-version: "3"
-services:
-  npm:
-    image: node:16.9.1-alpine
-    volumes:
-      - ../frontend:/frontend
-      - ../backend:/backend

@@ -1,0 +1,21 @@
+version: "3"
+services:
+  frontend:
+    build:
+      dockerfile: ./docker/Dockerfile
+      target: frontend
+  backend:
+    build:
+      dockerfile: ./docker/Dockerfile
+      target: backend
+    env_file:
+      - .env
+  proxy:
+    ports:
+      - "${PORT:-2137}:80"
+    build:
+      dockerfile: ./docker/Dockerfile
+      target: proxy
+    depends_on:
+      - backend
+      - frontend

@@ -14,7 +14,7 @@ USER node
 COPY ./backend/package.json ./backend/package-lock.json* ./
 RUN npm ci && npm cache clean --force
 COPY ./backend/src/* ./src/
-COPY ./backend/app.js .
+COPY ./backend/app.js ./rooms.yml* ./
 CMD ["node", "./app.js"]
 
 FROM nginx:stable-alpine AS frontend

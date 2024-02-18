@@ -10,6 +10,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    legacy: false,
     auth_url: false,
     auth_proceed: false,
     adminRooms: [],
@@ -87,10 +88,12 @@ export default new Vuex.Store({
     ['changeRoom'] (state, room) {
       state.room = room
     },
-    ['successfulLogin'] (state, isAdmin) {
+    ['successfulLogin'] (state, isAdmin, isLegacy) {
       isAdmin = isAdmin || false
+      isLegacy = isLegacy || false
       state.isLogged = true
       state.isAdmin = isAdmin
+      state.legacy = isLegacy
     },
     //answer
     ['setAnswer'] (state, {answer, answerAlt}) {
@@ -142,6 +145,11 @@ export default new Vuex.Store({
   },
   actions: {
     //auth
+    ['legacy.admin.login'] ({commit,}, {password, room}) {
+      socket.emit('legacy.admin', {password, room})
+      commit('setPassword', password)
+      commit('changeRoom', room)
+    },
     ['auth.logout'] ({commit}) {
       commit('auth.logout')
       location.reload()
@@ -242,6 +250,8 @@ export default new Vuex.Store({
       if (state.isLogged) {
         if (state.nickname) {
           dispatch('login', {nickname: state.nickname, room: state.room})
+        } else if (state.isAdmin && state.legacy) {
+          dispatch('legacy.admin.login', {password: state.password, room: state.room})
         } else if (state.isAdmin) {
           const refreshToken = getLocalRefreshToken()
           if (!refreshToken) {
@@ -336,9 +346,11 @@ export default new Vuex.Store({
         this._vm.$toastr.e('Błąd przy resetowaniu Odpowiedzi.')
       }
     },
-    ['socket.admin'] ({commit,}, {isSuccess}) {
+    ['socket.admin'] ({commit,}, {isSuccess, code, legacy}) {
       if (isSuccess) {
-        commit('successfulLogin', true)
+        commit('successfulLogin', true, !!legacy)
+      } else if (code) {
+        this._vm.$toastr.e(t(code))
       } else {
         this._vm.$toastr.e('Błąd przy logowaniu.')
       }

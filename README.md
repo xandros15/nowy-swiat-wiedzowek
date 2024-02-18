@@ -33,7 +33,7 @@ Aby zbudować i postawić środowisko należy:
 make start
 ```
 
-wtedy wchodzimy pod http://localhost:2137 i mamy postawioną aplikację :)
+Następnie wchodzimy pod http://localhost:2137 i mamy postawioną aplikację :)
 
 Aby zbudować jedynie frontend, wystarczy wpisać komendę:
 
@@ -80,3 +80,24 @@ Aby zbudować frontend aplikacji, należy wykonać komendę:
 cd /frontend
 npm run build
 ```
+
+## Pominięcie oauth2
+
+Żeby można było się zalogować do panelu zarządzania pokojem w aplikacji z pominięciem oauth2, należy stworzyć plik `rooms.yml` na wzór
+`example.rooms.yml` i wstawić go do folderu z aplikacją (w wersji dockerowej w roocie projektu, w wersji node w roocie backendu)
+
+Przykładowy plik `rooms.yml`:
+```yaml
+- room: animesongs
+  key: 'mieczGutsaToBardzoDlugiMiecz'
+- room: ławica
+  key: 'gdzieJestNemo?'
+- room: radioanime24
+  key: 'toniejestanime24'
+- room: karczma
+  key: 'animewasmistake'
+- room: kartel
+  key: 'shipponiewie'
+```
+
+By zalogować się bez sso, należy użyć adresu `/{nazwa_pokoju}/admin` zamiast `/login` 

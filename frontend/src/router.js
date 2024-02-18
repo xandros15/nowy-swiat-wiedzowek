@@ -6,6 +6,7 @@ import OauthLoginPage from '@/views/OauthLoginPage'
 import RoomQrCodePage from '@/views/RoomQrCodePage'
 import ScorePage from '@/views/ScorePage'
 import TeamPage from '@/views/TeamPage'
+import AdminPage from "@/views/AdminPage";
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
@@ -19,6 +20,12 @@ const router = new VueRouter({
       path: '/login',
       name: 'OauthLogin',
       component: OauthLoginPage,
+    },
+    {
+      path: '/:room([\\w-_]{3,16})/admin',
+      name: 'AdminPage',
+      component: AdminPage,
+      props: true,
     },
     {
       path: '/admin-panel',

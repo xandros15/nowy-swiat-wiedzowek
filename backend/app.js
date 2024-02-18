@@ -21,6 +21,19 @@ const debug = process.env.DEBUG || false
 //repo
 const rooms = new Rooms()
 
+const yaml = require('js-yaml')
+const fs = require('fs')
+const LegacyKeyring = require('./src/LegacyKeyring')
+const keyRoomsFile = __dirname + '/rooms.yml';
+const keyRooms = fs.existsSync(keyRoomsFile) ? yaml.safeLoad(fs.readFileSync(keyRoomsFile, 'utf8')) : []
+const legacyKeyring = new LegacyKeyring(keyRooms)
+legacyKeyring.getRooms().forEach(roomName => {
+  rooms.create({
+    name: roomName,
+    owner: roomName + '@quiz.local',
+  })
+})
+
 const io = new Server(http, {
   cors: {
     origin: '*',
@@ -105,6 +118,39 @@ io.on('connection', socket => {
   })
 
   //auth
+  socket.on('legacy.admin', payload => {
+    const roomName = payload.room
+    const password = payload.password
+    if (
+        !roomName
+        || typeof roomName !== 'string'
+        || !password
+        || typeof password !== 'string'
+    ) {
+      socket.emit('admin', {isSuccess: false, code: 'INVALID_PAYLOAD',})
+      return
+    }
+    if (!legacyKeyring.hasRoom(roomName)) {
+      socket.emit('admin', {isSuccess: false, code: 'ROOM_NO_EXISTS',})
+      return
+    }
+    if (!legacyKeyring.isCorrectKey(password, roomName)) {
+      socket.emit('admin', {isSuccess: false, code: 'FORBIDDEN',})
+      return
+    }
+
+    socket.data.isAdmin = true
+    socket.data.email = roomName + '@quiz.local'
+    socket.data.username = roomName
+    socket.data.room = rooms.find(roomName)
+    socket.join('admin.' + roomName)
+    socket.join('score.' + roomName)
+    socket.emit('admin', {isSuccess: true, legacy: true})
+    socket.emit('answers.receive', {answers: socket.data.room.getAnswers()})
+    socket.emit('score', {score: socket.data.room.getScore()})
+    socket.emit('takeover.list', {takeovers: socket.data.room.getTakeovers()})
+  })
+
   socket.on('authenticate.code', async (code) => {
     try {
       const tokens = await oauth.byCode(code)

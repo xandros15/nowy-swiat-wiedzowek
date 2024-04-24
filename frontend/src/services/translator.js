@@ -49,7 +49,7 @@ const CODES_DEFAULT = {
   'HOST.POINTS.NEW_CARD': 'Open scoreboard in new tab',
   'HOST.TAKEOVER.TITLE': 'Takeovers',
   'HOST.TAKEOVER.TEAM_NAME': 'Team',
-  'HOST.TAKEOVER.TEAM_TIME': 'Time*',
+  'HOST.TAKEOVER.TEAM_TIME': 'Time',
   'HOST.TAKEOVER.RESET': 'RESET TAKEOVERS',
   'HOST.TAKEOVER.TEAM_TIME_HINT': 'Time from the first takeover',
 
@@ -146,7 +146,7 @@ const CODES_PL = {
 
   'HOST.TAKEOVER.TITLE': 'Przejęcia',
   'HOST.TAKEOVER.TEAM_NAME': 'Drużyna',
-  'HOST.TAKEOVER.TEAM_TIME': 'Czas*',
+  'HOST.TAKEOVER.TEAM_TIME': 'Czas',
   'HOST.TAKEOVER.RESET': 'RESETUJ PRZEJĘCIA',
   'HOST.TAKEOVER.TEAM_TIME_HINT': 'Czas od pierwszego przejęcia',
 

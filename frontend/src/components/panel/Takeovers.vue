@@ -9,7 +9,7 @@
       <thead>
       <tr>
         <th style="width: 15px">#</th>
-        <th>{{ $('HOST.TAKEOVER.TEAM_NAME') }}</th>
+        <th>{{ $t('HOST.TAKEOVER.TEAM_NAME') }}</th>
         <th :title="$t('HOST.TAKEOVER.TEAM_TIME_HINT')" style="cursor: pointer;">{{
             $t('HOST.TAKEOVER.TEAM_TIME')
           }}*

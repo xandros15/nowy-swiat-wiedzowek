@@ -1,15 +1,15 @@
 <template>
   <div style="display: grid;">
-    <small style="margin: .2rem">Możesz wybrać odpowiedzi do zbiorowych akcji</small>
+    <small style="margin: .2rem">{{$t('HOST.SCORE.BATCH_ACTION')}}</small>
     <div style="margin: .5rem .2rem; display: flex; justify-content: space-around;">
-      <label  class="label" @click="select('points')">Punkty:</label>
+      <label  class="label" @click="select('points')">{{$t('HOST.SCORE.POINT_LABEL')}}:</label>
       <input
           style="max-width: 40px;"
           ref="points"
           type="number"
           v-model.number="points"
       >
-      <label class="label" @click="select('tiebreaker')">Tiebreaker:</label>
+      <label class="label" @click="select('tiebreaker')">{{$t('HOST.SCORE.TIEBREAKER_LABEL')}}:</label>
       <input
           style="max-width: 40px;"
           ref="tiebreaker"
@@ -17,7 +17,7 @@
           v-model.number="tiebreaker"
       >
     </div>
-    <button @click="submit" style="width: 300px" class="button">Dodaj</button>
+    <button @click="submit" style="width: 300px" class="button">{{$t('HOST.SCORE.SUBMIT')}}</button>
   </div>
 </template>
 

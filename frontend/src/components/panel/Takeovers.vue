@@ -2,15 +2,18 @@
   <section class="card">
     <header class="card-header grid-2">
       <div class="left">
-        <h2 class="clickable" @click="hidden = !hidden">Przejęcia</h2>
+        <h2 class="clickable" @click="hidden = !hidden">{{ $t('HOST.TAKEOVER.TITLE') }}</h2>
       </div>
     </header>
     <table class="table card-body" v-if="!hidden">
       <thead>
       <tr>
         <th style="width: 15px">#</th>
-        <th>Drużyna</th>
-        <th title="Czas od pierwszego przejęcia" style="cursor: pointer;">Czas*</th>
+        <th>{{ $('HOST.TAKEOVER.TEAM_NAME') }}</th>
+        <th :title="$t('HOST.TAKEOVER.TEAM_TIME_HINT')" style="cursor: pointer;">{{
+            $t('HOST.TAKEOVER.TEAM_TIME')
+          }}*
+        </th>
       </tr>
       </thead>
       <tbody v-if="takeovers.length > 0">
@@ -27,7 +30,9 @@
       </tbody>
     </table>
     <footer class="right" v-if="!hidden">
-      <button class="button button-danger" @click="$store.dispatch('takeover.reset')">RESETUJ PRZEJĘCIA</button>
+      <button class="button button-danger" @click="$store.dispatch('takeover.reset')">
+        {{ $t('HOST.TAKEOVER.RESET') }}
+      </button>
     </footer>
   </section>
 </template>

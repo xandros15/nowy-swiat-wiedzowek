@@ -1,16 +1,16 @@
 <template>
     <div class="login-container">
-        <form @submit.prevent="loginAdmin" class="login-form">
-            <h2 class="title">Admin panel</h2>
-            <input autocomplete
-                   class="login-form-input"
-                   placeholder="hasło"
-                   title="hasło"
-                   type="password"
-                   v-model="password"
-            />
-            <button class="login-form-button button">Zaloguj się</button>
-        </form>
+      <form @submit.prevent="loginAdmin" class="login-form">
+        <h2 class="title">{{ $t('LOGIN.TITLE') }}</h2>
+        <input autocomplete
+               class="login-form-input"
+               placeholder="hasło"
+               title="hasło"
+               type="password"
+               v-model="password"
+        />
+        <button class="login-form-button button">{{ $t('LOGIN.BUTTON_LABEL') }}</button>
+      </form>
     </div>
 </template>
 

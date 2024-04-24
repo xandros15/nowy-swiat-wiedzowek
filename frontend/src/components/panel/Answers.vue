@@ -2,16 +2,16 @@
   <section class="card">
     <header class="card-header grid-2">
       <div class="left">
-        <h2 class="clickable" @click="hidden = !hidden">Odpowiedzi</h2>
+        <h2 class="clickable" @click="hidden = !hidden">{{$t('HOST.ANSWERSHEET.TITLE')}}</h2>
       </div>
       <div class="right" style="display: flex; align-items: center">
-        <label class="clickable">Dodatkowo
+        <label class="clickable">{{$t('HOST.ANSWERSHEET.ALT_ANSWER')}}
           <input type="checkbox" v-model="columnsToShow" value="alt-answer"/>
         </label>
-        <label class="clickable">Opcje
+        <label class="clickable">{{$t('HOST.ANSWERSHEET.OPTIONS')}}
           <input type="checkbox" v-model="columnsToShow" value="options"/>
         </label>
-        <label class="clickable">Ostatnio
+        <label class="clickable">{{$t('HOST.ANSWERSHEET.LAST_ANSWER')}}
           <input type="checkbox" v-model="columnsToShow" value="last-time"/>
         </label>
       </div>
@@ -20,11 +20,11 @@
       <thead>
       <tr>
         <th style="width: 15px">#</th>
-        <th>Drużyna</th>
-        <th v-if="columnsToShow.indexOf('last-time') !== -1">Ostatnio</th>
-        <th>Odpowiedź</th>
-        <th v-if="columnsToShow.indexOf('alt-answer') !== -1">Dodatkowo</th>
-        <th v-if="columnsToShow.indexOf('options') !== -1" style="width: 245px">Opcje</th>
+        <th>{{$t('HOST.ANSWERSHEET.TEAM_NAME')}}</th>
+        <th v-if="columnsToShow.indexOf('last-time') !== -1">{{$t('HOST.ANSWERSHEET.LAST_ANSWER')}}</th>
+        <th>{{$t('HOST.ANSWERSHEET.ANSWER')}}</th>
+        <th v-if="columnsToShow.indexOf('alt-answer') !== -1">{{$t('HOST.ANSWERSHEET.ALT_ANSWER')}}</th>
+        <th v-if="columnsToShow.indexOf('options') !== -1" style="width: 245px">{{$t('HOST.ANSWERSHEET.OPTIONS')}}</th>
       </tr>
       </thead>
       <tbody v-if="answers.length > 0">
@@ -41,11 +41,11 @@
             v-if="columnsToShow.indexOf('alt-answer') !== -1">{{ answer.answerAlt }}
         </td>
         <td v-if="columnsToShow.indexOf('options') !== -1">
-          <button @click="resetSingle(answer.nickname)">Usuń</button>
-          <button @click="pointAdd(answer.nickname)">+1 pkt</button>
-          <button @click="pointRemove(answer.nickname)">-1 pkt</button>
-          <button @click="tieAdd(answer.nickname)">+1 tie</button>
-          <button @click="tieRemove(answer.nickname)">-1 tie</button>
+          <button @click="resetSingle(answer.nickname)">{{$t('HOST.ANSWERSHEET.DELETE')}}</button>
+          <button @click="pointAdd(answer.nickname)">{{$t('HOST.SCORESHEET.ADD_POINT')}}</button>
+          <button @click="pointRemove(answer.nickname)">{{$t('HOST.SCORESHEET.DEL_POINT')}}</button>
+          <button @click="tieAdd(answer.nickname)">{{$t('HOST.SCORESHEET.ADD_TIEBREAKER')}}</button>
+          <button @click="tieRemove(answer.nickname)">{{$t('HOST.SCORESHEET.DEL_TIEBREAKER')}}</button>
         </td>
       </tr>
       </tbody>
@@ -58,7 +58,7 @@
     <footer class="grid-2" v-if="!hidden">
       <BulkPoints class="left"/>
       <div class="right" style="display: flex; align-items: flex-end">
-        <button @click="reset" class="button button-danger">Resetuj Odpowiedzi</button>
+        <button @click="reset" class="button button-danger">{{ $t('HOST.ANSWERSHEET.RESET') }}</button>
       </div>
     </footer>
   </section>

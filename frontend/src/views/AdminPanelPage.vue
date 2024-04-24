@@ -12,10 +12,10 @@
       <div class="create-room" v-if="!hasRoom">
         <form class="create-room-form" @submit.prevent="createRoom">
           <label class="create-room-form-label">
-            Room name
+            {{ $t('HOST.ROOM_LIST.ROOM_NAME_LABEL') }}
           </label>
           <input class="create-room-form-input" v-model="roomName">
-          <button class="button create-room-form-button">Create Room</button>
+          <button class="button create-room-form-button">{{ $t('HOST.ROOM_LIST.CREATE_BUTTON') }}</button>
         </form>
       </div>
     </div>

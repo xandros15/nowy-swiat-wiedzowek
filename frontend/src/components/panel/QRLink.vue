@@ -6,7 +6,7 @@
                target="_blank">
     <div class="qr-link">
       <img class="qr-link-image" src="@/images/example-qr.png" alt="example-qr">
-      <span class="qr-link-text">Wygeneruj kod QR do pokoju</span>
+      <span class="qr-link-text">{{ $t('GENERATE_QR_CODE') }}</span>
     </div>
   </router-link>
 </template>

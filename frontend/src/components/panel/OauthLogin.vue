@@ -2,9 +2,9 @@
   <div class="login-page-wrapper">
     <div class="login-page-container">
       <form class="login-form" @submit.prevent="authenticate">
-        <h2 class="title">Admin Panel</h2>
+        <h2 class="title">{{ $t('LOGIN.TITLE') }}</h2>
         <button :disabled="auth_proceed || !auth_url" class="login-form-button">
-          Login
+          {{ $t('LOGIN.BUTTON_LABEL') }}
         </button>
       </form>
     </div>

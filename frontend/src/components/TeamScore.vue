@@ -7,12 +7,12 @@
     <td>{{ team.tiebreaker }}</td>
     <td>
       <div style="width: 315px">
-        <button @click="addPoint(team.nickname)">+1 pkt</button>
-        <button @click="add3Points(team.nickname)">+3 pkt</button>
-        <button @click="addTiebreaker(team.nickname)">+1 tie</button>
-        <button @click="removePoint(team.nickname)">-1 pkt</button>
-        <button @click="zeroPoint(team.nickname)">Wyzeruj</button>
-        <button @click="removeTeam(team.nickname)">Usuń</button>
+        <button @click="addPoint(team.nickname)">{{ $t('HOST.SCORESHEET.ADD_POINT') }}</button>
+        <button @click="add3Points(team.nickname)">{{ $t('HOST.SCORESHEET.ADD_3_POINTS') }}</button>
+        <button @click="addTiebreaker(team.nickname)">{{ $t('HOST.SCORESHEET.ADD_TIEBREAKER') }}</button>
+        <button @click="removePoint(team.nickname)">{{ $t('HOST.SCORESHEET.DEL_POINT') }}</button>
+        <button @click="zeroPoint(team.nickname)">{{ $t('HOST.SCORESHEET.SET_ZERO') }}</button>
+        <button @click="removeTeam(team.nickname)">{{ $t('HOST.SCORESHEET.DELETE') }}</button>
       </div>
     </td>
   </tr>

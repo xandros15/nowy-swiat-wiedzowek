@@ -1,6 +1,6 @@
 <template>
   <div id="score-page">
-    <h2 class="title">Punktacja</h2>
+    <h2 class="title">{{ $t('SCOREBOARD.TITLE') }}</h2>
     <div class="grid" v-if="sorted.length > 0">
       <div v-for="(team,v) in sorted" :key="v" class="standing" :class="`place-${team.place}`">
         <div class="place" :class="`place-${team.place}`">

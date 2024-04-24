@@ -185,10 +185,10 @@ export default new Vuex.Store({
     },
     ['socket.admin.room.create'] (state, payload) {
       if (payload.isSuccess === false) {
-        this._vm.$toastr.e(t('Creating new room failed.'))
+        this._vm.$toastr.e(t('CREATE_ROOM_ERROR'))
         return
       }
-      this._vm.$toastr.s(t('Created new room.'))
+      this._vm.$toastr.s(t('CREATE_ROOM_SUCCESS'))
       //admin.room.join
     },
     ['socket.admin.rooms'] ({state}, payload) {
@@ -239,9 +239,9 @@ export default new Vuex.Store({
     },
     ['socket.answer'] ({commit}, {isSuccess}) {
       if (!isSuccess) {
-        this._vm.$toastr.e('Wysłałeś już swoją odpowiedź.')
+        this._vm.$toastr.e(t('ANSWER_ALREADY_SENT'))
       } else {
-        this._vm.$toastr.s('Odpowiedź została wysłana.')
+        this._vm.$toastr.s(t('ANSWER_SENT'))
         commit('setAnswer', {answer: '', answerAlt: ''})
       }
     },
@@ -336,14 +336,14 @@ export default new Vuex.Store({
         commit('resetAnswers')
         commit('resetSelectAnswer')
       } else {
-        this._vm.$toastr.e('Błąd przy resetowaniu Odpowiedzi.')
+        this._vm.$toastr.e(t('RESET_ANSWER_ERROR'))
       }
     },
     ['socket.reset.single'] ({commit}, {isSuccess, nickname}) {
       if (isSuccess) {
         commit('resetAnswer', nickname)
       } else {
-        this._vm.$toastr.e('Błąd przy resetowaniu Odpowiedzi.')
+        this._vm.$toastr.e(t('RESET_ANSWER_ERROR'))
       }
     },
     ['socket.admin'] ({commit,}, {isSuccess, code, legacy}) {
@@ -352,7 +352,7 @@ export default new Vuex.Store({
       } else if (code) {
         this._vm.$toastr.e(t(code))
       } else {
-        this._vm.$toastr.e('Błąd przy logowaniu.')
+        this._vm.$toastr.e(t('LOGIN_ERROR'))
       }
     },
     ['socket.answer.receive'] ({commit,}, answer) {

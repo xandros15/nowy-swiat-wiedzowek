@@ -2,24 +2,24 @@
   <section class="card">
     <header class="card-header grid-2">
       <div class="left">
-        <h2 class="clickable" @click="hidden = !hidden">Punktacja</h2>
+        <h2 class="clickable" @click="hidden = !hidden">{{ $t('HOST.POINTS.TITLE') }}</h2>
       </div>
       <div class="right input-group">
         <form @submit.prevent="addNewTeam">
-          <input placeholder="nazwa drużyny" title="nazwa drużyny" v-model="teamName">
-          <button>Dodaj drużynę</button>
+          <input :placeholder="$t('HOST.POINTS.TEAM_NAME_LABEL')" :title="$t('HOST.POINTS.TEAM_NAME_LABEL')" v-model="teamName">
+          <button>{{$t('HOST.POINTS.TEAM_ADD')}}</button>
         </form>
       </div>
     </header>
     <table class="table card-body" v-if="!hidden">
       <thead>
       <tr>
-        <th @click="sort(null)" class="sortable" style="width: 15px">#</th>
-        <th @click="sort('team')" class="sortable">Drużyna</th>
-        <th>Fever</th>
-        <th @click="sort('points')" class="sortable">Punkty</th>
-        <th>Tiebreakery</th>
-        <th style="width: 315px">Dodatki</th>
+        <th @click="sort(null)" class="sortable" style="width: 15px">{{ $t('HOST.POINTS.TEAM_NUMBER')}}</th>
+        <th @click="sort('team')" class="sortable">{{$t('HOST.POINTS.TEAM_NAME')}}</th>
+        <th>{{ $t('HOST.POINTS.TEAM_FEVER') }}</th>
+        <th @click="sort('points')" class="sortable">{{ $t('HOST.POINTS.TEAM_POINTS') }}</th>
+        <th>{{ $t('HOST.POINTS.TEAM_TIEBREAKERS') }}</th>
+        <th style="width: 315px">{{ $t('HOST.POINTS.TEAM_OPTIONS') }}</th>
       </tr>
       </thead>
       <tbody v-if="score.length > 0">
@@ -40,11 +40,11 @@
     <footer class="grid-2" v-if="!hidden">
       <div class="left">
         <router-link :to="{name: 'ScorePage', params: {room}}" class="button" target="_blank">
-          Otwórz punktacje w innej karcie
+          {{ $t('HOST.POINTS.NEW_CARD') }}
         </router-link>
       </div>
       <div class="right flex">
-        <button @click="scoreReset" class="button button-danger">Resetuj Punkty</button>
+        <button @click="scoreReset" class="button button-danger">{{ $t('HOST.POINTS.RESET') }}</button>
       </div>
     </footer>
   </section>

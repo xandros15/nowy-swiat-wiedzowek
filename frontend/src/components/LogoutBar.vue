@@ -1,6 +1,6 @@
 <template>
     <div class="logout-bar" v-if="isLogged">
-        <button @click="logout" class="button">Logout</button>
+        <button @click="logout" class="button">{{$t('LOGOUT.BUTTON_LABEL')}}</button>
     </div>
 </template>
 

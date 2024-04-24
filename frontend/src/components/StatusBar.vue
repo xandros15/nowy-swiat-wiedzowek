@@ -1,5 +1,5 @@
 <template>
-    <div class="status">status: <span :class="status.toLowerCase()">{{status}}</span></div>
+  <div class="status">{{ $t('STATUS_LABEL') }}: <span :class="status.toLowerCase()">{{ $t(status) }}</span></div>
 </template>
 
 <script>

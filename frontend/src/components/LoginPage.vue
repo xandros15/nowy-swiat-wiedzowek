@@ -1,11 +1,12 @@
 <template>
   <div class="login-container">
     <form @submit.prevent="login" class="login-form">
-      <h2 class="title">Wprowadź swoją nazwę drużyny i wciśnij "dołącz".</h2>
-      <input class="login-form-input" placeholder="nazwa drużyny" title="nazwa drużyny" v-model.trim="nickname"/>
-      <button class="login-form-button button">Dołącz</button>
+      <h2 class="title">{{ $t('JOIN.TITLE') }}</h2>
+      <input class="login-form-input" :placeholder="$t('JOIN.NAME_LABEL')" :title="$t('JOIN.NAME_LABEL')"
+             v-model.trim="nickname"/>
+      <button class="login-form-button button">{{ $t('JOIN.BUTTON_LABEL') }}</button>
       <div class="nicknames" v-if="nicknames.length > 0">
-        <small class="nicknames-description">Ostatnio używane:</small>
+        <small class="nicknames-description">{{ $t('JOIN.LAST_NICKNAMES') }}:</small>
         <button :key="lastNickname" @click.prevent="selectNickname(lastNickname)"
              class="nicknames-button button"
              v-for="lastNickname in nicknames">

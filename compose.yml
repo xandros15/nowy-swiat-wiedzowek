@@ -1,16 +1,19 @@
 version: "3"
 services:
   frontend:
+    restart: always
     build:
       dockerfile: ./docker/Dockerfile
       target: frontend
   backend:
+    restart: always
     build:
       dockerfile: ./docker/Dockerfile
       target: backend
     env_file:
       - .env
   proxy:
+    restart: always
     ports:
       - "${PORT:-2137}:80"
     build:

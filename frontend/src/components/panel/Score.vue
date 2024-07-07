@@ -148,8 +148,11 @@ export default {
 }
 
 .table {
+  color: #363636;
+  background-color: #fff;
   border-collapse: collapse;
   border-spacing: 0;
+  width: 100%;
 
   & th, & td {
     text-align: left;

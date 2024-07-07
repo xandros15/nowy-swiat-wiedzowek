@@ -55,10 +55,39 @@
       </tr>
       </tbody>
     </table>
-    <footer class="grid-2" v-if="!hidden">
-      <BulkPoints class="left"/>
-      <div class="right" style="display: flex; align-items: flex-end">
-        <button @click="reset" class="button button-danger">{{ $t('HOST.ANSWERSHEET.RESET') }}</button>
+    <footer v-if="!hidden">
+      <div class="grid-2" style="padding: .1rem .3rem;  text-align: left">
+        <div>
+          <small style="margin: .2rem">{{ $t('HOST.SCORE.BATCH_ACTION') }}</small>
+          <div style="margin: .5rem .2rem; display: flex; gap: .2rem">
+            <div>
+              <label class="label" @click="select('points')">{{ $t('HOST.SCORE.POINT_LABEL') }}:</label>
+              <input
+                  style="max-width: 40px;"
+                  ref="points"
+                  type="number"
+                  v-model.number="points"
+              >
+            </div>
+            <div>
+              <label class="label" @click="select('tiebreaker')">{{ $t('HOST.SCORE.TIEBREAKER_LABEL') }}:</label>
+              <input
+                  style="max-width: 40px;"
+                  ref="tiebreaker"
+                  type="number"
+                  v-model.number="tiebreaker"
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="left flex" style="display: flex; align-items: stretch">
+          <button @click="submit" class="button">{{ $t('HOST.SCORE.SUBMIT') }}</button>
+        </div>
+        <div class="right" style="display: flex; align-items: stretch">
+          <button @click="reset" class="button button-danger">{{ $t('HOST.ANSWERSHEET.RESET') }}</button>
+        </div>
       </div>
     </footer>
   </section>
@@ -66,21 +95,19 @@
 
 <script>
 import {mapActions, mapMutations, mapState} from "vuex";
-import BulkPoints from "@/components/panel/BulkPoints";
 
 
 export default {
   name: "Answers",
-  components: {
-    BulkPoints,
-  },
   data() {
     return {
       hidden: false,
       columnsToShow: [
         'alt-answer',
         'options',
-      ]
+      ],
+      points: 1,
+      tiebreaker: 0,
     }
   },
   computed: {
@@ -116,7 +143,18 @@ export default {
       } else {
         this.unselectAnswer(nickname)
       }
-    }
+    },
+    select(ref) {
+      this.$refs[ref].select()
+    },
+    submit() {
+      this.$store.dispatch('admin.bulkpoints', {
+        tiebreaker: this.tiebreaker,
+        points: this.points,
+      });
+      this.tiebreaker = 0
+      this.points = 1
+    },
   }
 }
 </script>
@@ -194,5 +232,11 @@ export default {
     color: #363636;
     background-color: #fafafa;
   }
+}
+
+.label {
+  margin-right: .3rem;
+  cursor: pointer;
+  font-weight: bold;
 }
 </style>

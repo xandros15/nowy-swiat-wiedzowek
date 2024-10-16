@@ -15,7 +15,7 @@ export default {
   props: ['room'],
   computed: {
     url () {
-      return 'https://' + window.location.host + this.$router.resolve({
+      return window.location.origin + this.$router.resolve({
         name: 'TeamPage',
         params: {'room': this.room}
       }).href

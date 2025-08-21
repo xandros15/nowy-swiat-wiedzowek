@@ -13,22 +13,18 @@
 </template>
 
 <script>
-  export default {
-    name: "LobbyPage",
-    sockets: {
-      rooms(rooms) {
-        this.rooms = rooms
-      }
-    },
-    created () {
-      this.$socket.emit('rooms')
-    },
-    data () {
-      return {
-        rooms: []
-      }
-    }
-  }
+import {mapState} from "vuex";
+import socket from "@/services/socket";
+
+export default {
+  name: "LobbyPage",
+  created () {
+    socket.emit('rooms')
+  },
+  computed: mapState({
+    rooms: state => state.rooms
+  }),
+}
 </script>
 
 <style lang="scss" scoped>

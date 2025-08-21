@@ -10,10 +10,11 @@
 </template>
 
 <script>
-import Takeovers from '@/components/panel/Takeovers'
-import Score from '@/components/panel/Score'
-import QRLink from "@/components/panel/QRLink";
-import Answers from "@/components/panel/Answers";
+import Takeovers from '@/components/panel/Takeovers.vue'
+import Score from '@/components/panel/Score.vue'
+import QRLink from "@/components/panel/QRLink.vue";
+import Answers from "@/components/panel/Answers.vue";
+import socket from '@/services/socket'
 
 export default {
   name: 'AnswersPage',
@@ -25,7 +26,7 @@ export default {
   },
   props: ['room'],
   created() {
-    this.$socket.emit('admin.room.join', {room: this.room})
+    socket.emit('admin.room.join', {room: this.room})
   },
 }
 </script>

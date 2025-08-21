@@ -23,40 +23,42 @@
 </template>
 
 <script>
-import { getLocalRefreshToken } from '@/api/auth'
+import {getLocalRefreshToken} from '@/api/auth'
 import t from '@/services/translator'
-import { mapGetters, mapState } from 'vuex'
+import {mapGetters, mapState} from 'vuex'
+import socket from '@/services/socket'
+import {error} from "@/services/toastr";
 
 export default {
   name: 'AdminPanelPage',
-  data () {
+  data() {
     return {roomName: ''}
   },
   computed: {
     ...mapState(['adminRooms', 'isAdmin']),
     ...mapGetters(['hasRoom']),
   },
-  created () {
+  async created() {
     if (!this.isAdmin) {
       const refresh_token = getLocalRefreshToken()
       if (!refresh_token) {
-        this.$router.replace({name: 'OauthLogin'})
+        await this.$router.replace({name: 'OauthLogin'})
         return
       }
-      this.$socket.emit('authenticate.refresh_token', refresh_token)
+      socket.emit('authenticate.refresh_token', refresh_token)
     }
   },
   methods: {
-    createRoom () {
+    createRoom() {
       if (!/^[\w-]{3,16}$/.test(this.roomName)) {
-        this.$toastr.Add({type: 'error', msg: t('VALIDATION_CREATE_ROOM')})
+        error('VALIDATION_CREATE_ROOM')
         return
       }
-      this.$socket.emit('admin.room.create', {room: this.roomName})
+      socket.emit('admin.room.create', {room: this.roomName})
     },
-    removeRoom (roomName) {
+    removeRoom(roomName) {
       if (confirm(t('CONFIRM_DELETE_ROOM'))) {
-        this.$socket.emit('admin.room.remove', {room: roomName})
+        socket.emit('admin.room.remove', {room: roomName})
       }
     }
   }

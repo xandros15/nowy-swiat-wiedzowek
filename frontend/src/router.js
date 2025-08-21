@@ -1,20 +1,16 @@
 import store from '@/store'
-import AdminPanelPage from '@/views/AdminPanelPage'
-import AdminRoomPage from '@/views/AdminRoomPage'
-import LobbyPage from '@/views/LobbyPage'
-import OauthLoginPage from '@/views/OauthLoginPage'
-import RoomQrCodePage from '@/views/RoomQrCodePage'
-import ScorePage from '@/views/ScorePage'
-import TeamPage from '@/views/TeamPage'
-import AdminPage from "@/views/AdminPage";
-import Vue from 'vue'
-import VueRouter from 'vue-router'
+import AdminPanelPage from '@/views/AdminPanelPage.vue'
+import AdminRoomPage from '@/views/AdminRoomPage.vue'
+import LobbyPage from '@/views/LobbyPage.vue'
+import OauthLoginPage from '@/views/OauthLoginPage.vue'
+import RoomQrCodePage from '@/views/RoomQrCodePage.vue'
+import ScorePage from '@/views/ScorePage.vue'
+import TeamPage from '@/views/TeamPage.vue'
+import AdminPage from "@/views/AdminPage.vue";
+import { createRouter, createWebHistory } from 'vue-router'
 
-Vue.use(VueRouter)
-
-const router = new VueRouter({
-  mode: 'history',
-  base: process.env.BASE_URL,
+const router = createRouter({
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/login',

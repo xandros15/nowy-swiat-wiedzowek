@@ -52,8 +52,8 @@
 
 <script>
 import {mapActions, mapState} from 'vuex'
-import TeamScore from "@/components/TeamScore";
-import t from "@/services/translator";
+import TeamScore from "@/components/TeamScore.vue";
+import {error} from "@/services/toastr";
 
 export default {
   name: "Score",
@@ -98,7 +98,7 @@ export default {
         this.teamName = ''
         return
       }
-      this.$toastr.e(t('INVALID_TEAM_NAME'))
+      error('INVALID_TEAM_NAME')
     },
   }
 }

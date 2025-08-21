@@ -1,6 +1,4 @@
 const axios = require('axios')
-const TOKEN_URL = 'https://animesongs.org/access/oauth/token'
-const AUTH_URL = 'https://animesongs.org/access/oauth/authorize'
 
 function nonce (length) {
   let result = ''

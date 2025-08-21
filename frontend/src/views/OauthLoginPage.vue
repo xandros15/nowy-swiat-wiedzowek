@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import OauthLogin from '../components/panel/OauthLogin'
+import OauthLogin from '@/components/panel/OauthLogin.vue'
 
 export default {
   name: 'OauthLoginPage',

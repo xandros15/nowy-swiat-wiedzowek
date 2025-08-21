@@ -7,8 +7,8 @@
 </template>
 
 <script>
-  import LogoutBar from './components/LogoutBar'
-  import StatusBar from './components/StatusBar'
+  import LogoutBar from './components/LogoutBar.vue'
+  import StatusBar from './components/StatusBar.vue'
 
   export default {
     name: 'app',

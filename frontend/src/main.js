@@ -1,19 +1,14 @@
-import Vue from 'vue'
-import VueToastr from 'vue-toastr'
 import App from './App.vue'
+import 'vue3-toastify/dist/index.css';
 import router from './router'
-import socket from './services/socket-wrapper'
 import store from './store'
 import t from "@/services/translator";
+import {createApp} from "vue";
 
-Vue.config.productionTip = false
+const app = createApp(App)
 
-Vue.use(socket)
-Vue.use(VueToastr)
-Vue.prototype.$t = t
+app.use(store)
+app.use(router)
+app.config.globalProperties.$t = t
 
-new Vue({
-  router,
-  store,
-  render: h => h(App)
-}).$mount('#app')
+app.mount('#app')

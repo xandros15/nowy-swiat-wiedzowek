@@ -5,7 +5,7 @@
       <div class="top-bar">
         <div class="top-bar-left">
           <div class="place" v-if="takeover">
-            {{ $t('TAKEOVER_LABEL')}} {{ place }}
+            {{ $t('TAKEOVER_LABEL') }} {{ place }}
           </div>
         </div>
         <div class="top-bar-right">
@@ -20,11 +20,12 @@
 
 <script>
 import {mapState} from 'vuex'
-import AnswerPage from '@/components/answer/AnswerPage'
-import LoginPage from '@/components/LoginPage'
-import t from "@/services/translator";
-import TakeoverLargeBtn from "@/components/answer/TakeoverLargeBtn";
-import ModeBtn from "@/components/answer/ModeBtn";
+import AnswerPage from '@/components/answer/AnswerPage.vue'
+import LoginPage from '@/components/LoginPage.vue'
+import TakeoverLargeBtn from "@/components/answer/TakeoverLargeBtn.vue"
+import ModeBtn from "@/components/answer/ModeBtn.vue"
+import socket from '@/services/socket'
+import {error} from "@/services/toastr";
 
 const MODE_TAKEOVER = 'MODE_TAKEOVER'
 const MODE_ANSWER = 'MODE_ANSWER'
@@ -40,16 +41,13 @@ export default {
     LoginPage,
   },
   created() {
-    this.$toastr.defaultPosition = 'toast-top-center'
-    this.$socket.emit('rooms')
-  },
-  sockets: {
-    rooms (rooms) {
-      if(rooms.indexOf(this.room) === -1){
-        this.$toastr.e(t('ROOM_NO_EXISTS'))
-        this.$router.replace({name: 'LobbyPage'})
+    socket.once('rooms', async rooms => {
+      if (rooms.indexOf(this.room) === -1) {
+        error('ROOM_NO_EXISTS', true)
+        await this.$router.replace({name: 'LobbyPage'})
       }
-    }
+    })
+    socket.emit('rooms')
   },
   data() {
     return {
@@ -61,8 +59,8 @@ export default {
     ...mapState({
       takeover: state => state.takeover,
     }),
-    modeLabel(){
-      switch (this.mode){
+    modeLabel() {
+      switch (this.mode) {
         case MODE_TAKEOVER:
           return this.$t(MODE_ANSWER);
         case MODE_ANSWER:

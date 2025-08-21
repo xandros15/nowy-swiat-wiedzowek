@@ -1,14 +1,9 @@
-import { getLocalRefreshToken, setLocalAccessToken, setLocalRefreshToken, setLocalState } from '@/api/auth'
+import { setLocalAccessToken, setLocalRefreshToken, setLocalState } from '@/api/auth'
 import router from '@/router'
-import escape from 'escape-html'
-import Vue from 'vue'
-import Vuex from 'vuex'
-import socket from '../services/socket'
-import t from '../services/translator'
+import {createStore} from 'vuex'
+import socket from '@/services/socket'
 
-Vue.use(Vuex)
-
-export default new Vuex.Store({
+export default createStore({
   state: {
     legacy: false,
     auth_url: false,
@@ -30,6 +25,7 @@ export default new Vuex.Store({
     selected: [],
     takeovers: [],
     takeover: false,
+    rooms: [],
   },
   getters: {
     ['hasRoom'] (state) {
@@ -142,6 +138,12 @@ export default new Vuex.Store({
     ['setTakeovers'] (state, takeovers) {
       state.takeovers = takeovers
     },
+    ['setAdminRooms'](state, rooms) {
+      state.adminRooms = rooms
+    },
+    ['setRooms'](state, rooms){
+      state.rooms = rooms
+    }
   },
   actions: {
     //auth
@@ -154,52 +156,6 @@ export default new Vuex.Store({
       commit('auth.logout')
       location.reload()
     },
-    ['socket.authenticate.url'] ({commit}, auth_url) {
-      const auth_state = (new URL(auth_url)).searchParams.get('state')
-      if (auth_state) {
-        commit('auth.url', {auth_url, auth_state})
-      }
-    },
-    ['socket.authenticate.code'] ({commit}, tokens) {//save tokens in browser
-      commit('auth.proceed_off')
-      if (tokens) {
-        commit('auth.refresh', tokens)
-        commit('successfulLogin', true)
-        router.replace({name: 'AdminPanel'})
-        return
-      }
-      alert('Session expired, try to login once again.')
-      commit('auth.refresh', {refresh_token: false})
-    },
-    ['socket.authenticate.refresh_token'] ({commit}, tokens) {//save tokens in browser
-      commit('auth.proceed_off')
-      if (tokens) {
-        commit('auth.refresh', tokens)
-        commit('successfulLogin', true)
-        router.replace({name: 'AdminPanel'})
-        return
-      }
-      alert('Session expired, try to login once again.')
-      commit('auth.refresh', {refresh_token: false})
-      router.replace({name: 'OauthLogin'})
-    },
-    ['socket.admin.room.create'] (state, payload) {
-      if (payload.isSuccess === false) {
-        this._vm.$toastr.e(t('CREATE_ROOM_ERROR'))
-        return
-      }
-      this._vm.$toastr.s(t('CREATE_ROOM_SUCCESS'))
-      //admin.room.join
-    },
-    ['socket.admin.rooms'] ({state}, payload) {
-      state.adminRooms = payload
-    },
-    ['socket.admin.room.join'] (store, {code}) {
-      if (code === 'ROOM_NO_EXISTS') {
-        this._vm.$toastr.e(t(code))
-        router.replace({name: 'AdminPanel'})
-      }
-    },
     ///
     ['answer'] ({state, commit}, {answer, answerAlt}) {
       if (state.isLogged) {
@@ -211,62 +167,17 @@ export default new Vuex.Store({
       socket.emit('login', {nickname, room})
       commit('changeRoom', room)
     },
-    ['logout'] ({state, commit}) {
+    async ['logout'] ({state, commit}) {
       socket.emit('logout')
       commit('logout')
       if (state.isAdmin) {
         commit('auth.logout')
-        router.replace({name: 'OauthLogin'})
+        await router.replace({name: 'OauthLogin'})
       }
     },
     ['score.listen'] ({commit}, {room}) {
       socket.emit('score', {room})
       commit('changeRoom', room)
-    },
-    ['socket.login'] ({commit}, {isSuccess, nickname, takeover, code}) {
-      if (isSuccess) {
-        commit('successfulLogin')
-        commit('takeover', takeover)
-        commit('changeNickname', {nickname})
-      } else if (code === 'ROOM_NO_EXISTS') {
-        this._vm.$toastr.e(t(code))
-        router.replace({name: 'LobbyPage'})
-      } else if (code === 'ERROR_USER_EXISTS') {
-        this._vm.$toastr.e(t(code))
-      } else if (code === 'INVALID_NICKNAME') {
-        this._vm.$toastr.e(t(code))
-      }
-    },
-    ['socket.answer'] ({commit}, {isSuccess}) {
-      if (!isSuccess) {
-        this._vm.$toastr.e(t('ANSWER_ALREADY_SENT'))
-      } else {
-        this._vm.$toastr.s(t('ANSWER_SENT'))
-        commit('setAnswer', {answer: '', answerAlt: ''})
-      }
-    },
-    ['socket.reconnect'] ({state, dispatch}) {
-      this._vm.$toastr.s(t('RECONNECTED'))
-      if (state.isLogged) {
-        if (state.nickname) {
-          dispatch('login', {nickname: state.nickname, room: state.room})
-        } else if (state.isAdmin && state.legacy) {
-          dispatch('legacy.admin.login', {password: state.password, room: state.room})
-        } else if (state.isAdmin) {
-          const refreshToken = getLocalRefreshToken()
-          if (!refreshToken) {
-            router.replace({name: 'OauthLogin'})
-            return
-          }
-          socket.emit('authenticate.refresh_token', refreshToken)
-        }
-      }
-    },
-    ['socket.disconnect'] ({commit}) {
-      commit('disconnect')
-    },
-    ['socket.connect'] ({commit}) {
-      commit('connect')
     },
     //admin
     ['admin.reset'] () {
@@ -331,94 +242,15 @@ export default new Vuex.Store({
     ['admin.notify'] (store, {type, message}) {
       socket.emit('admin.notify', {type, message})
     },
-    ['socket.reset.answers'] ({commit}, {isSuccess}) {
-      if (isSuccess) {
-        commit('resetAnswers')
-        commit('resetSelectAnswer')
-      } else {
-        this._vm.$toastr.e(t('RESET_ANSWER_ERROR'))
-      }
-    },
-    ['socket.reset.single'] ({commit}, {isSuccess, nickname}) {
-      if (isSuccess) {
-        commit('resetAnswer', nickname)
-      } else {
-        this._vm.$toastr.e(t('RESET_ANSWER_ERROR'))
-      }
-    },
-    ['socket.admin'] ({commit,}, {isSuccess, code, legacy}) {
-      if (isSuccess) {
-        commit('successfulLogin', true, !!legacy)
-      } else if (code) {
-        this._vm.$toastr.e(t(code))
-      } else {
-        this._vm.$toastr.e(t('LOGIN_ERROR'))
-      }
-    },
-    ['socket.answer.receive'] ({commit,}, answer) {
-      commit('pushAnswer', answer)
-    },
-    ['socket.answers.receive'] ({commit,}, {answers}) {
-      commit('resetAnswers')
-      answers = answers || []
-      for (const answer of answers) {
-        commit('pushAnswer', answer)
-      }
-    },
-    ['socket.notification'] (store, {message, type}) {
-      const types = {
-        'error': 'error',
-        'warning': 'warning',
-        'success': 'success',
-      }
-
-      type = types[type] || 'info'
-      let msg = escape(message)
-      msg = t(msg)
-      this._vm.$toastr.Add({type, msg})
-    },
-    ['socket.score'] ({commit,}, {score}) {
-      commit('setScore', score)
-    },
-    ['socket.notice.login'] (store, response) {
-      if (response.isSuccess) {
-        const msg = escape(`${response.nickname} join to game.`)
-        this._vm.$toastr.Add({type: 'success', msg})
-      } else {
-        const msg = escape(`${response.nickname} cannot join to game.`)
-        this._vm.$toastr.Add({type: 'warning', msg})
-      }
-    },
-    ['socket.notice.disconnect'] (store, nickname) {
-      const msg = escape(`${nickname} disconnected from game.`)
-      this._vm.$toastr.Add({type: 'error', msg})
-    },
-    ['socket.error'] (store, {code}) {
-      this._vm.$toastr.e(t(code))
-    },
     ['takeover'] ({state}) {
       if (state.isLogged && !state.takeover) {
         socket.emit('takeover')
       }
     },
-    ['socket.takeover'] ({commit}, {isSuccess, takeover}) {
-      if (isSuccess === true) {
-        commit('takeover', takeover)
-      }
-    },
-    ['socket.takeover.reset'] ({commit}) {
-      commit('resetTakeover')
-    },
-    ['socket.takeover.list'] ({commit}, {takeovers}) {
-      commit('setTakeovers', takeovers)
-    },
     ['takeover.reset'] ({commit}) {
       socket.emit('takeover.reset')
       commit('setTakeovers', [])
     },
-    ['t'](store, text) {
-      return t(text)
-    }
   },
   modules: {}
 })

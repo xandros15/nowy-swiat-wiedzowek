@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import QRcode from '@/components/QRcode'
+import QRcode from '@/components/QRcode.vue'
 
 export default {
   name: 'RoomQrCodePage',

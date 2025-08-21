@@ -14,11 +14,11 @@
 
 <script>
 import {mapState} from 'vuex';
-import LoginAdminPage from '@/components/panel-legacy/LoginAdminPage';
-import Score from "@/components/panel/Score";
-import Answers from "@/components/panel/Answers";
-import Takeovers from "@/components/panel/Takeovers";
-import QRLink from "@/components/panel/QRLink";
+import LoginAdminPage from '@/components/panel-legacy/LoginAdminPage.vue';
+import Score from "@/components/panel/Score.vue";
+import Answers from "@/components/panel/Answers.vue";
+import Takeovers from "@/components/panel/Takeovers.vue";
+import QRLink from "@/components/panel/QRLink.vue";
 
 export default {
   name: 'AdminPage',

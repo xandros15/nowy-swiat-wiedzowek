@@ -19,7 +19,7 @@
 
 <script>
   import { mapState } from 'vuex'
-  import t from "@/services/translator";
+  import {error} from "@/services/toastr";
 
   export default {
     name: 'AnswerPage',
@@ -39,9 +39,9 @@
           answerAlt: this.$refs.answerAlt.value.trim(),
         }
         if (payload.answer.length < 1) {
-          this.$toastr.e(t('TOO_SHORT_ANSWER'))
+          error('TOO_SHORT_ANSWER', true)
         } else if (payload.answer.length > 64 || payload.answerAlt.length > 64) {
-          this.$toastr.e(t('TOO_LONG_ANSWER'))
+          error('TOO_LONG_ANSWER', true)
         } else {
           this.$store.dispatch('answer', payload)
         }

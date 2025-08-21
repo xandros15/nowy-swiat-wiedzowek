@@ -14,6 +14,7 @@
 <script>
 import { getLocalRefreshToken, getLocalState, setLocalState } from '@/api/auth'
 import { mapState } from 'vuex'
+import socket from '@/services/socket'
 
 export default {
   name: 'panel-login',
@@ -39,16 +40,16 @@ export default {
         return
       }
       this.$store.commit('auth.proceed_toggle')
-      this.$socket.emit('authenticate.code', code)
+      socket.emit('authenticate.code', code)
     }
-    this.$socket.emit('authenticate.fetch_url')
+    socket.emit('authenticate.fetch_url')
   },
   methods: {
     authenticate () {
       this.$store.commit('auth.proceed_toggle')
       const refresh_token = getLocalRefreshToken()
       if (refresh_token) {
-        this.$socket.emit('authenticate.refresh_token', refresh_token)
+        socket.emit('authenticate.refresh_token', refresh_token)
         return
       } else if (this.auth_url) {
         window.location.href = this.auth_url

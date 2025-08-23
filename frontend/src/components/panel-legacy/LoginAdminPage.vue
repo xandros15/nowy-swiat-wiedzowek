@@ -22,7 +22,6 @@ export default {
   },
   methods: {
     loginAdmin() {
-      // console.log(this.room)
       this.$store.dispatch('legacy.admin.login', {password: this.password, room: this.room})
     }
   }

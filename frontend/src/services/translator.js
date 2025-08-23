@@ -26,6 +26,8 @@ const CODES_DEFAULT = {
   'NO_ROOMS': 'Sorry, there are no open rooms at this moment.',
   'ROOM_LIST': 'Room list',
   'INVALID_TEAM_NAME': 'Team name can\'t be shorter than 1 character nor longer than 16 characters.',
+  'NOT_CONNECTED': 'You are not connected',
+  'DISCONNECTED': 'You are disconnected',
 
   'CREATE_ROOM_ERROR': 'Creating new room failed',
   'CREATE_ROOM_SUCCESS': 'Created new room',
@@ -92,7 +94,6 @@ const CODES_DEFAULT = {
   'HOST.SCORE.POINT_LABEL': 'Points',
   'HOST.SCORE.TIEBREAKER_LABEL': 'Tiebreakers',
   'HOST.SCORE.SUBMIT': 'Submit',
-
 }
 
 const CODES_PL = {
@@ -121,6 +122,8 @@ const CODES_PL = {
   'NO_ROOMS': 'Przepraszam, nie ma aktualnie otwartych pokoi.',
   'ROOM_LIST': 'Lista pokoi',
   'INVALID_TEAM_NAME': 'Nazwa nie może być krótsza niż 1 znaki i dłuższa niż 16 znaków.',
+  'NOT_CONNECTED': 'Brak połączenia',
+  'DISCONNECTED': 'Utracono połączenie',
 
   'CREATE_ROOM_ERROR': 'Błąd przy tworzeniu pokoju.',
   'CREATE_ROOM_SUCCESS': 'Pokój został stworzony.',

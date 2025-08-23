@@ -24,10 +24,6 @@
             color: #045b00;
         }
 
-        & > .connecting {
-            color: #dcd116;
-        }
-
         & > .disconnect {
             color: #63000d;
         }

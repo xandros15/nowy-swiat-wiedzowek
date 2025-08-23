@@ -1,5 +1,4 @@
 import {io} from 'socket.io-client'
-import {getLocalRefreshToken} from "@/api/auth";
 import router from '@/router'
 import escape from 'escape-html'
 import store from '@/store'
@@ -31,9 +30,11 @@ socket.on('authenticate.code', async (tokens) => {//save tokens in browse=> r
 socket.on('authenticate.refresh_token', async (tokens) => {
     commit('auth.proceed_off')
     if (tokens) {
+        const wasReconnect = getState().isAdmin && getState().isLogged
         commit('auth.refresh', tokens)
         commit('successfulLogin', true)
-        await router.replace({name: 'AdminPanel'})
+        wasReconnect || await router.replace({name: 'AdminPanel'})
+
         return
     }
     alert('Session expired, try to login once again.')
@@ -81,20 +82,14 @@ socket.on('answer', ({isSuccess}) => {
 socket.io.on('reconnect', async () => {
     const state = getState()
     success('RECONNECTED', !state.isAdmin)
-    console.log(state.isLogged, state.nickname, state.room)
-    if (state.isLogged) {
-        if (state.nickname) {
-            dispatch('login', {nickname: state.nickname, room: state.room})
-        } else if (state.isAdmin && state.legacy) {
-            dispatch('legacy.admin.login', {password: state.password, room: state.room})
-        } else if (state.isAdmin) {
-            const refreshToken = getLocalRefreshToken()
-            if (!refreshToken) {
-                await router.replace({name: 'OauthLogin'})
-                return
-            }
-            socket.emit('authenticate.refresh_token', refreshToken)
-        }
+    if (!state.isLogged) {
+        return;
+    }
+
+    if (state.nickname) { //is participant
+        dispatch('login', {nickname: state.nickname, room: state.room})
+    } else if(state.isAdmin) { //is host
+        dispatch('admin.login')
     }
 });
 socket.on('disconnect', () => {

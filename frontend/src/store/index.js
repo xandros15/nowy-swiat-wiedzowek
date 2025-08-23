@@ -1,7 +1,8 @@
-import { setLocalAccessToken, setLocalRefreshToken, setLocalState } from '@/api/auth'
+import {getLocalRefreshToken, setLocalAccessToken, setLocalRefreshToken, setLocalState} from '@/api/auth'
 import router from '@/router'
 import {createStore} from 'vuex'
 import socket from '@/services/socket'
+import {error} from "@/services/toastr";
 
 export default createStore({
   state: {
@@ -12,7 +13,6 @@ export default createStore({
     nickname: '',
     isAdmin: false,
     isLogged: false,
-    isConnecting: false,
     isConnected: false,
     answer: '',
     answerAlt: '',
@@ -34,8 +34,6 @@ export default createStore({
     ['status'] (state) {
       if (state.isConnected) {
         return 'Connected'
-      } else if (state.isConnecting) {
-        return 'Connecting'
       } else {
         return 'Disconnect'
       }
@@ -68,14 +66,10 @@ export default createStore({
     },
     //connection status
     ['connect'] (state) {
-      state.isConnecting = false
       state.isConnected = true
     },
     ['disconnect'] (state) {
       state.isConnected = false
-    },
-    ['connecting'] (state) {
-      state.isConnecting = true
     },
     //join to game
     ['changeNickname'] (state, {nickname}) {
@@ -156,14 +150,37 @@ export default createStore({
       commit('auth.logout')
       location.reload()
     },
+    async ['admin.login'] ({state, dispatch}) {
+       if (!state.isAdmin) {
+         return;
+       }
+
+       if (state.legacy) {
+         dispatch('legacy.admin.login', {password: state.password, room: state.room})
+         return;
+       }
+
+      const refreshToken = getLocalRefreshToken()
+      if (!refreshToken) {
+        await router.replace({name: 'OauthLogin'});
+        return;
+      }
+
+      socket.emit('authenticate.refresh_token', refreshToken);
+    },
     ///
     ['answer'] ({state, commit}, {answer, answerAlt}) {
+      if (!state.isConnected) {
+        error('NOT_CONNECTED', true)
+        return
+      }
+
       if (state.isLogged) {
         socket.emit('answer', {answer, answerAlt})
         commit('setAnswer', {answer, answerAlt})
       }
     },
-    ['login'] ({commit}, {nickname, room}) {
+    ['login'] ({commit, state}, {nickname, room}) {
       socket.emit('login', {nickname, room})
       commit('changeRoom', room)
     },
@@ -243,6 +260,11 @@ export default createStore({
       socket.emit('admin.notify', {type, message})
     },
     ['takeover'] ({state}) {
+      if (!state.isConnected) {
+        error('NOT_CONNECTED', true)
+        return
+      }
+
       if (state.isLogged && !state.takeover) {
         socket.emit('takeover')
       }

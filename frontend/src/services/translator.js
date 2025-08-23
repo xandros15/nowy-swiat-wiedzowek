@@ -28,6 +28,7 @@ const CODES_DEFAULT = {
   'INVALID_TEAM_NAME': 'Team name can\'t be shorter than 1 character nor longer than 16 characters.',
   'NOT_CONNECTED': 'You are not connected',
   'DISCONNECTED': 'You are disconnected',
+  'RECONNECTION_COLLISION': 'After reconnection cannot join to room. Try to join once again.',
 
   'CREATE_ROOM_ERROR': 'Creating new room failed',
   'CREATE_ROOM_SUCCESS': 'Created new room',
@@ -131,6 +132,7 @@ const CODES_PL = {
   'RESET_ANSWER_ERROR': 'Błąd przy resetowaniu odpowiedzi.',
   'ANSWER_SENT': 'Odpowiedź została wysłana.',
   'ANSWER_ALREADY_SENT': 'Wysłałeś już swoją odpowiedź.',
+  'RECONNECTION_COLLISION': 'Nie udało się dołączyć do pokoju po utraconym połączeniu. Spróbuj raz jeszcze.',
 
 
   'GENERATE_QR_CODE': 'Wygeneruj kod QR do pokoju',

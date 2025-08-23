@@ -65,6 +65,10 @@ socket.on('login', async ({isSuccess, nickname, takeover, code}) => {
     } else if (code === 'ROOM_NO_EXISTS') {
         await router.replace({name: 'LobbyPage'})
         error(code, true)
+    } else if (code === 'ERROR_USER_EXISTS' && getState().nickname.length > 0 && getState().room.length > 0) {
+        //@todo fix reconnection
+        warning('RECONNECTION_COLLISION', true)
+        await router.replace({name: 'TeamPage', params: {room: getState().room}})
     } else if (code === 'ERROR_USER_EXISTS') {
         error(code, true)
     } else if (code === 'INVALID_NICKNAME') {

@@ -151,7 +151,7 @@ socket.on('score', ({score}) => {
     commit('setScore', score)
 });
 socket.on('notice.login', (store, response) => {
-    if (response.isSuccess) {
+    if (response?.isSuccess) {
         const msg = escape(`${response.nickname} join to game.`)
         success(msg)
     } else {

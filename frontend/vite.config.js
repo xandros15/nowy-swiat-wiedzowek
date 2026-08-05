@@ -22,8 +22,9 @@ export default defineConfig(({mode}) => {
             proxy: {
                 "/socket.io/": {
                     target: env.VITE_SOCKET_URL,
-                    rewrite: (path) => path.replace(/^\/socket\.io\//, ""),
+                    rewrite: (path) => path,
                     changeOrigin: true,
+                    ws: true,
                 }
             },
         }

@@ -8,7 +8,7 @@ const commit = (...args) => store.commit(...args)
 const dispatch = (...args) => store.dispatch(...args)
 const getState = () => store.state
 
-const socket = io(process.env.NODE_ENV === 'development' ? 'http://192.168.0.240:3333' : '')
+const socket = io()
 
 socket.on('authenticate.url', (auth_url) => {
     const auth_state = (new URL(auth_url)).searchParams.get('state')

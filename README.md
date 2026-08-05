@@ -23,6 +23,7 @@ parametry:
 | OAUTH2_SECRET   | client_secret do systemu oauth2 dla operatorów                                                   |
 | OAUTH2_REDIRECT | adress na którym będzie stać aplikacja frontendowa zakończony `/login`. Należy pamiętać o porcie |
 | DEBUG           | do debugowania                                                                                   |
+| VITE_SOCKET_URL | (dev only) adres serwera backendowego                                                            |
 
 
 ## docker

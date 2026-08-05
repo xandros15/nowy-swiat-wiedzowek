@@ -154,7 +154,7 @@ socket.on('notice.login', (store, response) => {
     if (response?.isSuccess) {
         const msg = escape(`${response.nickname} join to game.`)
         success(msg)
-    } else {
+    } else if(response?.nickname) {
         const msg = escape(`${response.nickname} cannot join to game.`)
         warning(msg)
     }

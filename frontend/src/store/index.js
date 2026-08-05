@@ -2,7 +2,8 @@ import {getLocalRefreshToken, setLocalAccessToken, setLocalRefreshToken, setLoca
 import router from '@/router'
 import {createStore} from 'vuex'
 import socket from '@/services/socket'
-import {error} from "@/services/toastr";
+import {error} from "@/services/toastr"
+import t from "@/services/translator"
 
 export default createStore({
   state: {

@@ -180,5 +180,8 @@ socket.on('takeover.list', ({takeovers}) => {
 socket.on('rooms', (rooms) => {
     commit('setRooms', rooms)
 })
+socket.on('history', ({history}) => {
+    commit('setHistory', history)
+})
 
 export default socket

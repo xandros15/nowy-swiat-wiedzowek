@@ -2,6 +2,7 @@ const Answer = require('./Answer')
 const Score = require('./Score')
 const Room = require('./Room')
 const Takeovers = require('./Takeovers')
+const RoomHistory = require('./RoomHistory')
 
 function Rooms () {
   let rooms = []
@@ -12,6 +13,7 @@ function Rooms () {
     answers: new Answer(),
     scores: new Score(),
     takeovers: new Takeovers(),
+    history: new RoomHistory(),
   })
 
   this.create = ({name, owner}) => {
@@ -21,7 +23,8 @@ function Rooms () {
         scores: new Score(),
         answers: new Answer(),
         takeovers: new Takeovers(),
-        owner
+        owner,
+        history: new RoomHistory(),
       })
       rooms.push(room)
       return room

@@ -27,6 +27,7 @@ export default createStore({
     takeovers: [],
     takeover: false,
     rooms: [],
+    history: [],
   },
   getters: {
     ['hasRoom'] (state) {
@@ -138,6 +139,10 @@ export default createStore({
     },
     ['setRooms'](state, rooms){
       state.rooms = rooms
+    },
+    //history
+    ['setHistory'](state, history) {
+      state.history = history
     }
   },
   actions: {

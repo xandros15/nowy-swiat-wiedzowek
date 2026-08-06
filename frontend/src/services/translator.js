@@ -95,6 +95,18 @@ const CODES_DEFAULT = {
   'HOST.SCORE.POINT_LABEL': 'Points',
   'HOST.SCORE.TIEBREAKER_LABEL': 'Tiebreakers',
   'HOST.SCORE.SUBMIT': 'Submit',
+
+  'HOST.HISTORY.TITLE': 'History',
+  'HOST.HISTORY.TIME': 'Time',
+  'HOST.HISTORY.EVENT': 'Event',
+  'HOST.HISTORY.RESET_ANSWERS': 'Reset all answers',
+  'HOST.HISTORY.RESET_SCORE': 'Reset score',
+  'HOST.HISTORY.RESET_ANSWER': 'Reset {{nickname}}\'s answer',
+  'HOST.HISTORY.REMOVE_TIEBREAKER': 'Removed {{points}} tiebreaker points from team {{nickname}}',
+  'HOST.HISTORY.ADD_TIEBREAKER': 'Added {{points}} tiebreaker points to team {{nickname}}',
+  'HOST.HISTORY.REMOVE_POINTS': 'Removed {{points}} points from team {{nickname}}',
+  'HOST.HISTORY.ADD_POINTS': 'Added {{points}} points to team {{nickname}}',
+  'HOST.HISTORY.ANSWER': 'Answer from team {{nickname}}: {{answer}}, additionally: {{answerAlt}}',
 }
 
 const CODES_PL = {
@@ -194,6 +206,18 @@ const CODES_PL = {
   'HOST.SCORE.POINT_LABEL': 'Punkty',
   'HOST.SCORE.TIEBREAKER_LABEL': 'Tiebreaker',
   'HOST.SCORE.SUBMIT': 'Dodaj',
+
+  'HOST.HISTORY.TITLE': 'Historia',
+  'HOST.HISTORY.TIME': 'Czas',
+  'HOST.HISTORY.EVENT': 'Zdarzenie',
+  'HOST.HISTORY.RESET_ANSWERS': 'Reset wszystkich odpowiedzi',
+  'HOST.HISTORY.RESET_SCORE': 'Reset punktacji',
+  'HOST.HISTORY.RESET_ANSWER': 'Reset odpowiedzi {{nickname}}',
+  'HOST.HISTORY.REMOVE_TIEBREAKER': 'Odjęcie {{points}} tiebreakerów drużynie {{nickname}}',
+  'HOST.HISTORY.ADD_TIEBREAKER': 'Dodanie {{points}} tiebreakerów drużynie {{nickname}}',
+  'HOST.HISTORY.REMOVE_POINTS': 'Odjęcie {{points}} punktów drużynie {{nickname}}',
+  'HOST.HISTORY.ADD_POINTS': 'Dodanie {{points}} punktów drużynie {{nickname}}',
+  'HOST.HISTORY.ANSWER': 'Odpowiedź drużyny {{nickname}}: {{answer}}, dodatkowo: {{answerAlt}}',
 }
 
 const getDictionary = () => {
@@ -208,6 +232,11 @@ const getDictionary = () => {
 }
 
 const dictionary = getDictionary();
-const t = input => dictionary[input] || escape(input);
+
+function formatTemplate(template, params = {}) {
+  return template.replace(/\{\{\s*(\w+)\s*}}/g, (match, key) => Object.prototype.hasOwnProperty.call(params, key) ? escape(params[key]) : match);
+}
+
+const t = (input, data) => dictionary[input] ? (data ? formatTemplate(dictionary[input], data) : dictionary[input]) : escape(input);
 
 export default t

@@ -249,6 +249,7 @@ io.on('connection', socket => {
     socket.emit('answers.receive', {answers: socket.data.room.getAnswers()})
     socket.emit('score', {score: socket.data.room.getScore()})
     socket.emit('takeover.list', {takeovers: socket.data.room.getTakeovers()})
+    socket.emit('history', {history: socket.data.room.getHistory()})
   })
   socket.on('admin.notify', payload => {
     if (socket.data.isAdmin) {
@@ -260,36 +261,42 @@ io.on('connection', socket => {
     if (socket.data.isAdmin) {
       socket.data.room.addPoints(nickname, points)
       io.to('score.' + socket.data.room.name()).emit('score', {score: socket.data.room.getScore()})
+      io.to('admin.' + socket.data.room.name()).emit('history', {history: socket.data.room.getHistory()})
     }
   })
   socket.on('score.remove', (nickname, points) => {
     if (socket.data.isAdmin) {
       socket.data.room.removePoints(nickname, points)
       io.to('score.' + socket.data.room.name()).emit('score', {score: socket.data.room.getScore()})
+      io.to('admin.' + socket.data.room.name()).emit('history', {history: socket.data.room.getHistory()})
     }
   })
   socket.on('tiebreaker.add', (nickname, points) => {
     if (socket.data.isAdmin) {
       socket.data.room.addTiebreaker(nickname, points)
       io.to('score.' + socket.data.room.name()).emit('score', {score: socket.data.room.getScore()})
+      io.to('admin.' + socket.data.room.name()).emit('history', {history: socket.data.room.getHistory()})
     }
   })
   socket.on('tiebreaker.remove', (nickname, points) => {
     if (socket.data.isAdmin) {
       socket.data.room.removeTiebreaker(nickname, points)
       io.to('score.' + socket.data.room.name()).emit('score', {score: socket.data.room.getScore()})
+      io.to('admin.' + socket.data.room.name()).emit('history', {history: socket.data.room.getHistory()})
     }
   })
   socket.on('score.reset', () => {
     if (socket.data.isAdmin) {
       socket.data.room.resetScore()
       io.to('score.' + socket.data.room.name()).emit('score', {score: socket.data.room.getScore()})
+      io.to('admin.' + socket.data.room.name()).emit('history', {history: socket.data.room.getHistory()})
     }
   })
   socket.on('score.nickname.remove', (nickname) => {
     if (socket.data.isAdmin) {
       socket.data.room.removeNickname(nickname)
       io.to('score.' + socket.data.room.name()).emit('score', {score: socket.data.room.getScore()})
+      io.to('admin.' + socket.data.room.name()).emit('history', {history: socket.data.room.getHistory()})
     }
   })
   socket.on('reset', () => {
@@ -297,12 +304,14 @@ io.on('connection', socket => {
       socket.data.room.resetAnswers()
       io.to('admin.' + socket.data.room.name()).emit('reset.answers', {isSuccess: true})
       io.to(socket.data.room.name()).emit('reset', {isSuccess: true})
+      io.to('admin.' + socket.data.room.name()).emit('history', {history: socket.data.room.getHistory()})
     }
   })
   socket.on('reset.single', (nickname) => {
     if (socket.data.isAdmin && typeof nickname === 'string') {
       socket.data.room.resetSingleAnswer(nickname)
       io.to('admin.' + socket.data.room.name()).emit('reset.single', {isSuccess: true, nickname})
+      io.to('admin.' + socket.data.room.name()).emit('history', {history: socket.data.room.getHistory()})
     }
   })
   //takeover
@@ -351,6 +360,7 @@ io.on('connection', socket => {
     }
     socket.data.room.putAnswer(answer)
     io.to('admin.' + socket.data.room.name()).emit('answer.receive', answer)
+    io.to('admin.' + socket.data.room.name()).emit('history', {history: socket.data.room.getHistory()})
     socket.emit('answer', {isSuccess: true})
   })
   socket.on('login', payload => {

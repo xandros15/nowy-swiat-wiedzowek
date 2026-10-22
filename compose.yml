@@ -1,23 +1,17 @@
 services:
   frontend:
     restart: always
-    build:
-      dockerfile: ./docker/Dockerfile
-      target: frontend
+    image: ${DOCKER_IMAGE_NAME}-frontend
   backend:
     restart: always
-    build:
-      dockerfile: ./docker/Dockerfile
-      target: backend
+    image: ${DOCKER_IMAGE_NAME}-backend
     env_file:
       - .env
   proxy:
     restart: always
+    image: ${DOCKER_IMAGE_NAME}-web
     ports:
       - "${PORT:-2137}:80"
-    build:
-      dockerfile: ./docker/Dockerfile
-      target: proxy
     depends_on:
       - backend
       - frontend

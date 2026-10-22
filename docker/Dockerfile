@@ -1,9 +1,9 @@
-FROM node:24.4.1-alpine AS frontend-builder
+FROM node:24.22-alpine AS frontend-builder
 WORKDIR /app
 COPY ./frontend .
 RUN npm ci && npm cache clean --force && npm run build
 
-FROM node:16.9.1-alpine AS backend
+FROM node:24.22-alpine AS backend
 WORKDIR /app
 RUN chown node:node ./
 USER node

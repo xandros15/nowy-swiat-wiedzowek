@@ -42,7 +42,7 @@ Aby zbudować jedynie frontend, wystarczy wpisać komendę:
 make build-frontend
 ```
 
-Obraz powinien zbudować się pod nazwą domyślną `docker.animesongs.local:5000/quiz-answer/frontend:unreleased `
+Obraz powinien zbudować się pod nazwą domyślną `docker.animesongs.local:5000/quiz-answer-frontend:latest `
 Jeśli chce się użyć innej nazwy, należy wprowadzić własną do pliku .env pod parametrem `DOCKER_IMAGE_NAME`
 
 ```

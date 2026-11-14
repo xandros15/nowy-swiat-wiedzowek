@@ -53,7 +53,7 @@ class Oauth2 {
       grant_type: 'refresh_token',
       client_id: this.client_id,
       client_secret: this.client_secret,
-      scope: this.scopes,
+      scope: this.scopes.join(' '),
       refresh_token,
     }
     try {

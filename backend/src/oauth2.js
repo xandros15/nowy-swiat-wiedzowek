@@ -58,7 +58,7 @@ class Oauth2 {
     }
     try {
       const response = await axios.post(this.token_url, data)
-      const userinfo = await axios.post(this.userinfo_url, {}, {
+      const userinfo = await axios.get(this.userinfo_url, {
         headers:  {
             accept: 'application/json',
             authorization: 'Bearer ' + response.data.access_token,

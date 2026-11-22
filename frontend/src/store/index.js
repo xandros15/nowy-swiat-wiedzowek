@@ -28,6 +28,8 @@ export default createStore({
     takeover: false,
     rooms: [],
     history: [],
+    auth_device_url: false,
+    auth_device_status: null,
   },
   getters: {
     ['hasRoom'] (state) {
@@ -48,6 +50,13 @@ export default createStore({
     },
     ['auth.proceed_toggle'] (state) {
       state.auth_proceed = !state.auth_proceed
+    },
+    ['auth.device_url'](state, auth_device_url) {
+      state.auth_device_status = auth_device_url !== null ? 'pending' : null;
+      state.auth_device_url = auth_device_url
+    },
+    ['auth.device_status'](state, status) {
+      state.auth_device_status = status
     },
     ['auth.url'] (state, {auth_url, auth_state}) {
       setLocalState(auth_state)
@@ -154,7 +163,7 @@ export default createStore({
     },
     ['auth.logout'] ({commit}) {
       commit('auth.logout')
-      location.reload()
+      window.location.reload()
     },
     async ['admin.login'] ({state, dispatch}) {
        if (!state.isAdmin) {

@@ -1,4 +1,5 @@
 # nowy-swiat-wiedzowek
+
 Projekt dla konwentowego zglaszania odpowiedzi
 
 Aby używać aplikacji, potrzebujecie nodejs, npma lub dockera i make.
@@ -11,20 +12,31 @@ PORT=2137
 OAUTH2_CLIENT=
 OAUTH2_SECRET=
 OAUTH2_REDIRECT=http://localhost:2137/login
+OAUTH2_TOKEN_URL=https://YOUR_AUTH_PROVIDER_URL/token
+OAUTH2_AUTH_URL=https://YOUR_AUTH_PROVIDER_URL/oauth2/auth
+OIDC_USERINFO_URL=https://YOUR_AUTH_PROVIDER_URL/openid
+OAUTH2_DEVICE_DOMAIN=https://YOUR_AUTH_PROVIDER_URL
+OAUTH2_DEVICE_URL=https://YOUR_AUTH_PROVIDER_URL/oauth2/auth/device
+OAUTH2_JWKS_URL=https://YOUR_AUTH_PROVIDER_URL/.well-known/jwks.json
 DEBUG=0
 ```
 
 parametry:
 
-| Nazwa           | Opis                                                                                             |
-|:----------------|:-------------------------------------------------------------------------------------------------|
-| PORT            | wolny port numeryczny, domyślnie 2137                                                            |
-| OAUTH2_CLIENT   | client_id do systemu oauth2 dla operatorów                                                       |
-| OAUTH2_SECRET   | client_secret do systemu oauth2 dla operatorów                                                   |
-| OAUTH2_REDIRECT | adress na którym będzie stać aplikacja frontendowa zakończony `/login`. Należy pamiętać o porcie |
-| DEBUG           | do debugowania                                                                                   |
-| VITE_SOCKET_URL | (dev only) adres serwera backendowego                                                            |
-
+| Nazwa                | Opis                                                                                             |
+|:---------------------|:-------------------------------------------------------------------------------------------------|
+| VITE_SOCKET_URL      | (dev only) adres serwera backendowego                                                            |
+| DEBUG                | do debugowania                                                                                   |
+| PORT                 | wolny port numeryczny, domyślnie 2137                                                            |
+| OAUTH2_CLIENT        | client_id do systemu oauth2 dla operatorów                                                       |
+| OAUTH2_SECRET        | client_secret do systemu oauth2 dla operatorów                                                   |
+| OAUTH2_REDIRECT      | adress na którym będzie stać aplikacja frontendowa zakończony `/login`. Należy pamiętać o porcie |
+| OAUTH2_TOKEN_URL     | adres wymiany tokenów do oauth2                                                                  |
+| OAUTH2_AUTH_URL      | adres, na którym admin musi się zalogować pod oauth2                                             |
+| OIDC_USERINFO_URL    | adres z openconnect id                                                                           |
+| OAUTH2_JWKS_URL      | adres z keyring do weryfikacji tokenów. Jeśli nie zdefiniowany, pomija weryfikacje kluczem pub.  |
+| OAUTH2_DEVICE_DOMAIN | (QR login) domena (schema i host) do logowania przez kod QR                                      |
+| OAUTH2_DEVICE_URL    | (QR login) adres pod którym app sprawdza, poprawność zalogowania się przez kod QR                |
 
 ## docker
 
@@ -70,13 +82,16 @@ Aby uruchomić aplikacje w trybie deweloperskim, należy wykonać następujące 
 cd /frontend
 npm run serve
 ```
+
 oraz
+
 ```
 cd /backend
 node app.js
 ```
 
 Aby zbudować frontend aplikacji, należy wykonać komendę:
+
 ```
 cd /frontend
 npm run build
@@ -84,10 +99,13 @@ npm run build
 
 ## Pominięcie oauth2
 
-Żeby można było się zalogować do panelu zarządzania pokojem w aplikacji z pominięciem oauth2, należy stworzyć plik `rooms.yml` na wzór
-`example.rooms.yml` i wstawić go do folderu z aplikacją (w wersji dockerowej w roocie projektu, w wersji node w roocie backendu)
+Żeby można było się zalogować do panelu zarządzania pokojem w aplikacji z pominięciem oauth2, należy stworzyć plik
+`rooms.yml` na wzór
+`example.rooms.yml` i wstawić go do folderu z aplikacją (w wersji dockerowej w roocie projektu, w wersji node w roocie
+backendu)
 
 Przykładowy plik `rooms.yml`:
+
 ```yaml
 - room: animesongs
   key: 'mieczGutsaToBardzoDlugiMiecz'

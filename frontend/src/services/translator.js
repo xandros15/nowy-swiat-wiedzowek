@@ -59,6 +59,9 @@ const CODES_DEFAULT = {
   'LOGIN.TITLE': 'Admin panel',
   'LOGIN.PASSWORD_LABEL': 'password',
   'LOGIN.BUTTON_LABEL': 'Log in',
+  'LOGIN.QR_BUTTON_LABEL': 'Log in via QR',
+  'LOGIN.QR_REFRESH': 'Refresh QR',
+  'LOGIN.QR_ERROR': 'Got Error',
 
   'JOIN.TITLE': 'Enter your team name and press "Join".',
   'JOIN.NAME_LABEL': 'team name',
@@ -170,6 +173,9 @@ const CODES_PL = {
   'LOGIN.TITLE': 'Admin panel',
   'LOGIN.PASSWORD_LABEL': 'hasło',
   'LOGIN.BUTTON_LABEL': 'Zaloguj się',
+  'LOGIN.QR_BUTTON_LABEL': 'Zaloguj przez QR',
+  'LOGIN.QR_REFRESH': 'Odśwież QR',
+  'LOGIN.QR_ERROR': 'Błąd logowania',
 
   'JOIN.TITLE': 'Wprowadź swoją nazwę drużyny i wciśnij "dołącz".',
   'JOIN.NAME_LABEL': 'nazwa drużyny',

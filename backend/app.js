@@ -1,7 +1,7 @@
 require('dotenv').config()
 const Rooms = require('./src/Rooms')
 const Oauth2 = require('./src/oauth2')
-const jwt_decode = require('jwt-decode')
+const OauthDevice = require('./src/OauthDevice')
 const app = require('express')()
 const http = require('http').createServer(app)
 const {Server} = require('socket.io')
@@ -15,7 +15,11 @@ const oauth = new Oauth2({
   token_url: process.env.OAUTH2_TOKEN_URL,
   userinfo_url: process.env.OIDC_USERINFO_URL,
   scopes: ['openid', 'email', 'profile'],
+  device_domain: process.env.OAUTH2_DEVICE_DOMAIN,
+  device_url: process.env.OAUTH2_DEVICE_URL,
+  token_jwks_url: process.env.OAUTH2_JWKS_URL,
 })
+const oauthDevice = new OauthDevice(oauth)
 const debug = process.env.DEBUG || false
 
 //repo
@@ -92,6 +96,19 @@ io.on('connection', socket => {
     username: '',//if admin
     room: rooms.createEmpty()//empty room
   }
+
+  function adminAuthorize(claims) {
+    if (!claims) {
+      socket.emit('authenticate.status', 'error')
+      return
+    }
+
+    socket.data.isAdmin = true
+    socket.data.email = claims.email
+    socket.data.username = claims.username
+    socket.emit('admin.rooms', rooms.getOwnerRooms(claims.email).map(room => room.name()))
+  }
+
   socket.use(([event, ...args], next) => { //debug
     if (
       adminRoutes.indexOf(event) !== -1
@@ -154,13 +171,7 @@ io.on('connection', socket => {
   socket.on('authenticate.code', async (code) => {
     try {
       const tokens = await oauth.byCode(code)
-      if (tokens !== false) {//login
-        const jwt = jwt_decode(tokens.id_token)
-        socket.data.isAdmin = true
-        socket.data.email = jwt.email
-        socket.data.username = jwt.username
-        socket.emit('admin.rooms', rooms.getOwnerRooms(jwt.email).map(room => room.name()))
-      }
+      adminAuthorize(tokens);
       socket.emit('authenticate.code', tokens)
     } catch (e) {
     }
@@ -168,18 +179,35 @@ io.on('connection', socket => {
   socket.on('authenticate.refresh_token', async (refresh_token) => {
     try {
       const tokens = await oauth.byRefresh(refresh_token)
-      if (tokens !== false) {//login
-        socket.data.isAdmin = true
-        socket.data.email = tokens.userinfo.email
-        socket.data.username = tokens.userinfo.username
-        socket.emit('admin.rooms', rooms.getOwnerRooms(tokens.userinfo.email).map(room => room.name()))
-      }
+      adminAuthorize(tokens)
       socket.emit('authenticate.refresh_token', tokens)
     } catch (e) {}
   })
-  socket.on('authenticate.fetch_url', async () => {
-    const url = await oauth.getAuthUrl()
-    socket.emit('authenticate.url', url)
+  socket.on('authenticate.fetch_url', () => {
+    socket.emit('authenticate.url', oauth.getAuthUrl())
+  })
+  socket.on('authenticate.device_url', async () => {
+    const device = await oauthDevice.start(socket.id)
+    socket.emit('authenticate.device_url', device ? device.url : false)
+    if (!device?.created) {
+      return
+    }
+
+    oauthDevice.scheduler(socket.id).then((response) => {
+      if(response.status === 'inactive') {
+        return;
+      }
+
+      if(response.status === 'approved') {
+        const tokens = response.verified.id_token?.payload
+        adminAuthorize(tokens)
+        socket.emit('authenticate.code', response.tokens)
+        socket.emit('authenticate.status', response.status);
+        return;
+      }
+
+      socket.emit('authenticate.status', response.status);
+    }).catch(() => socket.emit('authenticate.status', 'error'));
   })
   //admin
   socket.on('admin.room.remove', payload => {
@@ -418,6 +446,7 @@ io.on('connection', socket => {
   })
 
   socket.on('disconnect', () => {
+    oauthDevice.cancel(socket.id);
     if (socket.data.nickname.length > 0) {
       users = users.filter(u => u !== socket.data.nickname)
       if (socket.data.room.name()) {//send admin someone disconnect from app

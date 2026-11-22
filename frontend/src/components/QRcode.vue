@@ -11,10 +11,14 @@ export default {
     url: {
       type: String,
       require: true,
+    },
+    version: {
+      type: Number,
+      default: 5,
     }
   },
   async created () {
-    this.base64Url = await QRCode.toDataURL(this.url, {errorCorrectionLevel: 'H', version: 5})
+    this.base64Url = await QRCode.toDataURL(this.url, {errorCorrectionLevel: 'H', version: this.version})
   },
   data () {
     return {

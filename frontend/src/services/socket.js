@@ -16,6 +16,12 @@ socket.on('authenticate.url', (auth_url) => {
         commit('auth.url', {auth_url, auth_state})
     }
 });
+socket.on('authenticate.device_url', (auth_device_url) => {
+    commit('auth.device_url', auth_device_url)
+});
+socket.on('authenticate.status', (status) => {
+    commit('auth.device_status', status)
+});
 socket.on('authenticate.code', async (tokens) => {//save tokens in browse=> r
     commit('auth.proceed_off')
     if (tokens) {
@@ -179,9 +185,9 @@ socket.on('takeover.list', ({takeovers}) => {
 });
 socket.on('rooms', (rooms) => {
     commit('setRooms', rooms)
-})
+});
 socket.on('history', ({history}) => {
     commit('setHistory', history)
-})
+});
 
 export default socket

@@ -20,7 +20,7 @@
               <span class="qr-info" v-else-if="auth_device_status && auth_device_status !== 'pending'">
               {{ $t('LOGIN.QR_ERROR') }}
             </span>
-              <QRcode :url="auth_device_url" :version="7" :class="{'qr-expiried': auth_device_status !== 'pending'}"/>
+              <QRcode :key="auth_device_url" :url="auth_device_url" :version="8" :class="{'qr-expiried': auth_device_status !== 'pending'}"/>
             </a>
           </div>
         </div>

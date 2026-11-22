@@ -98,8 +98,10 @@ io.on('connection', socket => {
   }
 
   function adminAuthorize(claims) {
-    if (!claims) {
-      socket.emit('authenticate.status', 'error')
+    if (!claims?.email) {
+      socket.emit('authenticate.status', 'error');
+      console.error('invalid claims');
+
       return
     }
 
@@ -122,8 +124,8 @@ io.on('connection', socket => {
   socket.use(([event, ...args], next) => { //debug
     if (debug) {
       console.log({event, args,})
-      next()
     }
+    next()
   })
   socket.use(([event, ...args], next) => { //pokemon-catch
     try {
@@ -171,16 +173,22 @@ io.on('connection', socket => {
   socket.on('authenticate.code', async (code) => {
     try {
       const tokens = await oauth.byCode(code)
-      adminAuthorize(tokens);
-      socket.emit('authenticate.code', tokens)
+      adminAuthorize(tokens.verified?.id_token?.payload);
+      socket.emit('authenticate.code', {
+        access_token: tokens.access_token,
+        refresh_token: tokens.refresh_token,
+      })
     } catch (e) {
     }
   })
   socket.on('authenticate.refresh_token', async (refresh_token) => {
     try {
       const tokens = await oauth.byRefresh(refresh_token)
-      adminAuthorize(tokens)
-      socket.emit('authenticate.refresh_token', tokens)
+      adminAuthorize(tokens.verified?.id_token?.payload)
+      socket.emit('authenticate.refresh_token', {
+        access_token: tokens.access_token,
+        refresh_token: tokens.refresh_token,
+      })
     } catch (e) {}
   })
   socket.on('authenticate.fetch_url', () => {
@@ -200,6 +208,7 @@ io.on('connection', socket => {
 
       if(response.status === 'approved') {
         const tokens = response.verified.id_token?.payload
+        console.log(tokens)
         adminAuthorize(tokens)
         socket.emit('authenticate.code', response.tokens)
         socket.emit('authenticate.status', response.status);
